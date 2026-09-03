@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  /* Travel Theme (Harmonized with Lombok Experience Logo) */
+  --theme-primary: #0EA5E9;       /* Bright Sky & Ocean Blue */
+  --theme-secondary: #0369A1;     /* Deep Coastal Blue */
+  --theme-accent: #38BDF8;        /* Sky Blue Highlight */
+  --theme-accent-teal: #0D9488;   /* Tropical Island Teal */
+  --theme-accent-gold: #F59E0B;   /* Sunrise Amber Glow */
+  --theme-background: #F7FCFF;    /* Clean White / Ice Lagoon background */
+  --theme-surface: #FFFFFF;
+  --theme-surface-card: #EFF8FF;
+  --theme-text-primary: #0C4A6E;   /* Deep Ocean Navy text */
+  --theme-text-secondary: #486581;
+  --theme-text-on-surface: #0C4A6E;
+  --theme-text-on-surface-muted: #6B8CA5;
+  --theme-border: #BAE6FD;
+  --theme-border-light: #D9F1FF;
+
+  --font-inter: var(--font-inter, sans-serif);
+  --font-mono: var(--font-mono, monospace);
+  --radius-card: 23px;
+  --radius-control: 23px;
+}
+
+[data-theme="admin"] {
+  /* Admin Theme */
+  --theme-primary: #0284C7;
+  --theme-secondary: #0369A1;
+  --theme-accent: #7DD3FC;
+  --theme-background: #F0F9FF;
+  --theme-surface: #FFFFFF;
+  --theme-surface-card: #E0F2FE;
+  --theme-text-primary: #082F49;
+  --theme-text-secondary: #486581;
+  --theme-text-on-surface: #082F49;
+  --theme-text-on-surface-muted: #5B7C93;
+  --theme-border: #7DD3FC;
+  --theme-border-light: #BAE6FD;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--theme-background);
+  color: var(--theme-text-primary);
+  font-family: var(--font-inter);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* Custom In-View & Scroll Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
