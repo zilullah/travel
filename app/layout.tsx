@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Lombok Experience | Tours, Airport Transfer & Luxury Property",
-  description: "Official Lombok travel booking, airport transfers, chauffeur services, and verified property investments.",
+  title: "Lombok Travel Organizer | Tours, Airport Transfer & Luxury Property",
+  description:
+    "Official Lombok travel booking, airport transfers, chauffeur services, and verified property investments.",
 };
 
 export default function RootLayout({
@@ -25,7 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}
+    >
       <body className="min-h-screen flex flex-col bg-[#F7FCFF] text-[#0C4A6E]">
         <LanguageProvider>
           <Header />
