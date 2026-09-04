@@ -73,11 +73,33 @@ function AdminShell({ children }: { children: React.ReactNode }) {
               <span>Tour Packages</span>
             </Link>
             <Link
-              href="/properties"
-              className="flex items-center gap-3 px-4 py-2.5 rounded-[23px] text-sm font-semibold text-[#486581] hover:bg-[#F0F9FF] transition-all"
+              href="/admin/properties"
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-[23px] text-sm font-bold transition-all ${
+                pathname.startsWith('/admin/properties')
+                  ? 'bg-[#E0F2FE] text-[#0284C7]'
+                  : 'text-[#486581] hover:bg-[#F0F9FF]'
+              }`}
             >
               <span>🏡</span>
-              <span>View Landing</span>
+              <span>Real Estate Properties</span>
+            </Link>
+            <Link
+              href="/admin/transfers"
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-[23px] text-sm font-bold transition-all ${
+                pathname.startsWith('/admin/transfers')
+                  ? 'bg-[#E0F2FE] text-[#0284C7]'
+                  : 'text-[#486581] hover:bg-[#F0F9FF]'
+              }`}
+            >
+              <span>🚗</span>
+              <span>Transfer Points & Fleet</span>
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-3 px-4 py-2.5 rounded-[23px] text-sm font-semibold text-[#486581] hover:bg-[#F0F9FF] transition-all"
+            >
+              <span>🌐</span>
+              <span>View Landing Page</span>
             </Link>
           </nav>
         </div>

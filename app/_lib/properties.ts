@@ -1,26 +1,11 @@
-export interface Property {
-  id: string;
-  slug: string;
-  title: string;
-  tagline: string;
-  type: 'villa' | 'land' | 'commercial';
-  location: string;
-  priceIdr: number;
-  ownership: 'Freehold (SHM)' | 'Leasehold (HGB)' | 'PMA Foreign Investment';
-  leaseYears?: number;
-  landSizeM2: number;
-  buildingSizeM2?: number;
-  bedrooms?: number;
-  bathrooms?: number;
-  roi: string;
-  beachDistance: string;
-  airportDistance: string;
-  image: string;
-  features: string[];
-  status: 'For Sale' | 'Exclusive' | 'Under Offer';
-}
+import { Property } from '@/lib/domain/property.types';
+import { supabaseClient } from '@/lib/supabase/client';
+import { SupabasePropertyRepository } from '@/lib/repositories/supabase-property.repository';
+import { PropertyService } from '@/lib/services/property.service';
 
-export const PROPERTIES: Property[] = [
+export type { Property };
+
+export const FALLBACK_PROPERTIES: Property[] = [
   {
     id: 'kuta-sunset-cliff-villa',
     slug: 'kuta-sunset-cliff-villa',
@@ -41,6 +26,7 @@ export const PROPERTIES: Property[] = [
     image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80',
     features: ['Infinity Ocean-View Pool', 'Fully Furnished Turnkey', 'PMA Management Ready', 'Private Gated Security'],
     status: 'Exclusive',
+    isFeatured: true,
   },
   {
     id: 'selong-belanak-beachfront-land',
@@ -58,6 +44,7 @@ export const PROPERTIES: Property[] = [
     image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
     features: ['Direct White Sand Access', 'Road & PLN Electricity Access', 'Clean Legal Due Diligence', 'Ideal for Boutique Resort'],
     status: 'For Sale',
+    isFeatured: true,
   },
   {
     id: 'gerupuk-surf-view-villa',
@@ -79,6 +66,7 @@ export const PROPERTIES: Property[] = [
     image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80',
     features: ['Panoramic Bay View', 'Plunge Pool & Sun Deck', 'Turnkey Airbnb Setup', 'High Rental Occupancy History'],
     status: 'For Sale',
+    isFeatured: false,
   },
   {
     id: 'tampah-hills-ocean-plot',
@@ -96,13 +84,32 @@ export const PROPERTIES: Property[] = [
     image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
     features: ['180-Degree Ocean Panorama', 'Asphalt Access Road', 'Masterplan Community Adjacent', 'Certified Title (SHM)'],
     status: 'For Sale',
+    isFeatured: false,
   },
 ];
 
 export async function getProperties(): Promise<Property[]> {
-  return PROPERTIES;
+  try {
+    const repo = new SupabasePropertyRepository(supabaseClient);
+    const service = new PropertyService(repo);
+    const data = await service.listProperties();
+    if (data && data.length > 0) {
+      return data;
+    }
+  } catch (err) {
+    console.warn('[Properties] Supabase query failed, falling back to dummy data:', err);
+  }
+  return FALLBACK_PROPERTIES;
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | undefined> {
-  return PROPERTIES.find((p) => p.slug === slug);
+  try {
+    const repo = new SupabasePropertyRepository(supabaseClient);
+    const service = new PropertyService(repo);
+    const prop = await service.getPropertyBySlug(slug);
+    if (prop) return prop;
+  } catch (err) {
+    console.warn('[Properties] Supabase query by slug failed, falling back:', err);
+  }
+  return FALLBACK_PROPERTIES.find((p) => p.slug === slug);
 }
