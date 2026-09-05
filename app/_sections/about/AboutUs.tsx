@@ -49,9 +49,9 @@ export const AboutUs: React.FC = () => {
               {t("about.body")}
             </p>
             <div className="pt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs font-bold uppercase tracking-wide text-[#0284C7]">
-              <span>Lombok local team</span>
-              <span>English support</span>
-              <span>Private planning</span>
+              <span>{t("about.local_team")}</span>
+              <span>{t("about.english_support")}</span>
+              <span>{t("about.private_planning")}</span>
             </div>
           </div>
 

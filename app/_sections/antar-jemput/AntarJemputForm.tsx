@@ -71,83 +71,64 @@ export const AntarJemputForm: React.FC = () => {
                   <label className="text-xs font-bold text-[#0C4A6E] uppercase">
                     {t("transfer.pickup_point")}
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    maxLength={120}
+                    placeholder={t("transfer.pickup_placeholder")}
                     value={values.pickup}
                     onChange={(e) => handleChange("pickup", e.target.value)}
                     className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#0C4A6E] focus:ring-2 focus:ring-[#0EA5E9] focus:outline-none"
-                  >
-                    <option value="Lombok International Airport (BIL)">
-                      Lombok Airport (BIL)
-                    </option>
-                    <option value="Bangsal Harbor (Boat to Gili)">
-                      Bangsal Harbor (Gili)
-                    </option>
-                    <option value="Lembar Harbor (Bali Ferry)">
-                      Lembar Harbor
-                    </option>
-                    <option value="Senggigi Resort Area">Senggigi Area</option>
-                    <option value="Kuta Mandalika Hotel">Kuta Mandalika</option>
-                    <option value="Senaru / Sembalun (Rinjani Base)">
-                      Senaru / Sembalun
-                    </option>
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#0C4A6E] uppercase">
                     {t("transfer.dropoff_point")}
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    maxLength={120}
+                    placeholder={t("transfer.dropoff_placeholder")}
                     value={values.dropoff}
                     onChange={(e) => handleChange("dropoff", e.target.value)}
                     className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#0C4A6E] focus:ring-2 focus:ring-[#0EA5E9] focus:outline-none"
-                  >
-                    <option value="Kuta Mandalika Beach / Resort">
-                      Kuta Mandalika Beach
-                    </option>
-                    <option value="Bangsal Harbor (Fast Boat to Gili)">
-                      Bangsal Harbor
-                    </option>
-                    <option value="Senggigi Strip">Senggigi Strip</option>
-                    <option value="Selong Belanak Bay">Selong Belanak</option>
-                    <option value="Tetebatu Waterfall & Rice Terraces">
-                      Tetebatu Nature Area
-                    </option>
-                    <option value="Lombok Airport (BIL)">
-                      Lombok Airport (BIL)
-                    </option>
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#0C4A6E] uppercase">
                     {t("transfer.vehicle_choice")}
                   </label>
-                  <select
+                  <input
+                    type="text"
+                    maxLength={80}
+                    placeholder={t("transfer.vehicle_placeholder")}
                     value={values.vehicle}
                     onChange={(e) => handleChange("vehicle", e.target.value)}
                     className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#0C4A6E] focus:ring-2 focus:ring-[#0EA5E9] focus:outline-none"
-                  >
-                    {/* <option value="Toyota Avanza (1-4 Pax)">
-                      Toyota Avanza (1-4 Pax)
-                    </option> */}
-                    <option value="Innova Reborn (1-6 Pax)">
-                      Innova Reborn (1-4 Pax)
-                    </option>
-                    {/* <option value="Toyota HiAce Commuter (7-14 Pax)">Toyota HiAce (7-14 Pax)</option>
-                    <option value="Toyota Alphard VIP (1-5 Pax)">Toyota Alphard VIP</option> */}
-                  </select>
+                  />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[#0C4A6E] uppercase">
-                    {t("transfer.date_time")}
+                    {t("transfer.pickup_date")}
                   </label>
                   <input
-                    type="text"
-                    placeholder="e.g. 15 Oct, 14:30 / JT-650"
+                    type="date"
                     value={values.date}
                     onChange={(e) => handleChange("date", e.target.value)}
+                    className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#0C4A6E] focus:ring-2 focus:ring-[#0EA5E9] focus:outline-none"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#0C4A6E] uppercase">
+                    {t("transfer.pickup_time")}
+                  </label>
+                  <input
+                    type="time"
+                    value={values.time}
+                    onChange={(e) => handleChange("time", e.target.value)}
                     className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#0C4A6E] focus:ring-2 focus:ring-[#0EA5E9] focus:outline-none"
                   />
                 </div>
@@ -158,7 +139,8 @@ export const AntarJemputForm: React.FC = () => {
                   </label>
                   <textarea
                     rows={2}
-                    placeholder="Flight flight number, hotel name, luggage count, or child seat requests..."
+                    maxLength={300}
+                    placeholder={t("transfer.notes_placeholder")}
                     value={values.notes}
                     onChange={(e) => handleChange("notes", e.target.value)}
                     className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3.5 py-2 text-sm text-[#0C4A6E] focus:ring-2 focus:ring-[#0EA5E9] focus:outline-none"

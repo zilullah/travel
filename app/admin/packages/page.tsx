@@ -1,19 +1,23 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { TourPackage, PackageCategory, PackageStatus } from '@/lib/domain/package.types';
-import { PackageService } from '@/lib/services/package.service';
-import { SupabasePackageRepository } from '@/lib/repositories/supabase-package.repository';
-import { supabaseClient } from '@/lib/supabase/client';
-import { formatIDR } from '@/app/_lib/utils';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  TourPackage,
+  PackageCategory,
+  PackageStatus,
+} from "@/lib/domain/package.types";
+import { PackageService } from "@/lib/services/package.service";
+import { SupabasePackageRepository } from "@/lib/repositories/supabase-package.repository";
+import { supabaseClient } from "@/lib/supabase/client";
+import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 
 export default function AdminPackagesPage() {
   const [packages, setPackages] = useState<TourPackage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   const repo = new SupabasePackageRepository(supabaseClient);
   const service = new PackageService(repo);
@@ -24,7 +28,7 @@ export default function AdminPackagesPage() {
       const data = await service.listPackages();
       setPackages(data);
     } catch (err) {
-      console.error('Failed to load packages:', err);
+      console.error("Failed to load packages:", err);
     } finally {
       setLoading(false);
     }
@@ -38,10 +42,10 @@ export default function AdminPackagesPage() {
     try {
       await service.updatePackageStatus(id, status);
       setPackages((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, status } : p))
+        prev.map((p) => (p.id === id ? { ...p, status } : p)),
       );
     } catch (err) {
-      alert('Failed to update status');
+      alert("Failed to update status");
     }
   };
 
@@ -51,7 +55,7 @@ export default function AdminPackagesPage() {
       await service.deletePackage(id);
       setPackages((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
-      alert('Failed to delete package');
+      alert("Failed to delete package");
     }
   };
 
@@ -60,8 +64,8 @@ export default function AdminPackagesPage() {
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.destination.toLowerCase().includes(search.toLowerCase());
     const matchCategory =
-      categoryFilter === 'all' || p.category === categoryFilter;
-    const matchStatus = statusFilter === 'all' || p.status === statusFilter;
+      categoryFilter === "all" || p.category === categoryFilter;
+    const matchStatus = statusFilter === "all" || p.status === statusFilter;
     return matchSearch && matchCategory && matchStatus;
   });
 
@@ -135,7 +139,8 @@ export default function AdminPackagesPage() {
           <div className="text-3xl">🏝️</div>
           <h3 className="font-bold text-[#082F49]">No tour packages found</h3>
           <p className="text-xs text-[#486581]">
-            Try changing your search filters or create a new package to get started.
+            Try changing your search filters or create a new package to get
+            started.
           </p>
         </div>
       ) : (
@@ -147,18 +152,21 @@ export default function AdminPackagesPage() {
             >
               <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
                 <img
-                  src={pkg.imageUrl || 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=600&q=80'}
+                  src={formatImageUrl(
+                    pkg.imageUrl ||
+                      "https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=600&q=80",
+                  )}
                   alt={pkg.title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-3 left-3 flex gap-1.5">
                   <span
                     className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full ${
-                      pkg.status === 'published'
-                        ? 'bg-emerald-500 text-white'
-                        : pkg.status === 'draft'
-                        ? 'bg-amber-400 text-amber-950'
-                        : 'bg-slate-400 text-white'
+                      pkg.status === "published"
+                        ? "bg-emerald-500 text-white"
+                        : pkg.status === "draft"
+                          ? "bg-amber-400 text-amber-950"
+                          : "bg-slate-400 text-white"
                     }`}
                   >
                     {pkg.status}
@@ -175,7 +183,7 @@ export default function AdminPackagesPage() {
                     {pkg.title}
                   </h3>
                   <p className="text-xs text-[#486581] mt-1 line-clamp-2">
-                    {pkg.tagline || 'No description provided.'}
+                    {pkg.tagline || "No description provided."}
                   </p>
 
                   <div className="mt-3 flex items-center justify-between text-xs text-[#5B7C93] pt-2 border-t border-[#F0F9FF]">

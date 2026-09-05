@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import { getPropertyBySlug, getProperties } from "@/app/_lib/properties";
 import { PropertyBookingForm } from "@/app/_sections/property-booking/PropertyBookingForm";
 import { Badge } from "@/app/_components/ui/Badge";
-import { formatIDR } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 import { CheckIcon } from "@/app/_components/ui/Icons";
+import { LocalizedText } from "@/app/_components/ui/LocalizedText";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -43,7 +44,7 @@ export async function generateMetadata({
       url: `/properties/${property.slug}`,
       type: "website",
       images: property.image
-        ? [{ url: property.image, alt: property.title }]
+        ? [{ url: formatImageUrl(property.image), alt: property.title }]
         : undefined,
     },
   };
@@ -64,7 +65,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           href="/properties"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[#0C4A6E] mb-6 hover:underline"
         >
-          ← Kembali ke daftar properti
+          <LocalizedText translationKey="property.back_to_list" />
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -72,7 +73,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           <div className="lg:col-span-7 space-y-6">
             <div className="rounded-[23px] overflow-hidden border border-[#BAE6FD] shadow-md bg-slate-900 h-96">
               <img
-                src={property.image}
+                src={formatImageUrl(property.image)}
                 alt={property.title}
                 className="w-full h-full object-cover"
               />
@@ -94,7 +95,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-[#EFF8FF] text-sm">
                 <div>
                   <span className="text-xs text-[#6B8CA5] block uppercase">
-                    Luas Tanah
+                    <LocalizedText translationKey="property.land_size" />
                   </span>
                   <span className="font-bold text-[#0C4A6E]">
                     {property.landSizeM2} m²
@@ -103,7 +104,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 {property.buildingSizeM2 && (
                   <div>
                     <span className="text-xs text-[#6B8CA5] block uppercase">
-                      Luas Bangunan
+                      <LocalizedText translationKey="property.building_size" />
                     </span>
                     <span className="font-bold text-[#0C4A6E]">
                       {property.buildingSizeM2} m²
@@ -113,16 +114,17 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 {property.bedrooms && (
                   <div>
                     <span className="text-xs text-[#6B8CA5] block uppercase">
-                      Kamar Tidur
+                      <LocalizedText translationKey="property.bedrooms" />
                     </span>
                     <span className="font-bold text-[#0C4A6E]">
-                      {property.bedrooms} Kamar
+                      {property.bedrooms}{" "}
+                      <LocalizedText translationKey="property.rooms" />
                     </span>
                   </div>
                 )}
                 <div>
                   <span className="text-xs text-[#6B8CA5] block uppercase">
-                    Estimasi ROI
+                    <LocalizedText translationKey="property.roi" />
                   </span>
                   <span className="font-bold text-[#0284C7]">
                     {property.roi}
@@ -132,7 +134,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
               <div className="space-y-2 pt-2">
                 <h3 className="font-bold text-sm text-[#0C4A6E] uppercase">
-                  Fitur & Legalitas
+                  <LocalizedText translationKey="property.features" />
                 </h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#486581]">
                   {property.features.map((f, i) => (
@@ -152,7 +154,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white p-6 rounded-[23px] border border-[#BAE6FD] shadow-sm">
               <span className="text-xs text-[#6B8CA5] uppercase font-bold block">
-                Harga Penawaran
+                <LocalizedText translationKey="property.asking_price" />
               </span>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-3xl font-black text-[#0C4A6E]">

@@ -1,19 +1,23 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Property, PropertyType, PropertyStatus } from '@/lib/domain/property.types';
-import { PropertyService } from '@/lib/services/property.service';
-import { SupabasePropertyRepository } from '@/lib/repositories/supabase-property.repository';
-import { supabaseClient } from '@/lib/supabase/client';
-import { formatIDR } from '@/app/_lib/utils';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  Property,
+  PropertyType,
+  PropertyStatus,
+} from "@/lib/domain/property.types";
+import { PropertyService } from "@/lib/services/property.service";
+import { SupabasePropertyRepository } from "@/lib/repositories/supabase-property.repository";
+import { supabaseClient } from "@/lib/supabase/client";
+import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 
 export default function AdminPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   const repo = new SupabasePropertyRepository(supabaseClient);
   const service = new PropertyService(repo);
@@ -24,7 +28,7 @@ export default function AdminPropertiesPage() {
       const data = await service.listProperties();
       setProperties(data);
     } catch (err) {
-      console.error('Failed to load properties:', err);
+      console.error("Failed to load properties:", err);
     } finally {
       setLoading(false);
     }
@@ -38,10 +42,10 @@ export default function AdminPropertiesPage() {
     try {
       await service.updatePropertyStatus(id, status);
       setProperties((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, status } : p))
+        prev.map((p) => (p.id === id ? { ...p, status } : p)),
       );
     } catch {
-      alert('Failed to update property status');
+      alert("Failed to update property status");
     }
   };
 
@@ -51,7 +55,7 @@ export default function AdminPropertiesPage() {
       await service.deleteProperty(id);
       setProperties((prev) => prev.filter((p) => p.id !== id));
     } catch {
-      alert('Failed to delete property');
+      alert("Failed to delete property");
     }
   };
 
@@ -59,8 +63,8 @@ export default function AdminPropertiesPage() {
     const matchSearch =
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.location.toLowerCase().includes(search.toLowerCase());
-    const matchType = typeFilter === 'all' || p.type === typeFilter;
-    const matchStatus = statusFilter === 'all' || p.status === statusFilter;
+    const matchType = typeFilter === "all" || p.type === typeFilter;
+    const matchStatus = statusFilter === "all" || p.status === statusFilter;
     return matchSearch && matchType && matchStatus;
   });
 
@@ -72,7 +76,8 @@ export default function AdminPropertiesPage() {
             Real Estate & Villa Listings
           </h1>
           <p className="text-xs sm:text-sm text-[#486581]">
-            Manage verified turnkey villas, beachfront land plots, and legal due diligence documents.
+            Manage verified turnkey villas, beachfront land plots, and legal due
+            diligence documents.
           </p>
         </div>
 
@@ -133,7 +138,8 @@ export default function AdminPropertiesPage() {
           <div className="text-3xl">🏡</div>
           <h3 className="font-bold text-[#082F49]">No properties found</h3>
           <p className="text-xs text-[#486581]">
-            Create a new property listing to showcase villas and land on the public landing page.
+            Create a new property listing to showcase villas and land on the
+            public landing page.
           </p>
         </div>
       ) : (
@@ -145,18 +151,21 @@ export default function AdminPropertiesPage() {
             >
               <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
                 <img
-                  src={prop.image || 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80'}
+                  src={formatImageUrl(
+                    prop.image ||
+                      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80",
+                  )}
                   alt={prop.title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-3 left-3 flex gap-1.5">
                   <span
                     className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full ${
-                      prop.status === 'Exclusive'
-                        ? 'bg-[#0284C7] text-white'
-                        : prop.status === 'For Sale'
-                        ? 'bg-emerald-500 text-white'
-                        : 'bg-amber-500 text-white'
+                      prop.status === "Exclusive"
+                        ? "bg-[#0284C7] text-white"
+                        : prop.status === "For Sale"
+                          ? "bg-emerald-500 text-white"
+                          : "bg-amber-500 text-white"
                     }`}
                   >
                     {prop.status}

@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { Property } from '@/app/_lib/properties';
-import { Button } from '@/app/_components/ui/Button';
-import { formatIDR } from '@/app/_lib/utils';
-import { MapPinIcon, TrendingUpIcon } from '@/app/_components/ui/Icons';
-import { useLanguage } from '@/app/_context/LanguageContext';
+import React from "react";
+import Link from "next/link";
+import { Property } from "@/app/_lib/properties";
+import { Button } from "@/app/_components/ui/Button";
+import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { MapPinIcon, TrendingUpIcon } from "@/app/_components/ui/Icons";
+import { useLanguage } from "@/app/_context/LanguageContext";
 
 interface PropertyCardProps {
   property: Property;
@@ -19,7 +19,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     <div className="bg-white rounded-[23px] border border-[#BAE6FD] overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-all duration-300">
       <div className="relative h-60 w-full overflow-hidden bg-slate-100">
         <img
-          src={property.image}
+          src={formatImageUrl(property.image)}
           alt={property.title}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
         />
@@ -58,16 +58,16 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
         <div className="flex flex-wrap gap-2 text-xs text-[#0C4A6E] font-medium">
           <span className="bg-[#EFF8FF] px-2.5 py-1 rounded-md border border-[#BAE6FD]">
-            {t('property.land_size')}: {property.landSizeM2} m²
+            {t("property.land_size")}: {property.landSizeM2} m²
           </span>
           {property.buildingSizeM2 && (
             <span className="bg-[#EFF8FF] px-2.5 py-1 rounded-md border border-[#BAE6FD]">
-              {t('property.building_size')}: {property.buildingSizeM2} m²
+              {t("property.building_size")}: {property.buildingSizeM2} m²
             </span>
           )}
           {property.bedrooms && (
             <span className="bg-[#EFF8FF] px-2.5 py-1 rounded-md border border-[#BAE6FD]">
-              {property.bedrooms} {t('property.bedrooms')}
+              {property.bedrooms} {t("property.bedrooms")}
             </span>
           )}
         </div>
@@ -75,7 +75,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         <div className="pt-4 mt-auto border-t border-[#EFF8FF] flex items-center justify-between">
           <div>
             <span className="text-[10px] uppercase font-bold text-[#486581] block">
-              {t('property.price')}
+              {t("property.price")}
             </span>
             <span className="text-lg font-black text-[#0284C7]">
               {formatIDR(property.priceIdr)}
@@ -84,7 +84,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
           <Link href={`/properties/${property.slug}`}>
             <Button variant="primary" size="sm">
-              {t('property.view_details')}
+              {t("property.view_details")}
             </Button>
           </Link>
         </div>

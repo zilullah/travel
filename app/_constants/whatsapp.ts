@@ -1,10 +1,18 @@
 export const WHATSAPP_CONFIG = {
-  phoneNumber: '6281234567890',
-  defaultGreeting: 'Halo Lombok Explorer & Property!',
+  phoneNumber: "6287754552859",
+  defaultGreeting: "Halo Travel Organizer Lombok.",
 };
 
 export const WHATSAPP_TEMPLATES = {
-  property: (params: { title: string; location: string; price: string; date?: string; guests?: number; name?: string; notes?: string }) => {
+  property: (params: {
+    title: string;
+    location: string;
+    price: string;
+    date?: string;
+    guests?: number;
+    name?: string;
+    notes?: string;
+  }) => {
     let msg = `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya tertarik untuk konsultasi / booking Properti:\n`;
     msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
     msg += `🏡 *Properti:* ${params.title}\n`;
@@ -19,7 +27,16 @@ export const WHATSAPP_TEMPLATES = {
     return msg;
   },
 
-  antarJemput: (params: { pickup: string; dropoff: string; vehicle: string; date: string; time?: string; passengers: number; name?: string; notes?: string }) => {
+  antarJemput: (params: {
+    pickup: string;
+    dropoff: string;
+    vehicle: string;
+    date: string;
+    time?: string;
+    passengers: number;
+    name?: string;
+    notes?: string;
+  }) => {
     let msg = `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya ingin memesan Layanan Antar-Jemput (Transport Pick-Up):\n`;
     msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
     msg += `🚗 *Kendaraan:* ${params.vehicle}\n`;
@@ -35,7 +52,14 @@ export const WHATSAPP_TEMPLATES = {
     return msg;
   },
 
-  tour: (params: { tourTitle: string; duration: string; date?: string; guests?: number; name?: string; notes?: string }) => {
+  tour: (params: {
+    tourTitle: string;
+    duration: string;
+    date?: string;
+    guests?: number;
+    name?: string;
+    notes?: string;
+  }) => {
     let msg = `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya ingin booking Paket Wisata:\n`;
     msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
     msg += `🏝️ *Paket:* ${params.tourTitle}\n`;
@@ -47,5 +71,5 @@ export const WHATSAPP_TEMPLATES = {
     msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
     msg += `Mohon informasi detail itinerary dan penawaran terbaik. Terima kasih!`;
     return msg;
-  }
+  },
 };

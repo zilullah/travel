@@ -1,8 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { buildWhatsAppLink } from '@/app/_lib/whatsapp';
-import { WHATSAPP_TEMPLATES } from '@/app/_constants/whatsapp';
+import { useState } from "react";
+import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
+import { WHATSAPP_TEMPLATES } from "@/app/_constants/whatsapp";
+
+const TEXT_LIMITS = {
+  pickup: 120,
+  dropoff: 120,
+  vehicle: 80,
+  date: 80,
+  notes: 300,
+} as const;
+
+function sanitizeText(value: string, maxLength: number): string {
+  return value
+    .replace(/[\u0000-\u001F\u007F]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
+}
+
+function sanitizeDate(value: string): string {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "";
+}
+
+function sanitizeTime(value: string): string {
+  return /^\d{2}:\d{2}$/.test(value) ? value : "";
+}
 
 export interface AntarJemputFormValues {
   pickup: string;
@@ -17,22 +41,31 @@ export interface AntarJemputFormValues {
 
 export function useAntarJemputForm() {
   const [values, setValues] = useState<AntarJemputFormValues>({
-    pickup: 'Lombok International Airport (BIL)',
-    dropoff: 'Kuta Mandalika Beach / Resort',
-    vehicle: 'Toyota Innova Reborn (1-6 Pax + Chauffeur)',
-    date: '',
-    time: '12:00',
+    pickup: "Lombok International Airport (BIL)",
+    dropoff: "Kuta Mandalika Beach / Resort",
+    vehicle: "Toyota Innova Reborn (1-6 Pax + Chauffeur)",
+    date: "",
+    time: "12:00",
     passengers: 2,
-    name: '',
-    notes: '',
+    name: "",
+    notes: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     field: keyof AntarJemputFormValues,
-    value: string | number
+    value: string | number,
   ) => {
+    if (typeof value === "string" && field in TEXT_LIMITS) {
+      const maxLength = TEXT_LIMITS[field as keyof typeof TEXT_LIMITS];
+      setValues((prev) => ({
+        ...prev,
+        [field]: sanitizeText(value, maxLength),
+      }));
+      return;
+    }
+
     setValues((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -41,18 +74,18 @@ export function useAntarJemputForm() {
     setIsSubmitting(true);
 
     const message = WHATSAPP_TEMPLATES.antarJemput({
-      pickup: values.pickup,
-      dropoff: values.dropoff,
-      vehicle: values.vehicle,
-      date: values.date || 'Hari ini / Fleksibel',
-      time: values.time,
+      pickup: sanitizeText(values.pickup, TEXT_LIMITS.pickup),
+      dropoff: sanitizeText(values.dropoff, TEXT_LIMITS.dropoff),
+      vehicle: sanitizeText(values.vehicle, TEXT_LIMITS.vehicle),
+      date: sanitizeDate(values.date) || "Hari ini / Fleksibel",
+      time: sanitizeTime(values.time),
       passengers: values.passengers,
       name: values.name,
-      notes: values.notes,
+      notes: sanitizeText(values.notes, TEXT_LIMITS.notes),
     });
 
     const link = buildWhatsAppLink(message);
-    window.open(link, '_blank');
+    window.open(link, "_blank");
     setIsSubmitting(false);
   };
 

@@ -1,47 +1,50 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Badge } from '@/app/_components/ui/Badge';
-import { StarIcon } from '@/app/_components/ui/Icons';
-import { useLanguage } from '@/app/_context/LanguageContext';
+import React from "react";
+import { Badge } from "@/app/_components/ui/Badge";
+import { StarIcon } from "@/app/_components/ui/Icons";
+import { useLanguage } from "@/app/_context/LanguageContext";
 
 export const CustomerReviews: React.FC = () => {
   const { t } = useLanguage();
 
   const reviews = [
     {
-      author: 'David & Emily Thompson',
-      location: 'Perth, Australia',
-      trip: 'Rinjani 3D2N Summit + Airport Pickup',
-      quote: 'Flawless communication from the moment we landed at BIL. Our driver Hendra was waiting on time, and our mountain guides made the summit push feel safe and unforgettable.',
+      author: "David & Emily Thompson",
+      location: "Perth, Australia",
+      tripKey: "reviews.trip1",
+      quoteKey: "reviews.quote1",
       rating: 5,
     },
     {
-      author: 'Julien Laurent',
-      location: 'Geneva, Switzerland',
-      trip: 'Kuta Mandalika Villa Acquisition',
-      quote: 'Clear legal diligence and transparent PMA advisory. We inspected three turnkey villas in Selong Belanak and closed our leasehold smoothly.',
+      author: "Julien Laurent",
+      location: "Geneva, Switzerland",
+      tripKey: "reviews.trip2",
+      quoteKey: "reviews.quote2",
       rating: 5,
     },
     {
-      author: 'Aiko & Kenji Sato',
-      location: 'Tokyo, Japan',
-      trip: 'Secret Gili Snorkeling & Private Boat',
-      quote: 'Private island hopping at Gili Nanggu with crystal waters, sea turtles, and grilled fish right on the sandbar. Truly the best day of our Indonesia trip.',
+      author: "Aiko & Kenji Sato",
+      location: "Tokyo, Japan",
+      tripKey: "reviews.trip3",
+      quoteKey: "reviews.quote3",
       rating: 5,
     },
   ];
 
   return (
-    <section id="reviews" className="py-20 lg:py-28 bg-[#F7FCFF] text-[#0C4A6E] border-t border-[#BAE6FD]">
+    <section
+      id="reviews"
+      className="py-20 lg:py-28 bg-[#F7FCFF] text-[#0C4A6E] border-t border-[#BAE6FD]"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-          <Badge variant="sky">{t('reviews.badge')}</Badge>
+          <Badge variant="sky">{t("reviews.badge")}</Badge>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0C4A6E]">
-            {t('reviews.title')}
+            {t("reviews.title")}
           </h2>
           <p className="text-[#486581] text-sm sm:text-base">
-            {t('reviews.desc')}
+            {t("reviews.desc")}
           </p>
         </div>
 
@@ -59,16 +62,18 @@ export const CustomerReviews: React.FC = () => {
                     ))}
                   </div>
                   <span className="text-[11px] font-semibold text-[#0284C7] bg-[#EFF8FF] px-2.5 py-1 rounded-full border border-[#BAE6FD]">
-                    {rev.trip}
+                    {t(rev.tripKey)}
                   </span>
                 </div>
                 <p className="text-sm text-[#0C4A6E] leading-relaxed">
-                  &ldquo;{rev.quote}&rdquo;
+                  &ldquo;{t(rev.quoteKey)}&rdquo;
                 </p>
               </div>
 
               <div className="pt-6 mt-6 border-t border-[#EFF8FF]">
-                <h4 className="font-bold text-sm text-[#0C4A6E]">{rev.author}</h4>
+                <h4 className="font-bold text-sm text-[#0C4A6E]">
+                  {rev.author}
+                </h4>
                 <p className="text-xs text-[#486581]">{rev.location}</p>
               </div>
             </div>

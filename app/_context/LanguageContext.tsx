@@ -60,6 +60,13 @@ export const translations: Record<Language, Record<string, string>> = {
     "transfer.dropoff_point": "Drop-off Destination",
     "transfer.vehicle_choice": "Select Vehicle",
     "transfer.date_time": "Date & Flight / Pickup Time",
+    "transfer.pickup_date": "Pickup Date",
+    "transfer.pickup_time": "Flight / Pickup Time",
+    "transfer.pickup_placeholder": "e.g. hotel or pickup location",
+    "transfer.dropoff_placeholder": "e.g. villa, hotel, or harbor",
+    "transfer.vehicle_placeholder": "e.g. Innova, HiAce, or suitable vehicle",
+    "transfer.notes_placeholder":
+      "Flight number, hotel name, luggage count, or child seat requests...",
     "transfer.passengers": "Passengers (Pax)",
     "transfer.flight_notes": "Flight Number / Hotel Name / Special Notes",
     "transfer.btn_book": "Book via WhatsApp Concierge",
@@ -77,12 +84,24 @@ export const translations: Record<Language, Record<string, string>> = {
     "property.view_details": "View Details",
     "property.features_legal": "Features & Legal Due Diligence",
     "property.back_to_list": "← Back to properties list",
+    "property.features": "Features & Legal Due Diligence",
+    "property.asking_price": "Asking Price",
 
     // Reviews Section
     "reviews.badge": "Verified Guest Stories",
     "reviews.title": "Trusted by Travelers & Villa Investors Worldwide",
     "reviews.desc":
       "Honest feedback from international guests who explored Lombok with our drivers, guides, and real estate advisors.",
+    "property.rooms": "Rooms",
+    "reviews.trip1": "Rinjani 3D2N Summit + Airport Pickup",
+    "reviews.trip2": "Kuta Mandalika Villa Acquisition",
+    "reviews.trip3": "Secret Gili Snorkeling & Private Boat",
+    "reviews.quote1":
+      "Flawless communication from the moment we landed at BIL. Our driver Hendra was waiting on time, and our mountain guides made the summit push feel safe and unforgettable.",
+    "reviews.quote2":
+      "Clear legal diligence and transparent PMA advisory. We inspected three turnkey villas in Selong Belanak and closed our leasehold smoothly.",
+    "reviews.quote3":
+      "Private island hopping at Gili Nanggu with crystal waters, sea turtles, and grilled fish right on the sandbar. Truly the best day of our Indonesia trip.",
 
     // About Us
     "about.badge": "Your Local Lombok Travel Partner",
@@ -101,6 +120,32 @@ export const translations: Record<Language, Record<string, string>> = {
     "about.card3_title": "Local help from arrival onward",
     "about.card3_text":
       "Our Lombok-based team stays reachable on WhatsApp for airport coordination, driver support, and on-island questions.",
+    "about.local_team": "Lombok local team",
+    "about.english_support": "English support",
+    "about.private_planning": "Private planning",
+
+    // Tours & Booking
+    "tour.badge": "Curated Lombok Tour Packages",
+    "tour.title": "Authentic Island Adventures & Trekking",
+    "tour.desc":
+      "Explore curated Lombok tour packages for European and international travelers, from Rinjani trekking and Gili island hopping to South Lombok beaches, private boats, and flexible day trips.",
+    "tour.featured": "Featured",
+    "tour.start_from": "Start from",
+    "tour.person": "/ person",
+    "tour.book": "Book Tour",
+    "booking.title": "Inquire Legal Dossier & Site Tour",
+    "booking.desc":
+      "Request full title certificates, ROI breakdown, and private property viewing.",
+    "booking.full_name": "Your Full Name",
+    "booking.full_name_placeholder": "Full name",
+    "booking.survey_date": "Target Survey Date",
+    "booking.group_size": "Group / Party Size",
+    "booking.questions": "Questions / Specific Interest",
+    "booking.questions_placeholder":
+      "e.g. PT PMA structure, villa permits, or daily rental projections...",
+    "booking.request": "Request Dossier via WhatsApp",
+    "header.language": "Language / Bahasa",
+    "header.toggle_menu": "Toggle navigation menu",
 
     // Footer
     "footer.desc":
@@ -159,6 +204,14 @@ export const translations: Record<Language, Record<string, string>> = {
     "transfer.dropoff_point": "Tujuan Pengantaran",
     "transfer.vehicle_choice": "Pilihan Kendaraan",
     "transfer.date_time": "Tanggal & Jam Jemput / Penerbangan",
+    "transfer.pickup_date": "Tanggal Jemput",
+    "transfer.pickup_time": "Jam Penerbangan / Jemput",
+    "transfer.pickup_placeholder": "contoh: hotel atau lokasi jemput",
+    "transfer.dropoff_placeholder": "contoh: villa, hotel, atau pelabuhan",
+    "transfer.vehicle_placeholder":
+      "contoh: Innova, HiAce, atau kendaraan sesuai kebutuhan",
+    "transfer.notes_placeholder":
+      "Nomor penerbangan, nama hotel, jumlah bagasi, atau permintaan kursi anak...",
     "transfer.passengers": "Jumlah Penumpang (Pax)",
     "transfer.flight_notes": "Nomor Penerbangan / Nama Hotel / Catatan Khusus",
     "transfer.btn_book": "Pesan via WhatsApp Concierge",
@@ -176,12 +229,24 @@ export const translations: Record<Language, Record<string, string>> = {
     "property.view_details": "Lihat Detail",
     "property.features_legal": "Fitur & Legalitas Dokumen",
     "property.back_to_list": "← Kembali ke daftar properti",
+    "property.features": "Fitur & Legalitas Dokumen",
+    "property.asking_price": "Harga Penawaran",
 
     // Reviews Section
     "reviews.badge": "Kisah Nyata Tamu & Wisatawan",
     "reviews.title": "Dipercaya oleh Wisatawan & Investor Villa Mancanegara",
     "reviews.desc":
       "Testimoni jujur dari para tamu yang menjelajahi Lombok bersama tim pemandu, driver, dan konsultan properti kami.",
+    "property.rooms": "Kamar",
+    "reviews.trip1": "Puncak Rinjani 3H2M + Antar-Jemput Bandara",
+    "reviews.trip2": "Akuisisi Villa Kuta Mandalika",
+    "reviews.trip3": "Snorkeling Gili Rahasia & Kapal Privat",
+    "reviews.quote1":
+      "Komunikasi sangat lancar sejak kami mendarat di BIL. Driver kami, Hendra, sudah menunggu tepat waktu dan pemandu gunung membuat pendakian terasa aman serta tak terlupakan.",
+    "reviews.quote2":
+      "Pendampingan legal yang jelas dan konsultasi PMA yang transparan. Kami melihat tiga villa siap huni di Selong Belanak dan menyelesaikan proses leasehold dengan lancar.",
+    "reviews.quote3":
+      "Island hopping privat di Gili Nanggu dengan air jernih, penyu, dan ikan bakar langsung di gundukan pasir. Hari terbaik selama perjalanan kami di Indonesia.",
 
     // Tentang Kami
     "about.badge": "Mitra Perjalanan Lokal Lombok",
@@ -200,6 +265,32 @@ export const translations: Record<Language, Record<string, string>> = {
     "about.card3_title": "Bantuan lokal sejak tiba",
     "about.card3_text":
       "Tim kami di Lombok siap dihubungi melalui WhatsApp untuk koordinasi bandara, driver, dan pertanyaan selama perjalanan.",
+    "about.local_team": "Tim lokal Lombok",
+    "about.english_support": "Dukungan bahasa Inggris",
+    "about.private_planning": "Perencanaan privat",
+
+    // Paket Wisata & Booking
+    "tour.badge": "Paket Wisata Lombok Pilihan",
+    "tour.title": "Petualangan Pulau dan Trekking Autentik",
+    "tour.desc":
+      "Jelajahi paket wisata Lombok pilihan untuk wisatawan lokal dan mancanegara, mulai dari trekking Rinjani, island hopping Gili, pantai Lombok Selatan, kapal privat, hingga perjalanan harian fleksibel.",
+    "tour.featured": "Pilihan",
+    "tour.start_from": "Mulai dari",
+    "tour.person": "/ orang",
+    "tour.book": "Pesan Wisata",
+    "booking.title": "Tanyakan Dokumen Legal & Tur Lokasi",
+    "booking.desc":
+      "Minta sertifikat hak lengkap, rincian ROI, dan jadwal kunjungan properti privat.",
+    "booking.full_name": "Nama Lengkap",
+    "booking.full_name_placeholder": "Nama lengkap",
+    "booking.survey_date": "Tanggal Survei",
+    "booking.group_size": "Jumlah Rombongan",
+    "booking.questions": "Pertanyaan / Minat Khusus",
+    "booking.questions_placeholder":
+      "Contoh: struktur PT PMA, perizinan villa, atau proyeksi sewa harian...",
+    "booking.request": "Minta Dokumen via WhatsApp",
+    "header.language": "Bahasa / Language",
+    "header.toggle_menu": "Buka atau tutup menu navigasi",
 
     // Footer
     "footer.desc":

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MenuIcon, XIcon } from "@/app/_components/ui/Icons";
 import { useLanguage } from "@/app/_context/LanguageContext";
 import Link from "next/link";
+import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 
 export const Header: React.FC = () => {
   const { lang, setLang, t } = useLanguage();
@@ -107,7 +108,7 @@ export const Header: React.FC = () => {
           </div>
 
           <a
-            href="https://wa.me/6281234567890"
+            href={`https://wa.me/${WHATSAPP_CONFIG.phoneNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex bg-[#0EA5E9] hover:bg-[#0284C7] text-white px-4 py-2 rounded-[23px] text-xs font-bold transition-all shadow-sm active:scale-95"
@@ -119,7 +120,7 @@ export const Header: React.FC = () => {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2 rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] border border-[#BAE6FD] transition-colors cursor-pointer"
-            aria-label="Toggle navigation menu"
+            aria-label={t("header.toggle_menu")}
           >
             {mobileMenuOpen ? (
               <XIcon className="w-5 h-5" />
@@ -166,7 +167,7 @@ export const Header: React.FC = () => {
 
           <div className="pt-2 flex items-center justify-between border-t border-[#EFF8FF]">
             <span className="text-xs font-bold text-[#486581]">
-              Language / Bahasa:
+              {t("header.language")}:
             </span>
             <div className="flex items-center bg-[#EFF8FF] p-1 rounded-full border border-[#BAE6FD] text-xs font-bold">
               <button
@@ -188,7 +189,7 @@ export const Header: React.FC = () => {
 
           <div className="pt-2">
             <a
-              href="https://wa.me/6281234567890"
+              href={`https://wa.me/${WHATSAPP_CONFIG.phoneNumber}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full inline-flex justify-center items-center bg-[#0EA5E9] hover:bg-[#0284C7] text-white py-2.5 rounded-[23px] text-sm font-bold shadow-md"

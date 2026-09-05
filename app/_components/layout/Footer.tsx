@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { useLanguage } from '@/app/_context/LanguageContext';
+import React from "react";
+import Image from "next/image";
+import { useLanguage } from "@/app/_context/LanguageContext";
+import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 
 export const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -27,28 +28,48 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-[#486581] max-w-sm">
-              {t('footer.desc')}
+              {t("footer.desc")}
             </p>
           </div>
 
           <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#0C4A6E]">{t('footer.quick_links')}</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#0C4A6E]">
+              {t("footer.quick_links")}
+            </h4>
             <ul className="space-y-1 text-xs text-[#486581]">
-              <li><a href="/#packages" className="hover:text-[#0284C7]">{t('nav.tours')}</a></li>
-              <li><a href="/#antar-jemput" className="hover:text-[#0284C7]">{t('nav.pickup')}</a></li>
-              <li><a href="/properties" className="hover:text-[#0284C7]">{t('nav.properties')}</a></li>
+              <li>
+                <a href="/#packages" className="hover:text-[#0284C7]">
+                  {t("nav.tours")}
+                </a>
+              </li>
+              <li>
+                <a href="/#antar-jemput" className="hover:text-[#0284C7]">
+                  {t("nav.pickup")}
+                </a>
+              </li>
+              <li>
+                <a href="/properties" className="hover:text-[#0284C7]">
+                  {t("nav.properties")}
+                </a>
+              </li>
             </ul>
           </div>
 
           <div className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#0C4A6E]">{t('footer.contact_support')}</h4>
-            <p className="text-xs text-[#486581]">WhatsApp: +62 812-3456-7890</p>
-            <p className="text-xs text-[#486581]">Kuta, Mandalika, Lombok Tengah, NTB</p>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#0C4A6E]">
+              {t("footer.contact_support")}
+            </h4>
+            <p className="text-xs text-[#486581]">
+              WhatsApp: +{WHATSAPP_CONFIG.phoneNumber}
+            </p>
+            <p className="text-xs text-[#486581]">
+              Kuta, Mandalika, Lombok Tengah, NTB
+            </p>
           </div>
         </div>
 
         <div className="pt-6 text-center text-[11px] text-[#6B8CA5]">
-          {t('footer.rights')}
+          {t("footer.rights")}
         </div>
       </div>
     </footer>
