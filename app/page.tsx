@@ -19,8 +19,6 @@ export default async function Home() {
       {/* 1. Hero Section with quick multi-service search */}
       <Hero />
 
-      <AboutUs />
-
       {/* 2. Dynamic Curated Tour Packages (Synced with Supabase / Admin Panel) */}
       <AnimatedSection>
         <TourPackagesSection packages={tourPackages} />
@@ -36,7 +34,12 @@ export default async function Home() {
         <PropertyList properties={properties} />
       </AnimatedSection>
 
-      {/* 5. Real Customer Reviews & Social Proof */}
+      {/* 5. About Lombok Travel Organizer */}
+      <AnimatedSection>
+        <AboutUs />
+      </AnimatedSection>
+
+      {/* 6. Real Customer Reviews & Social Proof */}
       <AnimatedSection>
         <CustomerReviews />
       </AnimatedSection>
