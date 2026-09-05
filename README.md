@@ -22,6 +22,7 @@ This app deploys as a Cloudflare Worker through Vinext. Configure these variable
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SITE_URL=https://lomboktravelorganizer.com`
 
 Configure `SUPABASE_SERVICE_ROLE_KEY` as a Cloudflare secret, never as a committed `vars` value:
 

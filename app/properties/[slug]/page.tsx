@@ -1,10 +1,11 @@
-import { notFound } from 'next/navigation';
-import { getPropertyBySlug, getProperties } from '@/app/_lib/properties';
-import { PropertyBookingForm } from '@/app/_sections/property-booking/PropertyBookingForm';
-import { Badge } from '@/app/_components/ui/Badge';
-import { formatIDR } from '@/app/_lib/utils';
-import { CheckIcon } from '@/app/_components/ui/Icons';
-import Link from 'next/link';
+import { notFound } from "next/navigation";
+import { getPropertyBySlug, getProperties } from "@/app/_lib/properties";
+import { PropertyBookingForm } from "@/app/_sections/property-booking/PropertyBookingForm";
+import { Badge } from "@/app/_components/ui/Badge";
+import { formatIDR } from "@/app/_lib/utils";
+import { CheckIcon } from "@/app/_components/ui/Icons";
+import Link from "next/link";
+import type { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{
@@ -15,6 +16,37 @@ interface PageProps {
 export async function generateStaticParams() {
   const properties = await getProperties();
   return properties.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const property = await getPropertyBySlug(slug);
+
+  if (!property) {
+    return {
+      title: "Property Not Found | Lombok Travel Organizer",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  return {
+    title: `${property.title} | Lombok Property`,
+    description: `${property.tagline}. Explore location, ownership, estimated returns, and arrange a private viewing with Lombok Travel Organizer.`,
+    alternates: {
+      canonical: `/properties/${property.slug}`,
+    },
+    openGraph: {
+      title: `${property.title} | Lombok Property`,
+      description: property.tagline,
+      url: `/properties/${property.slug}`,
+      type: "website",
+      images: property.image
+        ? [{ url: property.image, alt: property.title }]
+        : undefined,
+    },
+  };
 }
 
 export default async function PropertyDetailPage({ params }: PageProps) {
@@ -61,35 +93,53 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-[#EFF8FF] text-sm">
                 <div>
-                  <span className="text-xs text-[#6B8CA5] block uppercase">Luas Tanah</span>
-                  <span className="font-bold text-[#0C4A6E]">{property.landSizeM2} m²</span>
+                  <span className="text-xs text-[#6B8CA5] block uppercase">
+                    Luas Tanah
+                  </span>
+                  <span className="font-bold text-[#0C4A6E]">
+                    {property.landSizeM2} m²
+                  </span>
                 </div>
                 {property.buildingSizeM2 && (
                   <div>
-                    <span className="text-xs text-[#6B8CA5] block uppercase">Luas Bangunan</span>
-                    <span className="font-bold text-[#0C4A6E]">{property.buildingSizeM2} m²</span>
+                    <span className="text-xs text-[#6B8CA5] block uppercase">
+                      Luas Bangunan
+                    </span>
+                    <span className="font-bold text-[#0C4A6E]">
+                      {property.buildingSizeM2} m²
+                    </span>
                   </div>
                 )}
                 {property.bedrooms && (
                   <div>
-                    <span className="text-xs text-[#6B8CA5] block uppercase">Kamar Tidur</span>
-                    <span className="font-bold text-[#0C4A6E]">{property.bedrooms} Kamar</span>
+                    <span className="text-xs text-[#6B8CA5] block uppercase">
+                      Kamar Tidur
+                    </span>
+                    <span className="font-bold text-[#0C4A6E]">
+                      {property.bedrooms} Kamar
+                    </span>
                   </div>
                 )}
                 <div>
-                  <span className="text-xs text-[#6B8CA5] block uppercase">Estimasi ROI</span>
-                  <span className="font-bold text-[#0284C7]">{property.roi}</span>
+                  <span className="text-xs text-[#6B8CA5] block uppercase">
+                    Estimasi ROI
+                  </span>
+                  <span className="font-bold text-[#0284C7]">
+                    {property.roi}
+                  </span>
                 </div>
               </div>
 
               <div className="space-y-2 pt-2">
-                <h3 className="font-bold text-sm text-[#0C4A6E] uppercase">Fitur & Legalitas</h3>
+                <h3 className="font-bold text-sm text-[#0C4A6E] uppercase">
+                  Fitur & Legalitas
+                </h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#486581]">
                   {property.features.map((f, i) => (
                     <li key={i} className="flex items-center gap-1.5">
                       <span className="text-[#0EA5E9] font-bold">
                         <CheckIcon className="w-3.5 h-3.5 inline" />
-                      </span>{' '}
+                      </span>{" "}
                       {f}
                     </li>
                   ))}
@@ -101,7 +151,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           {/* Sidebar Booking Form */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white p-6 rounded-[23px] border border-[#BAE6FD] shadow-sm">
-              <span className="text-xs text-[#6B8CA5] uppercase font-bold block">Harga Penawaran</span>
+              <span className="text-xs text-[#6B8CA5] uppercase font-bold block">
+                Harga Penawaran
+              </span>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-3xl font-black text-[#0C4A6E]">
                   {formatIDR(property.priceIdr)}
