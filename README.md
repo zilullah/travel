@@ -16,6 +16,21 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Cloudflare deployment
+
+This app deploys as a Cloudflare Worker through Vinext. Configure these variables in the Cloudflare build environment before deploying:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+Configure `SUPABASE_SERVICE_ROLE_KEY` as a Cloudflare secret, never as a committed `vars` value:
+
+```bash
+npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+```
+
+The `NEXT_PUBLIC_*` values must be available during `npm run build:vinext` because the browser bundle needs them at build time. After changing Cloudflare variables, run a new build and deploy.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
