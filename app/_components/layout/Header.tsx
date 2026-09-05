@@ -59,6 +59,12 @@ export const Header: React.FC = () => {
             {t("nav.tours")}
           </a>
           <a
+            href="/#about"
+            className="px-4 py-1.5 text-xs font-semibold rounded-full text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white transition-colors"
+          >
+            {t("nav.about")}
+          </a>
+          <a
             href="/#antar-jemput"
             className="px-4 py-1.5 text-xs font-semibold rounded-full text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white transition-colors"
           >
@@ -134,6 +140,13 @@ export const Header: React.FC = () => {
               className="px-4 py-2.5 text-sm font-semibold rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] transition-colors"
             >
               {t("nav.tours")}
+            </a>
+            <a
+              href="/#about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-4 py-2.5 text-sm font-semibold rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] transition-colors"
+            >
+              {t("nav.about")}
             </a>
             <a
               href="/#antar-jemput"

@@ -1,47 +1,54 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { TourPackage } from '@/lib/domain/package.types';
-import { formatIDR } from '@/app/_lib/utils';
-import { buildWhatsAppLink } from '@/app/_lib/whatsapp';
-import { WHATSAPP_TEMPLATES } from '@/app/_constants/whatsapp';
-import { Button } from '@/app/_components/ui/Button';
-import { Badge } from '@/app/_components/ui/Badge';
-import { CompassIcon, StarIcon, CheckIcon } from '@/app/_components/ui/Icons';
-import { useLanguage } from '@/app/_context/LanguageContext';
+import React from "react";
+import { TourPackage } from "@/lib/domain/package.types";
+import { formatIDR } from "@/app/_lib/utils";
+import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
+import { WHATSAPP_TEMPLATES } from "@/app/_constants/whatsapp";
+import { Button } from "@/app/_components/ui/Button";
+import { Badge } from "@/app/_components/ui/Badge";
+import { CompassIcon, StarIcon, CheckIcon } from "@/app/_components/ui/Icons";
+import { useLanguage } from "@/app/_context/LanguageContext";
 
 interface TourPackagesSectionProps {
   packages: TourPackage[];
 }
 
-export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({ packages }) => {
+export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
+  packages,
+}) => {
   const { t } = useLanguage();
 
   const handleBookTour = (pkg: TourPackage) => {
     const message = WHATSAPP_TEMPLATES.tour({
       tourTitle: pkg.title,
       duration: pkg.duration,
-      date: 'Rencana Segera / Flexible',
+      date: "Rencana Segera / Flexible",
       guests: 2,
       notes: `Booking via Landing Page untuk paket: ${pkg.title} (Base: ${formatIDR(pkg.basePriceIdr)})`,
     });
     const waUrl = buildWhatsAppLink(message);
-    window.open(waUrl, '_blank');
+    window.open(waUrl, "_blank");
   };
 
   return (
-    <section id="tour-packages" className="py-20 lg:py-28 bg-[#F7FCFF] text-[#0C4A6E]">
+    <section
+      id="tour-packages"
+      className="py-20 lg:py-28 bg-[#F7FCFF] text-[#0C4A6E]"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <Badge variant="sky">
-            {t('nav.tours') || 'Curated Lombok Tour Packages'}
+            {t("nav.tours") || "Curated Lombok Tour Packages"}
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-[#0C4A6E]">
             Authentic Island Adventures & Trekking
           </h2>
           <p className="text-[#486581] text-base sm:text-lg leading-relaxed">
-            Live-synced curated packages from our local guides — complete with certified guides, private boat charters, and transparent pricing tiers.
+            Explore curated Lombok tour packages for European and international
+            travelers, from Rinjani trekking and Gili island hopping to South
+            Lombok beaches, private boats, and flexible day trips.
           </p>
         </div>
 
@@ -55,7 +62,10 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({ packag
               {/* Image Banner */}
               <div className="relative h-60 w-full overflow-hidden bg-slate-100">
                 <img
-                  src={pkg.imageUrl || 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'}
+                  src={
+                    pkg.imageUrl ||
+                    "https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80"
+                  }
                   alt={pkg.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
@@ -63,7 +73,7 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({ packag
 
                 <div className="absolute top-4 left-4 flex gap-2">
                   <span className="bg-[#0EA5E9] text-white font-bold text-xs px-3 py-1 rounded-full uppercase shadow-sm">
-                    {pkg.category.replace('_', ' ')}
+                    {pkg.category.replace("_", " ")}
                   </span>
                   {pkg.isFeatured && (
                     <span className="bg-amber-400 text-amber-950 font-bold text-xs px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
@@ -95,7 +105,10 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({ packag
                   {/* Key Highlights */}
                   <div className="mt-4 space-y-1.5 border-t border-[#EFF8FF] pt-3">
                     {pkg.highlights.slice(0, 3).map((hl, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-[#0C4A6E]">
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 text-xs text-[#0C4A6E]"
+                      >
                         <span className="text-[#0EA5E9] font-bold">
                           <CheckIcon className="w-3.5 h-3.5 inline" />
                         </span>
@@ -114,7 +127,9 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({ packag
                     <span className="text-lg font-black text-[#0284C7]">
                       {formatIDR(pkg.basePriceIdr)}
                     </span>
-                    <span className="text-[10px] text-[#6B8CA5] block">/ person</span>
+                    <span className="text-[10px] text-[#6B8CA5] block">
+                      / person
+                    </span>
                   </div>
 
                   <Button
