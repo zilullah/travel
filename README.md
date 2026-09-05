@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Cloudflare deployment
 
-This app deploys as a Cloudflare Worker through Vinext. Configure these variables in the Cloudflare build environment before deploying:
+This app deploys as a Cloudflare Worker through Vinext. Configure these variables in Cloudflare Pages under **Settings > Environment variables** for the active deployment environment, before deploying:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -29,7 +29,7 @@ Configure `SUPABASE_SERVICE_ROLE_KEY` as a Cloudflare secret, never as a committ
 npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 ```
 
-The `NEXT_PUBLIC_*` values must be available during `npm run build:vinext` because the browser bundle needs them at build time. After changing Cloudflare variables, run a new build and deploy.
+Do not use `wrangler secret put` for the `NEXT_PUBLIC_*` values: those secrets are runtime-only and are not available to the Cloudflare build command. The `NEXT_PUBLIC_*` values must be available during `npm run build:vinext` because the browser bundle and prerender step need them at build time. After changing Cloudflare variables, run a new build and deploy.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
