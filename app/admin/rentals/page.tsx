@@ -107,8 +107,9 @@ export default function AdminRentalsPage() {
         alert("New vehicle registered successfully!");
       }
       resetForm();
-    } catch (err: any) {
-      alert(`Error saving vehicle: ${err.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Error saving vehicle";
+      alert(`Error saving vehicle: ${message}`);
     }
   };
 
@@ -118,8 +119,9 @@ export default function AdminRentalsPage() {
       await service.deleteVehicle(id);
       setVehicles(vehicles.filter((v) => v.id !== id));
       if (editingId === id) resetForm();
-    } catch (err: any) {
-      alert(`Failed to delete vehicle: ${err.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to delete vehicle";
+      alert(`Failed to delete vehicle: ${message}`);
     }
   };
 
@@ -127,8 +129,9 @@ export default function AdminRentalsPage() {
     try {
       const updated = await service.updateVehicle(v.id, { isActive: !v.isActive });
       setVehicles(vehicles.map((item) => (item.id === v.id ? updated : item)));
-    } catch (err: any) {
-      alert(`Failed to update status: ${err.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to update status";
+      alert(`Failed to update status: ${message}`);
     }
   };
 

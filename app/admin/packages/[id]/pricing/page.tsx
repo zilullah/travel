@@ -65,7 +65,7 @@ export default function PackagePricingPage() {
     setTiers(tiers.filter((_, i) => i !== index));
   };
 
-  const updateTierField = (index: number, field: keyof PricingTier, value: any) => {
+  const updateTierField = (index: number, field: keyof PricingTier, value: string | number) => {
     const updated = [...tiers];
     updated[index] = { ...updated[index], [field]: value };
     setTiers(updated);
@@ -80,8 +80,9 @@ export default function PackagePricingPage() {
     try {
       await service.updatePricingTiers(packageId, tiers);
       setSuccess(true);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to save pricing tiers');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to save pricing tiers';
+      setError(message);
     } finally {
       setSaving(false);
     }

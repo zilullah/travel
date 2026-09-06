@@ -1,7 +1,28 @@
-import { TransferLocation, TransferVehicle } from '../domain/transfer.types';
+import { TransferLocation, TransferVehicle, TransferLocationType } from '../domain/transfer.types';
+
+export interface TransferLocationRow {
+  id: string;
+  name: string;
+  location_type: TransferLocationType;
+  area: string;
+  is_active: boolean;
+  display_order: number;
+  created_at?: string;
+}
+
+export interface TransferVehicleRow {
+  id: string;
+  name: string;
+  category: string;
+  capacity_pax: number;
+  base_rate_idr: number;
+  image_url: string | null;
+  is_active: boolean;
+  created_at?: string;
+}
 
 export class TransferMapper {
-  static locationToDomain(row: any): TransferLocation {
+  static locationToDomain(row: TransferLocationRow): TransferLocation {
     return {
       id: row.id,
       name: row.name,
@@ -13,8 +34,8 @@ export class TransferMapper {
     };
   }
 
-  static locationToPersistence(domain: Partial<TransferLocation>): any {
-    const row: any = {};
+  static locationToPersistence(domain: Partial<TransferLocation>): Partial<TransferLocationRow> {
+    const row: Partial<TransferLocationRow> = {};
     if (domain.name !== undefined) row.name = domain.name;
     if (domain.locationType !== undefined) row.location_type = domain.locationType;
     if (domain.area !== undefined) row.area = domain.area;
@@ -23,7 +44,7 @@ export class TransferMapper {
     return row;
   }
 
-  static vehicleToDomain(row: any): TransferVehicle {
+  static vehicleToDomain(row: TransferVehicleRow): TransferVehicle {
     return {
       id: row.id,
       name: row.name,
@@ -36,13 +57,13 @@ export class TransferMapper {
     };
   }
 
-  static vehicleToPersistence(domain: Partial<TransferVehicle>): any {
-    const row: any = {};
+  static vehicleToPersistence(domain: Partial<TransferVehicle>): Partial<TransferVehicleRow> {
+    const row: Partial<TransferVehicleRow> = {};
     if (domain.name !== undefined) row.name = domain.name;
     if (domain.category !== undefined) row.category = domain.category;
     if (domain.capacityPax !== undefined) row.capacity_pax = domain.capacityPax;
     if (domain.baseRateIdr !== undefined) row.base_rate_idr = domain.baseRateIdr;
-    if (domain.imageUrl !== undefined) row.image_url = domain.imageUrl;
+    if (domain.imageUrl !== undefined) row.image_url = domain.imageUrl || null;
     if (domain.isActive !== undefined) row.is_active = domain.isActive;
     return row;
   }

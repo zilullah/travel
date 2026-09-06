@@ -33,7 +33,7 @@ export class SupabasePackageRepository implements IPackageRepository {
       throw new Error(`Failed to fetch tour packages: ${error.message}`);
     }
 
-    return (data || []).map((row: any) => {
+    return (data || []).map((row: TourPackageRow & { package_pricing_tiers?: PricingTierRow[] }) => {
       const tiers = row.package_pricing_tiers || [];
       return PackageMapper.toDomain(row, tiers);
     });
@@ -97,7 +97,7 @@ export class SupabasePackageRepository implements IPackageRepository {
       savedTiers = await this.savePricingTiers(data.id, pkg.pricingTiers);
     }
 
-    return PackageMapper.toDomain(data as TourPackageRow, savedTiers as any);
+    return PackageMapper.toDomain(data as TourPackageRow, (savedTiers || []).map((t) => PackageMapper.tierToPersistence(t, data.id) as PricingTierRow));
   }
 
   async update(id: string, pkg: Partial<TourPackage>): Promise<TourPackage> {
@@ -122,7 +122,7 @@ export class SupabasePackageRepository implements IPackageRepository {
       savedTiers = await this.getPricingTiers(id);
     }
 
-    return PackageMapper.toDomain(data as TourPackageRow, savedTiers as any);
+    return PackageMapper.toDomain(data as TourPackageRow, (savedTiers || []).map((t) => PackageMapper.tierToPersistence(t, id) as PricingTierRow));
   }
 
   async delete(id: string): Promise<boolean> {

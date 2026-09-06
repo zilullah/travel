@@ -38,7 +38,7 @@ async function runRentalTests() {
   assert.throws(() => {
     CreateRentalVehicleSchema.parse({
       ...validMotor,
-      type: "airplane" as any,
+      type: "airplane" as unknown as "motorcycle" | "car",
     });
   }, /Type must be motorcycle or car/);
 

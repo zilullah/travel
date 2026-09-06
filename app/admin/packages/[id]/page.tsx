@@ -104,7 +104,7 @@ export default function PackageFormPage() {
     setSaving(true);
 
     try {
-      const packageData: any = {
+      const packageData = {
         title,
         slug: slug || generateSlug(title),
         tagline,
@@ -128,8 +128,9 @@ export default function PackageFormPage() {
       }
 
       router.push('/admin/packages');
-    } catch (err: any) {
-      setError(err?.message || 'Failed to save package');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to save package';
+      setError(message);
     } finally {
       setSaving(false);
     }

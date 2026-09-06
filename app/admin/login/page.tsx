@@ -21,8 +21,9 @@ export default function AdminLoginPage() {
     try {
       await login(email, password);
       router.push('/admin/packages');
-    } catch (err: any) {
-      setError(err?.message || 'Login failed. Please verify credentials.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed. Please verify credentials.';
+      setError(message);
     } finally {
       setLoading(false);
     }

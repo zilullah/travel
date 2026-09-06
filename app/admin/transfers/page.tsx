@@ -61,8 +61,9 @@ export default function AdminTransfersPage() {
       });
       setLocations([...locations, created]);
       setNewLocName("");
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to create location";
+      alert(message);
     }
   };
 
@@ -89,8 +90,9 @@ export default function AdminTransfersPage() {
       });
       setVehicles([...vehicles, created]);
       setNewVehName("");
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to create vehicle";
+      alert(message);
     }
   };
 

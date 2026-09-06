@@ -10,13 +10,20 @@ export class TransferService {
     return this.transferRepo.findAllLocations(type);
   }
 
-  async createLocation(data: any): Promise<TransferLocation> {
+  async createLocation(data: unknown): Promise<TransferLocation> {
     const validation = validateTransferLocation(data);
     if (!validation.success) {
       const errorMsg = validation.error.issues.map((e) => `${e.path.join('.')}: ${e.message}`).join(', ');
       throw new Error(`Location Validation Error: ${errorMsg}`);
     }
-    return this.transferRepo.createLocation(validation.data as any);
+    const validData = validation.data;
+    return this.transferRepo.createLocation({
+      name: validData.name,
+      locationType: validData.locationType,
+      area: validData.area,
+      isActive: validData.isActive,
+      displayOrder: validData.displayOrder,
+    });
   }
 
   async updateLocation(id: string, data: Partial<TransferLocation>): Promise<TransferLocation> {
@@ -34,13 +41,21 @@ export class TransferService {
     return this.transferRepo.findAllVehicles();
   }
 
-  async createVehicle(data: any): Promise<TransferVehicle> {
+  async createVehicle(data: unknown): Promise<TransferVehicle> {
     const validation = validateTransferVehicle(data);
     if (!validation.success) {
       const errorMsg = validation.error.issues.map((e) => `${e.path.join('.')}: ${e.message}`).join(', ');
       throw new Error(`Vehicle Validation Error: ${errorMsg}`);
     }
-    return this.transferRepo.createVehicle(validation.data as any);
+    const validData = validation.data;
+    return this.transferRepo.createVehicle({
+      name: validData.name,
+      category: validData.category,
+      capacityPax: validData.capacityPax,
+      baseRateIdr: validData.baseRateIdr,
+      imageUrl: validData.imageUrl,
+      isActive: validData.isActive,
+    });
   }
 
   async updateVehicle(id: string, data: Partial<TransferVehicle>): Promise<TransferVehicle> {

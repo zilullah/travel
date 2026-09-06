@@ -1,14 +1,14 @@
-import { Property } from '../domain/property.types';
+import { Property, PropertyType, PropertyOwnership, PropertyStatus } from '../domain/property.types';
 
 export interface PropertyRow {
   id: string;
   slug: string;
   title: string;
   tagline: string | null;
-  type: string;
+  type: PropertyType;
   location: string;
   price_idr: number | string;
-  ownership: string;
+  ownership: PropertyOwnership;
   lease_years: number | null;
   land_size_m2: number;
   building_size_m2: number | null;
@@ -20,7 +20,7 @@ export interface PropertyRow {
   image_url: string;
   gallery: string[] | null;
   features: string[] | null;
-  status: string;
+  status: PropertyStatus;
   is_featured: boolean;
   created_at?: string;
   updated_at?: string;
@@ -33,10 +33,10 @@ export class PropertyMapper {
       slug: row.slug,
       title: row.title,
       tagline: row.tagline || '',
-      type: row.type as any,
+      type: row.type,
       location: row.location,
       priceIdr: Number(row.price_idr),
-      ownership: row.ownership as any,
+      ownership: row.ownership,
       leaseYears: row.lease_years ? Number(row.lease_years) : undefined,
       landSizeM2: Number(row.land_size_m2),
       buildingSizeM2: row.building_size_m2 ? Number(row.building_size_m2) : undefined,
@@ -48,7 +48,7 @@ export class PropertyMapper {
       image: row.image_url,
       gallery: row.gallery || [],
       features: row.features || [],
-      status: row.status as any,
+      status: row.status,
       isFeatured: Boolean(row.is_featured),
       createdAt: row.created_at,
       updatedAt: row.updated_at,

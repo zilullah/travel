@@ -88,7 +88,7 @@ export default function PropertyFormPage() {
     setSaving(true);
 
     try {
-      const data: any = {
+      const data = {
         title,
         slug: slug || generatePropertySlug(title),
         tagline,
@@ -117,8 +117,9 @@ export default function PropertyFormPage() {
       }
 
       router.push('/admin/properties');
-    } catch (err: any) {
-      setError(err?.message || 'Failed to save property listing');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to save property listing';
+      setError(message);
     } finally {
       setSaving(false);
     }

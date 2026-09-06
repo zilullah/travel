@@ -1,4 +1,4 @@
-import { TourPackage, PricingTier } from '../domain/package.types';
+import { TourPackage, PricingTier, PackageCategory, PackageStatus, ItineraryItem } from '../domain/package.types';
 
 export interface TourPackageRow {
   id: string;
@@ -7,15 +7,15 @@ export interface TourPackageRow {
   tagline: string | null;
   destination: string;
   duration: string;
-  category: string;
+  category: PackageCategory;
   base_price_idr: number | string;
   image_url: string | null;
   gallery: string[] | null;
   highlights: string[] | null;
   included: string[] | null;
   excluded: string[] | null;
-  itinerary: any;
-  status: string;
+  itinerary: ItineraryItem[] | null;
+  status: PackageStatus;
   is_featured: boolean;
   created_at?: string;
   updated_at?: string;
@@ -41,7 +41,7 @@ export class PackageMapper {
       tagline: row.tagline || '',
       destination: row.destination,
       duration: row.duration,
-      category: row.category as any,
+      category: row.category,
       basePriceIdr: Number(row.base_price_idr),
       imageUrl: row.image_url || '',
       gallery: row.gallery || [],
@@ -49,9 +49,9 @@ export class PackageMapper {
       included: row.included || [],
       excluded: row.excluded || [],
       itinerary: Array.isArray(row.itinerary) ? row.itinerary : [],
-      status: row.status as any,
+      status: row.status,
       isFeatured: Boolean(row.is_featured),
-      pricingTiers: tiers.map(this.tierToDomain),
+      pricingTiers: tiers.map((tier) => this.tierToDomain(tier)),
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     };
