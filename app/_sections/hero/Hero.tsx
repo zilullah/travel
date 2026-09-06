@@ -33,7 +33,7 @@ export const Hero: React.FC = () => {
   );
   const [dropOffLocation, setDropOffLocation] = useState("Kuta / Mandalika");
   const [vehicleCategory, setVehicleCategory] = useState(
-    "Innova Reborn (1-6 Pax)",
+    "Innova Reborn (1-4 Pax)",
   );
   const [transportDate, setTransportDate] = useState("");
 

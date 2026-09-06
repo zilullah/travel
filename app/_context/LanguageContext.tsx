@@ -13,11 +13,12 @@ interface LanguageContextType {
 export const translations: Record<Language, Record<string, string>> = {
   en: {
     // Nav & Header
-    "nav.tours": "Tour Packages",
-    "nav.about": "About Us",
-    "nav.pickup": "Airport & Harbor Transfer",
-    "nav.properties": "Properties & Villas",
-    "nav.contact": "Contact WhatsApp",
+    "nav.tours": "Tours",
+    "nav.rentals": "Rentals",
+    "nav.pickup": "Transfers",
+    "nav.properties": "Properties",
+    "nav.about": "About",
+    "nav.contact": "WhatsApp",
     "header.tagline": "Tours • Transfers • Real Estate",
     "header.whatsapp_cta": "WhatsApp Us",
     "header.whatsapp_247": "Contact WhatsApp 24/7",
@@ -53,7 +54,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "transfer.feat2":
       "Fixed transparent rates (All-inclusive toll, fuel & parking)",
     "transfer.feat3": "Instant WhatsApp dispatch & live driver coordination",
-    "transfer.form_title": "Book Transfer / Rental Chauffeur",
+    "transfer.form_title": "Book Transfer",
     "transfer.form_desc":
       "Instant quote and private chauffeur reservation dispatched via WhatsApp.",
     "transfer.pickup_point": "Pickup Point",
@@ -103,26 +104,44 @@ export const translations: Record<Language, Record<string, string>> = {
     "reviews.quote3":
       "Private island hopping at Gili Nanggu with crystal waters, sea turtles, and grilled fish right on the sandbar. Truly the best day of our Indonesia trip.",
 
+    // Rentals Section
+    "rental.badge": "Lombok Scooter & Car Rental",
+    "rental.title": "Rent Motorbikes & Cars with Easy Delivery",
+    "rental.desc":
+      "Explore Lombok with total freedom. Premium maintained scooters and cars with free delivery to airport or hotel, 2 helmets, raincoats, and 24/7 road assistance.",
+    "rental.tab_all": "All Vehicles",
+    "rental.tab_motorcycle": "Scooters / Motorbikes",
+    "rental.tab_car": "Cars / MPV",
+    "rental.per_day": "/ day",
+    "rental.pax": "Pax",
+    "rental.with_driver": "With Driver",
+    "rental.self_drive": "Self Drive",
+    "rental.book_now": "Rent via WhatsApp",
+
     // About Us
     "about.badge": "Your Local Lombok Travel Partner",
     "about.title":
-      "Travel Lombok with local knowledge and international-friendly support",
+      "Trusted Lombok Tour Organizer, Airport Transfer & Island Experiences",
     "about.intro":
-      "Lombok Travel Organizer helps international visitors experience the island with less uncertainty and more time for the places that matter.",
+      "Lombok Travel Organizer is a trusted local agency dedicated to delivering seamless island adventures, reliable airport transfers, motorbike/car rentals, and verified South Lombok villa investments.",
     "about.body":
-      "From your first airport pickup to a private Rinjani trek, island-hopping day, or South Lombok villa viewing, our local team coordinates the practical details in clear English through WhatsApp.",
-    "about.card1_title": "Trips shaped around you",
+      "Based in Lombok with fluent English support, our team handles everything from your Mount Rinjani summit treks and Secret Gili private boat tours to hassle-free Mandalika airport pickups. Follow our journey on social media for live island updates, guest stories, and travel tips.",
+    "about.card1_title": "Custom Tours & Adventures",
     "about.card1_text":
-      "Choose a ready-made Lombok tour or ask us to build a private itinerary around your pace, interests, and travel dates.",
-    "about.card2_title": "Clear, practical planning",
+      "Choose curated Lombok tour packages or customize private itineraries for Rinjani trekking, Pink Beach, and Secret Gili island hopping.",
+    "about.card2_title": "Transparent & Reliable Logistics",
     "about.card2_text":
-      "Get straightforward information about transfers, vehicles, activities, timing, and property viewings before you arrive.",
-    "about.card3_title": "Local help from arrival onward",
+      "Clear pricing for airport transfers, well-maintained scooter & car rentals, and verified legal due diligence for property surveys.",
+    "about.card3_title": "24/7 Local WhatsApp Concierge",
     "about.card3_text":
-      "Our Lombok-based team stays reachable on WhatsApp for airport coordination, driver support, and on-island questions.",
-    "about.local_team": "Lombok local team",
-    "about.english_support": "English support",
-    "about.private_planning": "Private planning",
+      "Our Lombok-based team is always reachable via WhatsApp for instant booking assistance, flight tracking, and local recommendations.",
+    "about.local_team": "Lombok Local Team",
+    "about.english_support": "Fluent English Support",
+    "about.private_planning": "Tailored Private Trips",
+    "about.social_heading": "Follow Our Island Journeys",
+    "about.social_sub": "Check out real guest moments, travel guides & behind-the-scenes on Instagram & TikTok",
+    "about.tiktok_label": "Watch on TikTok",
+    "about.instagram_label": "Follow on Instagram",
 
     // Tours & Booking
     "tour.badge": "Curated Lombok Tour Packages",
@@ -157,11 +176,12 @@ export const translations: Record<Language, Record<string, string>> = {
   },
   id: {
     // Nav & Header
-    "nav.tours": "Paket Wisata",
+    "nav.tours": "Wisata",
+    "nav.rentals": "Rental",
+    "nav.pickup": "Antar-Jemput",
+    "nav.properties": "Properti",
     "nav.about": "Tentang Kami",
-    "nav.pickup": "Antar-Jemput Bandara & Pelabuhan",
-    "nav.properties": "Properti & Villa",
-    "nav.contact": "Kontak WhatsApp",
+    "nav.contact": "WhatsApp",
     "header.tagline": "Wisata • Antar-Jemput • Properti",
     "header.whatsapp_cta": "Hubungi WhatsApp",
     "header.whatsapp_247": "Hubungi WhatsApp 24/7",
@@ -248,26 +268,44 @@ export const translations: Record<Language, Record<string, string>> = {
     "reviews.quote3":
       "Island hopping privat di Gili Nanggu dengan air jernih, penyu, dan ikan bakar langsung di gundukan pasir. Hari terbaik selama perjalanan kami di Indonesia.",
 
+    // Rentals Section
+    "rental.badge": "Rental Motor & Mobil Lombok",
+    "rental.title": "Sewa Motor & Mobil Nyaman dengan Layanan Antar-Jemput",
+    "rental.desc":
+      "Jelajahi Lombok dengan bebas dan leluasa. Unit motor dan mobil terawat prima, gratis antar ke bandara atau hotel, lengkap dengan 2 helm SNI, jas hujan, dan bantuan darurat 24 jam.",
+    "rental.tab_all": "Semua Kendaraan",
+    "rental.tab_motorcycle": "Sewa Motor",
+    "rental.tab_car": "Sewa Mobil",
+    "rental.per_day": "/ hari",
+    "rental.pax": "Penumpang",
+    "rental.with_driver": "Dengan Supir",
+    "rental.self_drive": "Lepas Kunci",
+    "rental.book_now": "Sewa via WhatsApp",
+
     // Tentang Kami
     "about.badge": "Mitra Perjalanan Lokal Lombok",
     "about.title":
-      "Jelajahi Lombok dengan wawasan lokal dan bantuan yang mudah dipahami wisatawan internasional",
+      "Penyelenggara Wisata Lombok Terpercaya, Antar-Jemput Bandara & Pengalaman Pulau",
     "about.intro":
-      "Lombok Travel Organizer membantu wisatawan mancanegara menikmati Lombok dengan lebih tenang dan lebih banyak waktu untuk menikmati destinasi terbaik.",
+      "Lombok Travel Organizer adalah agen lokal resmi dan terpercaya yang melayani paket wisata pulau terbaik, antar-jemput bandara tepat waktu, rental motor/mobil prima, dan konsultasi investasi villa Lombok Selatan.",
     "about.body":
-      "Mulai dari penjemputan bandara, trekking Rinjani privat, island hopping, hingga kunjungan villa di Lombok Selatan, tim lokal kami membantu mengatur detail perjalanan melalui WhatsApp.",
-    "about.card1_title": "Perjalanan sesuai kebutuhan",
+      "Berbasis di Lombok dengan tim lokal ramah dan berpengalaman, kami siap membantu pendakian Gunung Rinjani, island hopping Gili privat, hingga penjemputan bandara BIL Mandalika secara mudah via WhatsApp. Ikuti media sosial kami untuk update wisata dan dokumentasi perjalanan terkini.",
+    "about.card1_title": "Paket Wisata & Petualangan Kustom",
     "about.card1_text":
-      "Pilih paket wisata Lombok atau minta itinerary privat sesuai ritme, minat, dan tanggal perjalanan Anda.",
-    "about.card2_title": "Perencanaan yang jelas",
+      "Pilih paket tour Lombok favorit atau atur itinerary privat Anda sendiri: trekking Rinjani, Pantai Pink, hingga Secret Gili snorkeling.",
+    "about.card2_title": "Layanan Transportasi & Logistik Jelas",
     "about.card2_text":
-      "Dapatkan informasi praktis tentang transfer, kendaraan, aktivitas, jadwal, dan kunjungan properti sebelum tiba.",
-    "about.card3_title": "Bantuan lokal sejak tiba",
+      "Tarif transparan untuk antar-jemput bandara & pelabuhan, armada sewa motor dan mobil terawat, serta pendampingan survei properti.",
+    "about.card3_title": "Bantuan WhatsApp Cepat 24/7",
     "about.card3_text":
-      "Tim kami di Lombok siap dihubungi melalui WhatsApp untuk koordinasi bandara, driver, dan pertanyaan selama perjalanan.",
-    "about.local_team": "Tim lokal Lombok",
-    "about.english_support": "Dukungan bahasa Inggris",
-    "about.private_planning": "Perencanaan privat",
+      "Tim lokal kami di Lombok siap mendampingi kebutuhan perjalanan, pelacakan jam penerbangan, hingga rekomendasi kuliner lokal.",
+    "about.local_team": "Tim Lokal Asli Lombok",
+    "about.english_support": "Bahasa Indonesia & English",
+    "about.private_planning": "Perjalanan Privat Fleksibel",
+    "about.social_heading": "Ikuti Petualangan Kami",
+    "about.social_sub": "Tonton keseruan liburan tamu kami, tips wisata, dan pesona Lombok di Instagram & TikTok",
+    "about.tiktok_label": "Tonton di TikTok",
+    "about.instagram_label": "Ikuti di Instagram",
 
     // Paket Wisata & Booking
     "tour.badge": "Paket Wisata Lombok Pilihan",

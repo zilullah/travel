@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { TransferLocation, TransferVehicle } from '@/lib/domain/transfer.types';
-import { TransferService } from '@/lib/services/transfer.service';
-import { SupabaseTransferRepository } from '@/lib/repositories/supabase-transfer.repository';
-import { supabaseClient } from '@/lib/supabase/client';
-import { formatIDR } from '@/app/_lib/utils';
+import React, { useEffect, useState } from "react";
+import { TransferLocation, TransferVehicle } from "@/lib/domain/transfer.types";
+import { TransferService } from "@/lib/services/transfer.service";
+import { SupabaseTransferRepository } from "@/lib/repositories/supabase-transfer.repository";
+import { supabaseClient } from "@/lib/supabase/client";
+import { formatIDR } from "@/app/_lib/utils";
 
 export default function AdminTransfersPage() {
   const repo = new SupabaseTransferRepository(supabaseClient);
@@ -16,13 +16,15 @@ export default function AdminTransfersPage() {
   const [loading, setLoading] = useState(true);
 
   // New Location Form State
-  const [newLocName, setNewLocName] = useState('');
-  const [newLocArea, setNewLocArea] = useState('Central / South Lombok');
-  const [newLocType, setNewLocType] = useState<'both' | 'pickup' | 'dropoff'>('both');
+  const [newLocName, setNewLocName] = useState("");
+  const [newLocArea, setNewLocArea] = useState("Central / South Lombok");
+  const [newLocType, setNewLocType] = useState<"both" | "pickup" | "dropoff">(
+    "both",
+  );
 
   // New Vehicle Form State
-  const [newVehName, setNewVehName] = useState('');
-  const [newVehCategory, setNewVehCategory] = useState('Comfort MPV');
+  const [newVehName, setNewVehName] = useState("");
+  const [newVehCategory, setNewVehCategory] = useState("Comfort MPV");
   const [newVehPax, setNewVehPax] = useState(6);
   const [newVehRate, setNewVehRate] = useState(450000);
 
@@ -36,7 +38,7 @@ export default function AdminTransfersPage() {
       setLocations(locs);
       setVehicles(vehs);
     } catch (err) {
-      console.error('Failed to load transfers:', err);
+      console.error("Failed to load transfers:", err);
     } finally {
       setLoading(false);
     }
@@ -58,7 +60,7 @@ export default function AdminTransfersPage() {
         displayOrder: locations.length + 1,
       });
       setLocations([...locations, created]);
-      setNewLocName('');
+      setNewLocName("");
     } catch (err: any) {
       alert(err.message);
     }
@@ -70,7 +72,7 @@ export default function AdminTransfersPage() {
       await service.deleteLocation(id);
       setLocations(locations.filter((l) => l.id !== id));
     } catch {
-      alert('Failed to delete location');
+      alert("Failed to delete location");
     }
   };
 
@@ -86,7 +88,7 @@ export default function AdminTransfersPage() {
         isActive: true,
       });
       setVehicles([...vehicles, created]);
-      setNewVehName('');
+      setNewVehName("");
     } catch (err: any) {
       alert(err.message);
     }
@@ -98,7 +100,7 @@ export default function AdminTransfersPage() {
       await service.deleteVehicle(id);
       setVehicles(vehicles.filter((v) => v.id !== id));
     } catch {
-      alert('Failed to delete vehicle');
+      alert("Failed to delete vehicle");
     }
   };
 
@@ -109,7 +111,8 @@ export default function AdminTransfersPage() {
           Transfer Locations & Fleet Management
         </h1>
         <p className="text-xs sm:text-sm text-[#486581]">
-          Manage pickup/drop-off points across Lombok and transport fleet vehicle categories.
+          Manage pickup/drop-off points across Lombok and transport fleet
+          vehicle categories.
         </p>
       </div>
 
@@ -127,8 +130,13 @@ export default function AdminTransfersPage() {
           </div>
 
           {/* Add Location Form */}
-          <form onSubmit={handleCreateLocation} className="p-4 bg-[#F0F9FF] rounded-2xl border border-[#BAE6FD] space-y-3">
-            <div className="font-bold text-xs text-[#082F49] uppercase">Add New Location Point</div>
+          <form
+            onSubmit={handleCreateLocation}
+            className="p-4 bg-[#F0F9FF] rounded-2xl border border-[#BAE6FD] space-y-3"
+          >
+            <div className="font-bold text-xs text-[#082F49] uppercase">
+              Add New Location Point
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <input
                 type="text"
@@ -163,8 +171,12 @@ export default function AdminTransfersPage() {
                 className="p-3 bg-white border border-[#BAE6FD] rounded-xl flex items-center justify-between hover:bg-[#F0F9FF] transition-all"
               >
                 <div>
-                  <div className="font-bold text-xs text-[#082F49]">{loc.name}</div>
-                  <div className="text-[10px] text-[#5B7C93]">Area: {loc.area}</div>
+                  <div className="font-bold text-xs text-[#082F49]">
+                    {loc.name}
+                  </div>
+                  <div className="text-[10px] text-[#5B7C93]">
+                    Area: {loc.area}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -191,8 +203,13 @@ export default function AdminTransfersPage() {
           </div>
 
           {/* Add Vehicle Form */}
-          <form onSubmit={handleCreateVehicle} className="p-4 bg-[#F0F9FF] rounded-2xl border border-[#BAE6FD] space-y-3">
-            <div className="font-bold text-xs text-[#082F49] uppercase">Add New Fleet Vehicle</div>
+          <form
+            onSubmit={handleCreateVehicle}
+            className="p-4 bg-[#F0F9FF] rounded-2xl border border-[#BAE6FD] space-y-3"
+          >
+            <div className="font-bold text-xs text-[#082F49] uppercase">
+              Add New Fleet Vehicle
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <input
                 type="text"
@@ -245,9 +262,12 @@ export default function AdminTransfersPage() {
                 className="p-3 bg-white border border-[#BAE6FD] rounded-xl flex items-center justify-between hover:bg-[#F0F9FF] transition-all"
               >
                 <div>
-                  <div className="font-bold text-xs text-[#082F49]">{veh.name}</div>
+                  <div className="font-bold text-xs text-[#082F49]">
+                    {veh.name}
+                  </div>
                   <div className="text-[10px] text-[#5B7C93]">
-                    {veh.category} • Max {veh.capacityPax} Pax • Base: {formatIDR(veh.baseRateIdr)}
+                    {veh.category} • Max {veh.capacityPax} Pax • Base:{" "}
+                    {formatIDR(veh.baseRateIdr)}
                   </div>
                 </div>
                 <button

@@ -1,6 +1,6 @@
 export const WHATSAPP_CONFIG = {
   phoneNumber: "6287754552859",
-  defaultGreeting: "Halo Travel Organizer Lombok.",
+  defaultGreeting: "Hello LombokTravelOrganizer 👋",
 };
 
 export const WHATSAPP_TEMPLATES = {
@@ -37,19 +37,50 @@ export const WHATSAPP_TEMPLATES = {
     name?: string;
     notes?: string;
   }) => {
-    let msg = `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya ingin memesan Layanan Antar-Jemput (Transport Pick-Up):\n`;
-    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-    msg += `🚗 *Kendaraan:* ${params.vehicle}\n`;
-    msg += `🛫 *Titik Jemput (Pickup):* ${params.pickup}\n`;
-    msg += `🛬 *Tujuan (Drop-off):* ${params.dropoff}\n`;
-    msg += `📅 *Tanggal:* ${params.date}\n`;
-    if (params.time) msg += `⏰ *Jam:* ${params.time}\n`;
-    msg += `👥 *Jumlah Penumpang:* ${params.passengers} Orang\n`;
-    if (params.name) msg += `👤 *Nama Pemesan:* ${params.name}\n`;
-    if (params.notes) msg += `💬 *Catatan / No Penerbangan:* ${params.notes}\n`;
-    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-    msg += `Mohon konfirmasi ketersediaan driver dan total tarif. Terima kasih!`;
-    return msg;
+    const englishText = [
+      "Hello LombokTravelOrganizer 👋*",
+      "",
+      "I would like to book a Private drop and pick up Transfer Service:",
+      "━━━━━━━━━━━━━━━━━━━━━",
+      `🚗 Vehicle: ${params.vehicle}`,
+      `📍 Pick-up Point: ${params.pickup}`,
+      `📍 Drop-off Destination: ${params.dropoff}`,
+      `📅 Date: ${params.date}`,
+      params.time ? `⏰ Time: ${params.time}` : null,
+      `👥 Number of Passengers: ${params.passengers} People`,
+      params.notes ? `💬 Note / Flight Number: ${params.notes}` : null,
+      "━━━━━━━━━━━━━━━━━━━━━",
+      "",
+      "Could you please confirm driver availability and the total price?",
+      "Thank you so much, and I’m looking forward to my trip to Lombok! 🌴",
+    ]
+      .filter((line): line is string => Boolean(line))
+      .join("\n");
+
+    const indonesiaText = [
+      "",
+      "--- Bahasa Indonesia ---",
+      "",
+      "Halo LombokTravelOrganizer 👋",
+      "",
+      "Saya ingin memesan layanan transfer Private drop and pick up:",
+      "━━━━━━━━━━━━━━━━━━━━━",
+      `🚗 Kendaraan: ${params.vehicle}`,
+      `📍 Titik Jemput: ${params.pickup}`,
+      `📍 Tujuan Drop-off: ${params.dropoff}`,
+      `📅 Tanggal: ${params.date}`,
+      params.time ? `⏰ Waktu: ${params.time}` : null,
+      `👥 Jumlah Penumpang: ${params.passengers} Orang`,
+      params.notes ? `💬 Catatan / Nomor Penerbangan: ${params.notes}` : null,
+      "━━━━━━━━━━━━━━━━━━━━━",
+      "",
+      "Mohon konfirmasi ketersediaan sopir dan total harga yang harus dibayar.",
+      "Terima kasih banyak, saya menantikan perjalanan saya ke Lombok! 🌴",
+    ]
+      .filter((line): line is string => Boolean(line))
+      .join("\n");
+
+    return `${englishText}${indonesiaText}`;
   },
 
   tour: (params: {
@@ -70,6 +101,34 @@ export const WHATSAPP_TEMPLATES = {
     if (params.notes) msg += `💬 *Catatan:* ${params.notes}\n`;
     msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
     msg += `Mohon informasi detail itinerary dan penawaran terbaik. Terima kasih!`;
+    return msg;
+  },
+
+  rental: (params: {
+    vehicleName: string;
+    type: "motorcycle" | "car";
+    transmission: string;
+    price: string;
+    durationDays?: number;
+    startDate?: string;
+    withDriver?: boolean;
+    name?: string;
+    notes?: string;
+  }) => {
+    let msg = `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya ingin menyewa kendaraan di Lombok:\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+    msg += `🛵 *Unit Kendaraan:* ${params.vehicleName}\n`;
+    msg += `🏷️ *Kategori:* ${params.type === "motorcycle" ? "Sewa Motor" : "Sewa Mobil"} (${params.transmission.toUpperCase()})\n`;
+    msg += `💰 *Tarif:* ${params.price} / hari\n`;
+    if (params.withDriver !== undefined) {
+      msg += `🚗 *Opsi:* ${params.withDriver ? "Dengan Supir" : "Lepas Kunci"}\n`;
+    }
+    if (params.durationDays) msg += `⏱️ *Durasi Sewa:* ${params.durationDays} Hari\n`;
+    if (params.startDate) msg += `📅 *Mulai Tanggal:* ${params.startDate}\n`;
+    if (params.name) msg += `👤 *Nama Penyewa:* ${params.name}\n`;
+    if (params.notes) msg += `💬 *Catatan:* ${params.notes}\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+    msg += `Mohon informasi ketersediaan unit dan persyaratan sewanya. Terima kasih!`;
     return msg;
   },
 };

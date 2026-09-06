@@ -43,7 +43,7 @@ export function useAntarJemputForm() {
   const [values, setValues] = useState<AntarJemputFormValues>({
     pickup: "Lombok International Airport (BIL)",
     dropoff: "Kuta Mandalika Beach / Resort",
-    vehicle: "Toyota Innova Reborn (1-6 Pax + Chauffeur)",
+    vehicle: "Toyota Innova Reborn (1-4 Pax)",
     date: "",
     time: "12:00",
     passengers: 2,

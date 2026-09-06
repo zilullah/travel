@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 import { useLanguage } from "@/app/_context/LanguageContext";
 import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
+import { SITE_CONFIG } from "@/app/_constants/site";
+import { InstagramIcon, TikTokIcon } from "@/app/_components/ui/Icons";
 
 export const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -30,6 +32,26 @@ export const Footer: React.FC = () => {
             <p className="text-xs sm:text-sm text-[#486581] max-w-sm">
               {t("footer.desc")}
             </p>
+            <div className="flex items-center gap-2 pt-1">
+              <a
+                href={SITE_CONFIG.socials.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram Lombok Travel Organizer"
+                className="w-8 h-8 rounded-lg bg-[#F0F9FF] border border-[#BAE6FD] text-[#0C4A6E] hover:text-[#0284C7] hover:border-[#0284C7] flex items-center justify-center transition-colors"
+              >
+                <InstagramIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={SITE_CONFIG.socials.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok Lombok Travel Organizer"
+                className="w-8 h-8 rounded-lg bg-[#F0F9FF] border border-[#BAE6FD] text-[#0C4A6E] hover:text-[#0284C7] hover:border-[#0284C7] flex items-center justify-center transition-colors"
+              >
+                <TikTokIcon className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -43,6 +65,11 @@ export const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
+                <a href="/#rentals" className="hover:text-[#0284C7]">
+                  {t("nav.rentals")}
+                </a>
+              </li>
+              <li>
                 <a href="/#antar-jemput" className="hover:text-[#0284C7]">
                   {t("nav.pickup")}
                 </a>
@@ -50,6 +77,11 @@ export const Footer: React.FC = () => {
               <li>
                 <a href="/properties" className="hover:text-[#0284C7]">
                   {t("nav.properties")}
+                </a>
+              </li>
+              <li>
+                <a href="/#about" className="hover:text-[#0284C7]">
+                  {t("nav.about")}
                 </a>
               </li>
             </ul>

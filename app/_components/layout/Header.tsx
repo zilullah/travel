@@ -5,27 +5,64 @@ import Image from "next/image";
 import { MenuIcon, XIcon } from "@/app/_components/ui/Icons";
 import { useLanguage } from "@/app/_context/LanguageContext";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 
 export const Header: React.FC = () => {
   const { lang, setLang, t } = useLanguage();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("packages");
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      // Detect active hash section when on homepage
+      if (pathname === "/") {
+        const sections = ["packages", "rental", "antar-jemput", "about"];
+        const scrollPosition = window.scrollY + 200;
+
+        for (const section of sections) {
+          const el = document.getElementById(section);
+          if (el) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight;
+            if (scrollPosition >= top && scrollPosition < top + height) {
+              setActiveSection(section);
+              break;
+            }
+          }
+        }
+      }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
+
+  const navItems = [
+    { key: "tours", label: t("nav.tours"), href: "/#packages", sectionId: "packages" },
+    { key: "rentals", label: t("nav.rentals"), href: "/#rental", sectionId: "rental" },
+    { key: "pickup", label: t("nav.pickup"), href: "/#antar-jemput", sectionId: "antar-jemput" },
+    { key: "properties", label: t("nav.properties"), href: "/properties", isRoute: true },
+    { key: "about", label: t("nav.about"), href: "/#about", sectionId: "about" },
+  ];
+
+  const isItemActive = (item: typeof navItems[0]) => {
+    if (item.isRoute) {
+      return pathname.startsWith("/properties");
+    }
+    return pathname === "/" && activeSection === item.sectionId;
+  };
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3.5 text-[#0C4A6E] ${
         isScrolled
           ? "bg-white/95 backdrop-blur-md border-b border-[#BAE6FD] shadow-sm"
-          : "bg-white/70 backdrop-blur-sm border-b border-transparent"
+          : "bg-white/80 backdrop-blur-sm border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -52,31 +89,23 @@ export const Header: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1 bg-[#EFF8FF] p-1.5 rounded-[23px] border border-[#BAE6FD]">
-          <a
-            href="/#packages"
-            className="px-4 py-1.5 text-xs font-semibold rounded-full text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white transition-colors"
-          >
-            {t("nav.tours")}
-          </a>
-          <a
-            href="/#about"
-            className="px-4 py-1.5 text-xs font-semibold rounded-full text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white transition-colors"
-          >
-            {t("nav.about")}
-          </a>
-          <a
-            href="/#antar-jemput"
-            className="px-4 py-1.5 text-xs font-semibold rounded-full text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white transition-colors"
-          >
-            {t("nav.pickup")}
-          </a>
-          <a
-            href="/properties"
-            className="px-4 py-1.5 text-xs font-semibold rounded-full text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white transition-colors"
-          >
-            {t("nav.properties")}
-          </a>
+        <nav className="hidden lg:flex items-center gap-1 bg-[#F0F9FF] p-1.5 rounded-full border border-[#BAE6FD] shadow-inner">
+          {navItems.map((item) => {
+            const active = isItemActive(item);
+            return (
+              <a
+                key={item.key}
+                href={item.href}
+                className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all whitespace-nowrap ${
+                  active
+                    ? "bg-[#0284C7] text-white shadow-sm"
+                    : "text-[#0C4A6E] hover:text-[#0284C7] hover:bg-white/90 hover:shadow-xs"
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Desktop Controls & CTA */}
@@ -111,7 +140,7 @@ export const Header: React.FC = () => {
             href={`https://wa.me/${WHATSAPP_CONFIG.phoneNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex bg-[#0EA5E9] hover:bg-[#0284C7] text-white px-4 py-2 rounded-[23px] text-xs font-bold transition-all shadow-sm active:scale-95"
+            className="hidden sm:inline-flex bg-[#0EA5E9] hover:bg-[#0284C7] text-white px-4 py-2 rounded-[23px] text-xs font-bold transition-all shadow-sm hover:shadow active:scale-95"
           >
             {t("header.whatsapp_cta")}
           </a>
@@ -135,66 +164,33 @@ export const Header: React.FC = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/98 backdrop-blur-xl border-b border-[#BAE6FD] px-4 pt-4 pb-6 mt-3 space-y-3 shadow-xl animate-fade-in-up">
           <nav className="flex flex-col space-y-1">
-            <a
-              href="/#packages"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-2.5 text-sm font-semibold rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] transition-colors"
-            >
-              {t("nav.tours")}
-            </a>
-            <a
-              href="/#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-2.5 text-sm font-semibold rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] transition-colors"
-            >
-              {t("nav.about")}
-            </a>
-            <a
-              href="/#antar-jemput"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-2.5 text-sm font-semibold rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] transition-colors"
-            >
-              {t("nav.pickup")}
-            </a>
-            <a
-              href="/properties"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-2.5 text-sm font-semibold rounded-xl text-[#0C4A6E] hover:bg-[#EFF8FF] transition-colors"
-            >
-              {t("nav.properties")}
-            </a>
+            {navItems.map((item) => {
+              const active = isItemActive(item);
+              return (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-4 py-2.5 text-sm font-semibold rounded-xl transition-all ${
+                    active
+                      ? "bg-[#E0F2FE] text-[#0284C7] font-bold"
+                      : "text-[#0C4A6E] hover:bg-[#EFF8FF]"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="pt-2 flex items-center justify-between border-t border-[#EFF8FF]">
-            <span className="text-xs font-bold text-[#486581]">
-              {t("header.language")}:
-            </span>
-            <div className="flex items-center bg-[#EFF8FF] p-1 rounded-full border border-[#BAE6FD] text-xs font-bold">
-              <button
-                type="button"
-                onClick={() => setLang("en")}
-                className={`px-3 py-1 rounded-full ${lang === "en" ? "bg-[#0EA5E9] text-white" : "text-[#486581]"}`}
-              >
-                EN
-              </button>
-              <button
-                type="button"
-                onClick={() => setLang("id")}
-                className={`px-3 py-1 rounded-full ${lang === "id" ? "bg-[#0EA5E9] text-white" : "text-[#486581]"}`}
-              >
-                ID
-              </button>
-            </div>
-          </div>
-
-          <div className="pt-2">
             <a
               href={`https://wa.me/${WHATSAPP_CONFIG.phoneNumber}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex justify-center items-center bg-[#0EA5E9] hover:bg-[#0284C7] text-white py-2.5 rounded-[23px] text-sm font-bold shadow-md"
+              className="w-full text-center bg-[#0EA5E9] hover:bg-[#0284C7] text-white py-2.5 rounded-xl text-xs font-bold transition-all"
             >
-              {t("header.whatsapp_247")}
+              {t("header.whatsapp_cta")}
             </a>
           </div>
         </div>

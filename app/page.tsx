@@ -1,5 +1,6 @@
 import { Hero } from "@/app/_sections/hero/Hero";
 import { AntarJemputForm } from "@/app/_sections/antar-jemput/AntarJemputForm";
+import { VehicleRentalSection } from "@/app/_sections/rentals/VehicleRentalSection";
 import { TourPackagesSection } from "@/app/_sections/tours/TourPackagesSection";
 import { PropertyList } from "@/app/_sections/properties/PropertyList";
 import { CustomerReviews } from "@/app/_sections/testimonials/CustomerReviews";
@@ -7,11 +8,13 @@ import { AboutUs } from "@/app/_sections/about/AboutUs";
 import { AnimatedSection } from "@/app/_components/ui/AnimatedSection";
 import { getProperties } from "@/app/_lib/properties";
 import { getTourPackages } from "@/lib/packages";
+import { getRentalVehicles } from "@/lib/rentals";
 
 export default async function Home() {
-  const [properties, tourPackages] = await Promise.all([
+  const [properties, tourPackages, rentalVehicles] = await Promise.all([
     getProperties(),
     getTourPackages(),
+    getRentalVehicles(),
   ]);
 
   return (
@@ -24,22 +27,27 @@ export default async function Home() {
         <TourPackagesSection packages={tourPackages} />
       </AnimatedSection>
 
-      {/* 3. Standalone Antar-Jemput (Pickup/Drop-off) WhatsApp Flow (§20) */}
+      {/* 3. Scooter & Car Rental Catalog */}
+      <AnimatedSection>
+        <VehicleRentalSection vehicles={rentalVehicles} />
+      </AnimatedSection>
+
+      {/* 4. Standalone Antar-Jemput (Pickup/Drop-off) WhatsApp Flow (§20) */}
       <AnimatedSection>
         <AntarJemputForm />
       </AnimatedSection>
 
-      {/* 4. Verified Properties Showcase (lombokproperty.net style) */}
+      {/* 5. Verified Properties Showcase (lombokproperty.net style) */}
       <AnimatedSection>
         <PropertyList properties={properties} />
       </AnimatedSection>
 
-      {/* 5. About Lombok Travel Organizer */}
+      {/* 6. About Lombok Travel Organizer */}
       <AnimatedSection>
         <AboutUs />
       </AnimatedSection>
 
-      {/* 6. Real Customer Reviews & Social Proof */}
+      {/* 7. Real Customer Reviews & Social Proof */}
       <AnimatedSection>
         <CustomerReviews />
       </AnimatedSection>

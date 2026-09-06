@@ -86,7 +86,12 @@ export default function RootLayout({
                 "Lombok tour packages",
                 "Airport transfers",
                 "Private driver service",
+                "Scooter & car rentals",
                 "Lombok property consultation",
+              ],
+              sameAs: [
+                SITE_CONFIG.socials.instagram,
+                SITE_CONFIG.socials.tiktok,
               ],
             }),
           }}

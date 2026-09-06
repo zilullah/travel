@@ -117,7 +117,28 @@ CREATE TABLE IF NOT EXISTS public.transfer_vehicles (
 
 CREATE INDEX IF NOT EXISTS idx_transfer_vehicles_active ON public.transfer_vehicles(is_active);
 
--- 7. SECURITY FUNCTIONS & RLS POLICIES
+-- 7. RENTAL VEHICLES (Motorcycle & Car Rental Catalog)
+CREATE TABLE IF NOT EXISTS public.rental_vehicles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('motorcycle', 'car')),
+  transmission TEXT NOT NULL CHECK (transmission IN ('matic', 'manual')),
+  capacity_pax INT NOT NULL CHECK (capacity_pax > 0),
+  price_per_day BIGINT NOT NULL CHECK (price_per_day > 0),
+  price_with_driver_per_day BIGINT CHECK (price_with_driver_per_day IS NULL OR price_with_driver_per_day > 0),
+  image_url TEXT NOT NULL,
+  features TEXT[] DEFAULT '{}',
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  display_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_rental_vehicles_active ON public.rental_vehicles(is_active);
+CREATE INDEX IF NOT EXISTS idx_rental_vehicles_type ON public.rental_vehicles(type);
+CREATE INDEX IF NOT EXISTS idx_rental_vehicles_order ON public.rental_vehicles(display_order);
+
+-- 8. SECURITY FUNCTIONS & RLS POLICIES
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
@@ -137,6 +158,7 @@ ALTER TABLE public.package_pricing_tiers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.properties ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transfer_locations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transfer_vehicles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.rental_vehicles ENABLE ROW LEVEL SECURITY;
 
 -- Drop old policies if re-running
 DROP POLICY IF EXISTS "Public can view own profile or admin" ON public.profiles;
@@ -151,6 +173,8 @@ DROP POLICY IF EXISTS "Public view active transfer locations" ON public.transfer
 DROP POLICY IF EXISTS "Admins manage transfer locations" ON public.transfer_locations;
 DROP POLICY IF EXISTS "Public view active vehicles" ON public.transfer_vehicles;
 DROP POLICY IF EXISTS "Admins manage transfer vehicles" ON public.transfer_vehicles;
+DROP POLICY IF EXISTS "Public view active rental vehicles" ON public.rental_vehicles;
+DROP POLICY IF EXISTS "Admins manage rental vehicles" ON public.rental_vehicles;
 
 -- Profiles Policies
 CREATE POLICY "Public can view own profile or admin"
@@ -212,7 +236,16 @@ CREATE POLICY "Admins manage transfer vehicles"
   ON public.transfer_vehicles FOR ALL
   USING (public.is_admin());
 
--- 8. AUTOMATIC AUTH TRIGGER
+-- Rental Vehicles Policies
+CREATE POLICY "Public view active rental vehicles"
+  ON public.rental_vehicles FOR SELECT
+  USING (is_active = true OR public.is_admin());
+
+CREATE POLICY "Admins manage rental vehicles"
+  ON public.rental_vehicles FOR ALL
+  USING (public.is_admin());
+
+-- 9. AUTOMATIC AUTH TRIGGER
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
