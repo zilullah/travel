@@ -127,7 +127,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "rental.capacity": "Capacity",
     "rental.type": "Category",
     "rental.rental_terms": "Rental Terms & Delivery",
-    "rental.term1": "Free delivery to Lombok International Airport (BIL) or Kuta Lombok area hotel",
+    "rental.term1":
+      "Free delivery to Lombok International Airport (BIL) or Kuta Lombok area hotel",
     "rental.term2": "Clean SNI helmets + fresh raincoats provided",
     "rental.term3": "24/7 emergency roadside assistance support across Lombok",
     "rental.term4": "Valid ID / Passport required for booking verification",
@@ -153,7 +154,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "about.english_support": "Fluent English Support",
     "about.private_planning": "Tailored Private Trips",
     "about.social_heading": "Follow Our Island Journeys",
-    "about.social_sub": "Check out real guest moments, travel guides & behind-the-scenes on Instagram & TikTok",
+    "about.social_sub":
+      "Check out real guest moments, travel guides & behind-the-scenes on Instagram & TikTok",
     "about.tiktok_label": "Watch on TikTok",
     "about.instagram_label": "Follow on Instagram",
 
@@ -194,7 +196,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.quick_links": "Quick Links",
     "footer.contact_support": "Contact & Support",
     "footer.rights":
-      "© 2026 Lombok Experience & Property. All rights reserved.",
+      "© 2026 Lombok Travel Organizer & Property. All rights reserved.",
   },
   id: {
     // Nav & Header
@@ -313,7 +315,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "rental.capacity": "Kapasitas",
     "rental.type": "Kategori",
     "rental.rental_terms": "Syarat Sewa & Layanan Antar",
-    "rental.term1": "Gratis antar ke Bandara Lombok (BIL) atau hotel area Kuta Lombok",
+    "rental.term1":
+      "Gratis antar ke Bandara Lombok (BIL) atau hotel area Kuta Lombok",
     "rental.term2": "Termasuk 2 helm SNI bersih + jas hujan siap pakai",
     "rental.term3": "Bantuan darurat roadside assistance 24 jam se-Lombok",
     "rental.term4": "Cukup tunjukkan KTP / Paspor & SIM untuk verifikasi cepat",
@@ -339,7 +342,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "about.english_support": "Bahasa Indonesia & English",
     "about.private_planning": "Perjalanan Privat Fleksibel",
     "about.social_heading": "Ikuti Petualangan Kami",
-    "about.social_sub": "Tonton keseruan liburan tamu kami, tips wisata, dan pesona Lombok di Instagram & TikTok",
+    "about.social_sub":
+      "Tonton keseruan liburan tamu kami, tips wisata, dan pesona Lombok di Instagram & TikTok",
     "about.tiktok_label": "Tonton di TikTok",
     "about.instagram_label": "Ikuti di Instagram",
 
@@ -380,7 +384,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.quick_links": "Tautan Cepat",
     "footer.contact_support": "Kontak & Bantuan",
     "footer.rights":
-      "© 2026 Lombok Experience & Property. Seluruh hak cipta dilindungi.",
+      "© 2026 Lombok Travel Organizer & Property. Seluruh hak cipta dilindungi.",
   },
 };
 

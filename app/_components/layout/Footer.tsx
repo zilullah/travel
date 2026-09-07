@@ -26,7 +26,7 @@ export const Footer: React.FC = () => {
                 />
               </div>
               <span className="font-extrabold text-xl text-[#0C4A6E]">
-                LOMBOK<span className="text-[#0EA5E9]">EXPERIENCE</span>
+                LOMBOK <span className="text-[#0EA5E9]">TRAVEL ORGANIZER</span>
               </span>
             </div>
             <p className="text-xs sm:text-sm text-[#486581] max-w-sm">
