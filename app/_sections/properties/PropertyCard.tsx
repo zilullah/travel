@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Property } from "@/app/_lib/properties";
 import { Button } from "@/app/_components/ui/Button";
-import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl, maskId } from "@/app/_lib/utils";
 import { MapPinIcon, TrendingUpIcon } from "@/app/_components/ui/Icons";
 import { useLanguage } from "@/app/_context/LanguageContext";
 
@@ -82,7 +82,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </span>
           </div>
 
-          <Link href={`/properties/${property.slug}`}>
+          <Link href={`/properties/${maskId(property.id || property.slug)}`}>
             <Button variant="primary" size="sm">
               {t("property.view_details")}
             </Button>

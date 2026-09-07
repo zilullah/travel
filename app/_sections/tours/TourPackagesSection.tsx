@@ -3,14 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { TourPackage } from "@/lib/domain/package.types";
-import { formatIDR } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl, maskId } from "@/app/_lib/utils";
 import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
 import { WHATSAPP_TEMPLATES } from "@/app/_constants/whatsapp";
 import { Button } from "@/app/_components/ui/Button";
 import { Badge } from "@/app/_components/ui/Badge";
 import { CheckIcon } from "@/app/_components/ui/Icons";
 import { useLanguage } from "@/app/_context/LanguageContext";
-import { formatImageUrl } from "@/app/_lib/utils";
 
 interface TourPackagesSectionProps {
   packages: TourPackage[];
@@ -131,7 +130,7 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
                   </div>
 
                   <div className="flex items-center gap-1.5">
-                    <Link href={`/packages/${pkg.slug}`}>
+                    <Link href={`/packages/${maskId(pkg.id || pkg.slug)}`}>
                       <Button variant="outline" size="sm">
                         {t("tour.view_details")}
                       </Button>

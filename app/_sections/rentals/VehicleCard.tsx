@@ -3,10 +3,11 @@
 import React from "react";
 import Link from "next/link";
 import { RentalVehicle } from "@/lib/domain/rental.types";
-import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl, maskId } from "@/app/_lib/utils";
 import { WHATSAPP_TEMPLATES, WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
 import { MotorcycleSvg, CarSvg, UsersSvg, GearSvg, CheckCircleSvg, WhatsAppSvg } from "./rental.icons";
+import { Button } from "@/app/_components/ui/Button";
 
 interface VehicleCardProps {
   vehicle: RentalVehicle;
@@ -97,16 +98,18 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
         </div>
 
         {/* Pricing & CTA */}
-        <div className="pt-4 border-t border-[#E0F2FE] flex items-center justify-between gap-3">
-          <div>
-            <div className="text-[11px] font-bold text-[#5B7C93] uppercase tracking-wider">
+        <div className="pt-4 border-t border-[#E0F2FE] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-[10px] font-bold text-[#5B7C93] uppercase tracking-wider">
               {t("rental.self_drive")}
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-lg sm:text-xl font-black text-[#0284C7]">
+              <span className="text-lg font-black text-[#0284C7] truncate">
                 {formatIDR(vehicle.pricePerDay)}
               </span>
-              <span className="text-xs text-[#5B7C93] font-medium">{t("rental.per_day")}</span>
+              <span className="text-[11px] text-[#5B7C93] font-medium whitespace-nowrap">
+                {t("rental.per_day")}
+              </span>
             </div>
             {vehicle.priceWithDriverPerDay && (
               <div className="text-[10px] text-amber-700 font-bold mt-0.5">
@@ -116,19 +119,20 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Link
-              href={`/rentals/${vehicle.id}`}
-              className="px-3 py-2.5 bg-[#F0F9FF] hover:bg-[#E0F2FE] text-[#0284C7] border border-[#BAE6FD] text-xs sm:text-sm font-bold rounded-xl transition-all"
-            >
-              {t("rental.view_details")}
+            <Link href={`/rentals/${maskId(vehicle.id)}`} className="flex-1 sm:flex-initial">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs whitespace-nowrap px-3 py-2">
+                {t("rental.details")}
+              </Button>
             </Link>
-            <button
+            <Button
+              variant="primary"
+              size="sm"
               onClick={handleBook}
-              className="px-3.5 py-2.5 bg-[#0284C7] hover:bg-[#0369A1] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95"
+              className="flex-1 sm:flex-initial text-xs whitespace-nowrap px-3 py-2 flex items-center justify-center gap-1.5 active:scale-95"
             >
-              <WhatsAppSvg className="w-4 h-4" />
-              <span>{t("rental.book_now")}</span>
-            </button>
+              <WhatsAppSvg className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>{t("rental.rent_wa")}</span>
+            </Button>
           </div>
         </div>
       </div>

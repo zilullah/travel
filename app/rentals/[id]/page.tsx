@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getRentalVehicleById, getRentalVehicles } from "@/lib/rentals";
-import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl, maskId, unmaskId } from "@/app/_lib/utils";
 import { Badge } from "@/app/_components/ui/Badge";
 import { LocalizedText } from "@/app/_components/ui/LocalizedText";
 import { RentalDetailClient } from "./RentalDetailClient";
@@ -22,14 +22,18 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const vehicles = await getRentalVehicles(false);
-  return vehicles.map((v) => ({ id: v.id }));
+  return vehicles.flatMap((v) => [
+    { id: v.id },
+    { id: maskId(v.id) },
+  ]);
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const vehicle = await getRentalVehicleById(id);
+  const rawId = unmaskId(id);
+  const vehicle = (await getRentalVehicleById(rawId)) || (await getRentalVehicleById(id));
 
   if (!vehicle) {
     return {
@@ -38,16 +42,18 @@ export async function generateMetadata({
     };
   }
 
+  const maskedToken = maskId(vehicle.id);
+
   return {
     title: `Sewa ${vehicle.name} di Lombok | Rental Motor & Mobil`,
     description: `Rental ${vehicle.name} (${vehicle.type === "motorcycle" ? "Motor" : "Mobil"}) di Lombok. ${formatIDR(vehicle.pricePerDay)}/hari dengan fasilitas lengkap & gratis antar ke bandara/hotel.`,
     alternates: {
-      canonical: `/rentals/${vehicle.id}`,
+      canonical: `/rentals/${maskedToken}`,
     },
     openGraph: {
       title: `Sewa ${vehicle.name} di Lombok`,
       description: `Sewa ${vehicle.name} harian / mingguan di Lombok dengan unit terawat prima.`,
-      url: `/rentals/${vehicle.id}`,
+      url: `/rentals/${maskedToken}`,
       type: "website",
       images: vehicle.imageUrl
         ? [{ url: vehicle.imageUrl, alt: vehicle.name }]
@@ -58,7 +64,8 @@ export async function generateMetadata({
 
 export default async function RentalDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const vehicle = await getRentalVehicleById(id);
+  const rawId = unmaskId(id);
+  const vehicle = (await getRentalVehicleById(rawId)) || (await getRentalVehicleById(id));
 
   if (!vehicle) {
     notFound();

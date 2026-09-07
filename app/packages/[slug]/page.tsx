@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getTourPackageBySlug, getTourPackages } from "@/lib/packages";
-import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl, maskId, unmaskId } from "@/app/_lib/utils";
 import { Badge } from "@/app/_components/ui/Badge";
 import { CheckIcon } from "@/app/_components/ui/Icons";
 import { LocalizedText } from "@/app/_components/ui/LocalizedText";
@@ -16,14 +16,18 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const packages = await getTourPackages();
-  return packages.map((p) => ({ slug: p.slug }));
+  return packages.flatMap((p) => [
+    { slug: p.slug },
+    { slug: maskId(p.id || p.slug) },
+  ]);
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const pkg = await getTourPackageBySlug(slug);
+  const rawKey = unmaskId(slug);
+  const pkg = (await getTourPackageBySlug(rawKey)) || (await getTourPackageBySlug(slug));
 
   if (!pkg) {
     return {
@@ -32,16 +36,18 @@ export async function generateMetadata({
     };
   }
 
+  const maskedToken = maskId(pkg.id || pkg.slug);
+
   return {
     title: `${pkg.title} | Lombok Tour Package`,
     description: `${pkg.tagline} Discover ${pkg.destination} with expert local guides and flexible booking.`,
     alternates: {
-      canonical: `/packages/${pkg.slug}`,
+      canonical: `/packages/${maskedToken}`,
     },
     openGraph: {
       title: `${pkg.title} | Lombok Tour Package`,
       description: pkg.tagline,
-      url: `/packages/${pkg.slug}`,
+      url: `/packages/${maskedToken}`,
       type: "website",
       images: pkg.imageUrl
         ? [{ url: formatImageUrl(pkg.imageUrl), alt: pkg.title }]
@@ -52,7 +58,8 @@ export async function generateMetadata({
 
 export default async function TourPackageDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const pkg = await getTourPackageBySlug(slug);
+  const rawKey = unmaskId(slug);
+  const pkg = (await getTourPackageBySlug(rawKey)) || (await getTourPackageBySlug(slug));
 
   if (!pkg) {
     notFound();

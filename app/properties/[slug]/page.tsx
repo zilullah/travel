@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getPropertyBySlug, getProperties } from "@/app/_lib/properties";
 import { PropertyBookingForm } from "@/app/_sections/property-booking/PropertyBookingForm";
 import { Badge } from "@/app/_components/ui/Badge";
-import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl, maskId, unmaskId } from "@/app/_lib/utils";
 import { CheckIcon } from "@/app/_components/ui/Icons";
 import { LocalizedText } from "@/app/_components/ui/LocalizedText";
 import Link from "next/link";
@@ -16,14 +16,18 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const properties = await getProperties();
-  return properties.map((p) => ({ slug: p.slug }));
+  return properties.flatMap((p) => [
+    { slug: p.slug },
+    { slug: maskId(p.id || p.slug) },
+  ]);
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const property = await getPropertyBySlug(slug);
+  const rawKey = unmaskId(slug);
+  const property = (await getPropertyBySlug(rawKey)) || (await getPropertyBySlug(slug));
 
   if (!property) {
     return {
@@ -32,16 +36,18 @@ export async function generateMetadata({
     };
   }
 
+  const maskedToken = maskId(property.id || property.slug);
+
   return {
     title: `${property.title} | Lombok Property`,
     description: `${property.tagline}. Explore location, ownership, estimated returns, and arrange a private viewing with Lombok Travel Organizer.`,
     alternates: {
-      canonical: `/properties/${property.slug}`,
+      canonical: `/properties/${maskedToken}`,
     },
     openGraph: {
       title: `${property.title} | Lombok Property`,
       description: property.tagline,
-      url: `/properties/${property.slug}`,
+      url: `/properties/${maskedToken}`,
       type: "website",
       images: property.image
         ? [{ url: formatImageUrl(property.image), alt: property.title }]
@@ -52,7 +58,8 @@ export async function generateMetadata({
 
 export default async function PropertyDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const property = await getPropertyBySlug(slug);
+  const rawKey = unmaskId(slug);
+  const property = (await getPropertyBySlug(rawKey)) || (await getPropertyBySlug(slug));
 
   if (!property) {
     notFound();

@@ -108,8 +108,10 @@ export async function getPropertyBySlug(slug: string): Promise<Property | undefi
     const service = new PropertyService(repo);
     const prop = await service.getPropertyBySlug(slug);
     if (prop) return prop;
+    const propById = await service.getPropertyById(slug).catch(() => null);
+    if (propById) return propById;
   } catch (err) {
     console.warn('[Properties] Supabase query by slug failed, falling back:', err);
   }
-  return FALLBACK_PROPERTIES.find((p) => p.slug === slug);
+  return FALLBACK_PROPERTIES.find((p) => p.slug === slug || p.id === slug);
 }

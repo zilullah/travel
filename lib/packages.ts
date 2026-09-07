@@ -104,8 +104,12 @@ export async function getTourPackageBySlug(slug: string): Promise<TourPackage | 
     if (pkg) {
       return pkg;
     }
+    const pkgById = await service.getPackageById(slug).catch(() => null);
+    if (pkgById) {
+      return pkgById;
+    }
   } catch {
     // Graceful fallback
   }
-  return DUMMY_TOUR_PACKAGES.find((p) => p.slug === slug);
+  return DUMMY_TOUR_PACKAGES.find((p) => p.slug === slug || p.id === slug);
 }
