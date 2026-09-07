@@ -5,7 +5,7 @@ import { getRentalVehicleById, getRentalVehicles } from "@/lib/rentals";
 import { formatIDR, formatImageUrl, maskId, unmaskId } from "@/app/_lib/utils";
 import { Badge } from "@/app/_components/ui/Badge";
 import { LocalizedText } from "@/app/_components/ui/LocalizedText";
-import { RentalDetailClient } from "./RentalDetailClient";
+import { RentalDetailClient } from "@/app/_sections/rentals/RentalDetailClient";
 import {
   MotorcycleSvg,
   CarSvg,

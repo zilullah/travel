@@ -8,6 +8,7 @@ import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
 import { WHATSAPP_TEMPLATES } from "@/app/_constants/whatsapp";
 import { Button } from "@/app/_components/ui/Button";
 import { Badge } from "@/app/_components/ui/Badge";
+import { Card, CardHeader, CardBody } from "@/app/_components/ui/Card";
 import { CheckIcon } from "@/app/_components/ui/Icons";
 import { useLanguage } from "@/app/_context/LanguageContext";
 
@@ -52,12 +53,13 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
         {/* Packages Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg) => (
-            <div
+            <Card
               key={pkg.id}
-              className="bg-white rounded-[23px] border border-[#BAE6FD] overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-all duration-300"
+              variant="default"
+              className="flex flex-col"
             >
               {/* Image Banner */}
-              <div className="relative h-60 w-full overflow-hidden bg-slate-100">
+              <CardHeader className="h-60 w-full bg-slate-100">
                 <img
                   src={formatImageUrl(
                     pkg.imageUrl ||
@@ -87,10 +89,10 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
                     📍 {pkg.destination}
                   </span>
                 </div>
-              </div>
+              </CardHeader>
 
               {/* Card Body */}
-              <div className="p-6 flex flex-col flex-1 justify-between space-y-4">
+              <CardBody className="space-y-4">
                 <div>
                   <h3 className="text-xl font-bold text-[#0C4A6E] line-clamp-1">
                     {pkg.title}
@@ -144,8 +146,8 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </CardBody>
+            </Card>
           ))}
         </div>
       </div>

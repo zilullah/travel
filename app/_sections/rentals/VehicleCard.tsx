@@ -8,6 +8,7 @@ import { WHATSAPP_TEMPLATES, WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
 import { MotorcycleSvg, CarSvg, UsersSvg, GearSvg, CheckCircleSvg, WhatsAppSvg } from "./rental.icons";
 import { Button } from "@/app/_components/ui/Button";
+import { Card, CardHeader, CardBody } from "@/app/_components/ui/Card";
 
 interface VehicleCardProps {
   vehicle: RentalVehicle;
@@ -28,9 +29,9 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   };
 
   return (
-    <div className="bg-white rounded-[23px] border border-[#BAE6FD] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+    <Card variant="bordered" className="flex flex-col group hover:shadow-xl">
       {/* Vehicle Image Header */}
-      <div className="relative h-52 sm:h-56 w-full bg-[#F0F9FF] overflow-hidden">
+      <CardHeader className="h-52 sm:h-56 w-full bg-[#F0F9FF]">
         <img
           src={formatImageUrl(
             vehicle.imageUrl ||
@@ -61,10 +62,10 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             {vehicle.transmission === "matic" ? "Matic" : "Manual"}
           </span>
         </div>
-      </div>
+      </CardHeader>
 
       {/* Details Body */}
-      <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+      <CardBody className="space-y-5">
         <div className="space-y-3">
           <div className="flex items-start justify-between gap-2">
             <h3 className="text-xl font-black text-[#0C4A6E] tracking-tight group-hover:text-[#0284C7] transition-colors">
@@ -135,7 +136,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };

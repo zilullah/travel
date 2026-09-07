@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Property } from "@/app/_lib/properties";
 import { Button } from "@/app/_components/ui/Button";
+import { Card, CardHeader, CardBody } from "@/app/_components/ui/Card";
 import { formatIDR, formatImageUrl, maskId } from "@/app/_lib/utils";
 import { MapPinIcon, TrendingUpIcon } from "@/app/_components/ui/Icons";
 import { useLanguage } from "@/app/_context/LanguageContext";
@@ -16,8 +17,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const { t } = useLanguage();
 
   return (
-    <div className="bg-white rounded-[23px] border border-[#BAE6FD] overflow-hidden flex flex-col shadow-md hover:shadow-xl transition-all duration-300">
-      <div className="relative h-60 w-full overflow-hidden bg-slate-100">
+    <Card variant="default" className="flex flex-col">
+      <CardHeader className="h-60 w-full bg-slate-100">
         <img
           src={formatImageUrl(property.image)}
           alt={property.title}
@@ -44,9 +45,9 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             {property.location}
           </span>
         </div>
-      </div>
+      </CardHeader>
 
-      <div className="p-6 flex flex-col flex-1 space-y-4">
+      <CardBody className="space-y-4">
         <div>
           <h3 className="text-xl font-bold text-[#0C4A6E] line-clamp-1">
             {property.title}
@@ -88,7 +89,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             </Button>
           </Link>
         </div>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };

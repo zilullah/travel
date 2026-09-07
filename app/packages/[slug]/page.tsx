@@ -6,7 +6,7 @@ import { formatIDR, formatImageUrl, maskId, unmaskId } from "@/app/_lib/utils";
 import { Badge } from "@/app/_components/ui/Badge";
 import { CheckIcon } from "@/app/_components/ui/Icons";
 import { LocalizedText } from "@/app/_components/ui/LocalizedText";
-import { TourPackageDetailClient } from "./TourPackageDetailClient";
+import { TourPackageDetailClient } from "@/app/_sections/tours/TourPackageDetailClient";
 
 interface PageProps {
   params: Promise<{
