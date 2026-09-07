@@ -5,7 +5,7 @@ import { RentalVehicle, VehicleType, TransmissionType } from "@/lib/domain/renta
 import { RentalService } from "@/lib/services/rental.service";
 import { SupabaseRentalRepository } from "@/lib/repositories/supabase-rental.repository";
 import { supabaseClient } from "@/lib/supabase/client";
-import { formatIDR } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 
 export default function AdminRentalsPage() {
   const repo = new SupabaseRentalRepository(supabaseClient);
@@ -299,7 +299,7 @@ export default function AdminRentalsPage() {
               />
               {imageUrl && (
                 <div className="mt-2 h-28 w-full rounded-xl overflow-hidden border border-[#BAE6FD] bg-slate-100 flex items-center justify-center">
-                  <img src={imageUrl} alt="Preview" className="h-full w-full object-cover" />
+                  <img src={formatImageUrl(imageUrl)} alt="Preview" className="h-full w-full object-cover" />
                 </div>
               )}
             </div>
@@ -382,7 +382,7 @@ export default function AdminRentalsPage() {
                       <td className="py-3 px-3">
                         <div className="flex items-center gap-3">
                           <img
-                            src={v.imageUrl}
+                            src={formatImageUrl(v.imageUrl)}
                             alt={v.name}
                             className="w-10 h-10 rounded-lg object-cover border border-[#BAE6FD] flex-shrink-0"
                           />

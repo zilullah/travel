@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { TourPackage } from "@/lib/domain/package.types";
 import { formatIDR } from "@/app/_lib/utils";
 import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
@@ -115,8 +116,8 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
                   </div>
                 </div>
 
-                {/* Card Footer Price & WhatsApp CTA */}
-                <div className="pt-4 border-t border-[#EFF8FF] flex items-center justify-between">
+                {/* Card Footer Price & Actions */}
+                <div className="pt-4 border-t border-[#EFF8FF] flex items-center justify-between gap-2">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-[#486581] block">
                       {t("tour.start_from")}
@@ -129,13 +130,20 @@ export const TourPackagesSection: React.FC<TourPackagesSectionProps> = ({
                     </span>
                   </div>
 
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleBookTour(pkg)}
-                  >
-                    {t("tour.book")}
-                  </Button>
+                  <div className="flex items-center gap-1.5">
+                    <Link href={`/packages/${pkg.slug}`}>
+                      <Button variant="outline" size="sm">
+                        {t("tour.view_details")}
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => handleBookTour(pkg)}
+                    >
+                      {t("tour.book")}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -95,3 +95,16 @@ export async function getRentalVehicles(onlyActive: boolean = true): Promise<Ren
   }
   return onlyActive ? FALLBACK_RENTAL_VEHICLES.filter((v) => v.isActive) : FALLBACK_RENTAL_VEHICLES;
 }
+
+export async function getRentalVehicleById(id: string): Promise<RentalVehicle | undefined> {
+  try {
+    const repo = new SupabaseRentalRepository(supabaseClient);
+    const service = new RentalService(repo);
+    const data = await service.getVehicle(id);
+    if (data) return data;
+  } catch (err) {
+    console.warn("[Rentals] Failed to fetch vehicle by ID from Supabase, using fallback:", err);
+  }
+  return FALLBACK_RENTAL_VEHICLES.find((v) => v.id === id);
+}
+

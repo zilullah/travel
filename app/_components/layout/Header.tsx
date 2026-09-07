@@ -43,8 +43,8 @@ export const Header: React.FC = () => {
   }, [pathname]);
 
   const navItems = [
-    { key: "tours", label: t("nav.tours"), href: "/#packages", sectionId: "packages" },
-    { key: "rentals", label: t("nav.rentals"), href: "/#rental", sectionId: "rental" },
+    { key: "tours", label: t("nav.tours"), href: "/packages", isRoute: true },
+    { key: "rentals", label: t("nav.rentals"), href: "/rentals", isRoute: true },
     { key: "pickup", label: t("nav.pickup"), href: "/#antar-jemput", sectionId: "antar-jemput" },
     { key: "properties", label: t("nav.properties"), href: "/properties", isRoute: true },
     { key: "about", label: t("nav.about"), href: "/#about", sectionId: "about" },
@@ -52,7 +52,10 @@ export const Header: React.FC = () => {
 
   const isItemActive = (item: typeof navItems[0]) => {
     if (item.isRoute) {
-      return pathname.startsWith("/properties");
+      if (item.href === "/properties") return pathname.startsWith("/properties");
+      if (item.href === "/packages") return pathname.startsWith("/packages");
+      if (item.href === "/rentals") return pathname.startsWith("/rentals");
+      return pathname.startsWith(item.href);
     }
     return pathname === "/" && activeSection === item.sectionId;
   };

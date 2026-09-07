@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { RentalVehicle } from "@/lib/domain/rental.types";
-import { formatIDR } from "@/app/_lib/utils";
+import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 import { WHATSAPP_TEMPLATES, WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
 import { MotorcycleSvg, CarSvg, UsersSvg, GearSvg, CheckCircleSvg, WhatsAppSvg } from "./rental.icons";
@@ -30,12 +30,14 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
     <div className="bg-white rounded-[23px] border border-[#BAE6FD] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
       {/* Vehicle Image Header */}
       <div className="relative h-52 sm:h-56 w-full bg-[#F0F9FF] overflow-hidden">
-        <Image
-          src={vehicle.imageUrl}
+        <img
+          src={formatImageUrl(
+            vehicle.imageUrl ||
+              "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80",
+          )}
           alt={vehicle.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
         />
         <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
           <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/90 backdrop-blur-md text-[#0284C7] shadow-sm flex items-center gap-1.5">
@@ -113,13 +115,21 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
             )}
           </div>
 
-          <button
-            onClick={handleBook}
-            className="px-4 py-2.5 bg-[#0284C7] hover:bg-[#0369A1] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 flex-shrink-0 active:scale-95"
-          >
-            <WhatsAppSvg className="w-4 h-4" />
-            <span>{t("rental.book_now")}</span>
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Link
+              href={`/rentals/${vehicle.id}`}
+              className="px-3 py-2.5 bg-[#F0F9FF] hover:bg-[#E0F2FE] text-[#0284C7] border border-[#BAE6FD] text-xs sm:text-sm font-bold rounded-xl transition-all"
+            >
+              {t("rental.view_details")}
+            </Link>
+            <button
+              onClick={handleBook}
+              className="px-3.5 py-2.5 bg-[#0284C7] hover:bg-[#0369A1] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95"
+            >
+              <WhatsAppSvg className="w-4 h-4" />
+              <span>{t("rental.book_now")}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
