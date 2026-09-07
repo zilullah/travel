@@ -12,17 +12,31 @@ export const Header: React.FC = () => {
   const { lang, setLang, t } = useLanguage();
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("packages");
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // Hide navbar when scrolling down, show when scrolling up or at the top
+      if (currentScrollY > 60 && currentScrollY > lastScrollY) {
+        setIsVisible(false);
+        setMobileMenuOpen(false); // Close mobile drawer when scrolling down
+      } else {
+        setIsVisible(true);
+      }
+
+      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
 
       // Detect active hash section when on homepage
       if (pathname === "/") {
         const sections = ["packages", "rental", "antar-jemput", "about"];
-        const scrollPosition = window.scrollY + 200;
+        const scrollPosition = currentScrollY + 200;
 
         for (const section of sections) {
           const el = document.getElementById(section);
@@ -38,7 +52,7 @@ export const Header: React.FC = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
@@ -63,6 +77,8 @@ export const Header: React.FC = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3.5 text-[#0C4A6E] ${
+        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+      } ${
         isScrolled
           ? "bg-white/95 backdrop-blur-md border-b border-[#BAE6FD] shadow-sm"
           : "bg-white/80 backdrop-blur-sm border-b border-transparent"

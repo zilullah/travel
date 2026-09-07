@@ -1,4 +1,5 @@
 import { Hero } from "@/app/_sections/hero/Hero";
+import { ScatteredGallerySection } from "@/app/_sections/scattered-gallery/ScatteredGallerySection";
 import { AntarJemputForm } from "@/app/_sections/antar-jemput/AntarJemputForm";
 import { VehicleRentalSection } from "@/app/_sections/rentals/VehicleRentalSection";
 import { TourPackagesSection } from "@/app/_sections/tours/TourPackagesSection";
@@ -20,9 +21,13 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col">
       {/* 1. Hero Section with quick multi-service search */}
-      <Hero />
+      {/* <Hero /> */}
+      {/* 2. Scattered Polaroid/Photo Gallery Showcase */}
+      <AnimatedSection>
+        <ScatteredGallerySection />
+      </AnimatedSection>
 
-      {/* 2. Dynamic Curated Tour Packages (Synced with Supabase / Admin Panel) */}
+      {/* 3. Dynamic Curated Tour Packages (Synced with Supabase / Admin Panel) */}
       <AnimatedSection>
         <TourPackagesSection packages={tourPackages} />
       </AnimatedSection>
