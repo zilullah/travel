@@ -22,10 +22,7 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const vehicles = await getRentalVehicles(false);
-  return vehicles.flatMap((v) => [
-    { id: v.id },
-    { id: maskId(v.id) },
-  ]);
+  return vehicles.flatMap((v) => [{ id: v.id }, { id: maskId(v.id) }]);
 }
 
 export async function generateMetadata({
@@ -33,7 +30,8 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const rawId = unmaskId(id);
-  const vehicle = (await getRentalVehicleById(rawId)) || (await getRentalVehicleById(id));
+  const vehicle =
+    (await getRentalVehicleById(rawId)) || (await getRentalVehicleById(id));
 
   if (!vehicle) {
     return {
@@ -65,7 +63,8 @@ export async function generateMetadata({
 export default async function RentalDetailPage({ params }: PageProps) {
   const { id } = await params;
   const rawId = unmaskId(id);
-  const vehicle = (await getRentalVehicleById(rawId)) || (await getRentalVehicleById(id));
+  const vehicle =
+    (await getRentalVehicleById(rawId)) || (await getRentalVehicleById(id));
 
   if (!vehicle) {
     notFound();
@@ -124,7 +123,8 @@ export default async function RentalDetailPage({ params }: PageProps) {
                   {vehicle.name}
                 </h1>
                 <p className="text-sm text-[#486581] mt-1">
-                  Armada unit rental terawat prima, bersih, dan siap menemani perjalanan wisata Anda di Lombok.
+                  Armada unit rental terawat prima, bersih, dan siap menemani
+                  perjalanan wisata Anda di Lombok.
                 </p>
               </div>
 
@@ -165,7 +165,9 @@ export default async function RentalDetailPage({ params }: PageProps) {
                       <LocalizedText translationKey="rental.type" />
                     </span>
                     <span className="text-xs sm:text-sm font-extrabold text-[#0C4A6E] capitalize">
-                      {vehicle.type === "motorcycle" ? "Motorcycle" : "Car / MPV"}
+                      {vehicle.type === "motorcycle"
+                        ? "Motorcycle"
+                        : "Car / MPV"}
                     </span>
                   </div>
                 </div>
@@ -190,7 +192,7 @@ export default async function RentalDetailPage({ params }: PageProps) {
               </div>
 
               {/* Terms & Conditions */}
-              <div className="space-y-3 pt-4 border-t border-[#EFF8FF]">
+              {/* <div className="space-y-3 pt-4 border-t border-[#EFF8FF]">
                 <h2 className="text-sm font-bold text-[#0C4A6E] uppercase tracking-wider">
                   <LocalizedText translationKey="rental.rental_terms" />
                 </h2>
@@ -212,13 +214,13 @@ export default async function RentalDetailPage({ params }: PageProps) {
                     <span><LocalizedText translationKey="rental.term4" /></span>
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Right Sidebar Booking Form */}
           <div className="lg:col-span-5 space-y-6">
-            <RentalDetailClient vehicle={vehicle} />
+            <RentalDetailClient key={vehicle.id} vehicle={vehicle} />
           </div>
         </div>
       </div>

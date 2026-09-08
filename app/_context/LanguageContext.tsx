@@ -34,7 +34,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "gallery.rinjani_badge_top": "3D2N Trek",
     "gallery.rinjani_badge_extra": "Sembalun Route",
     "gallery.gili_title": "Secret Gili Snorkeling",
-    "gallery.gili_sub": "Crystal clear water at Gili Nanggu & wild sea turtles.",
+    "gallery.gili_sub":
+      "Crystal clear water at Gili Nanggu & wild sea turtles.",
     "gallery.gili_badge_top": "Island Hopping",
     "gallery.gili_stat": "99% Clarity",
     "gallery.gili_badge_extra": "Private Boat",
@@ -59,12 +60,14 @@ export const translations: Record<Language, Record<string, string>> = {
     "gallery.pusuk_stat": "ROAD TRIP",
     "gallery.pusuk_badge_extra": "Innova Chauffeur",
     "gallery.surf_title": "Selong Belanak Surf",
-    "gallery.surf_sub": "Soft coral-free sands, ideal for beginner surf lessons.",
+    "gallery.surf_sub":
+      "Soft coral-free sands, ideal for beginner surf lessons.",
     "gallery.surf_badge_top": "Surf & Sun",
     "gallery.surf_stat": "BEGINNER",
     "gallery.surf_badge_extra": "South Coast",
     "gallery.villa_title": "Infinity Villa Kuta",
-    "gallery.villa_sub": "Wake up and swim overlooking Mandalika hills and ocean.",
+    "gallery.villa_sub":
+      "Wake up and swim overlooking Mandalika hills and ocean.",
     "gallery.villa_badge_top": "Villa & Stay",
     "gallery.villa_stat": "EXCLUSIVE",
     "gallery.villa_badge_extra": "Mandalika Ridge",
@@ -172,12 +175,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "rental.transmission": "Transmission",
     "rental.capacity": "Capacity",
     "rental.type": "Category",
-    "rental.rental_terms": "Rental Terms & Delivery",
-    "rental.term1":
-      "Free delivery to Lombok International Airport (BIL) or Kuta Lombok area hotel",
-    "rental.term2": "Clean SNI helmets + fresh raincoats provided",
-    "rental.term3": "24/7 emergency roadside assistance support across Lombok",
-    "rental.term4": "Valid ID / Passport required for booking verification",
+    // "rental.rental_terms": "Rental Terms & Delivery",
+    // "rental.term1":
+    //   "Free delivery to Lombok International Airport (BIL) or Kuta Lombok area hotel",
+    // "rental.term2": "Clean SNI helmets + fresh raincoats provided",
+    // "rental.term3": "24/7 emergency roadside assistance support across Lombok",
+    // "rental.term4": "Valid ID / Passport required for booking verification",
 
     // About Us
     "about.badge": "Your Local Lombok Travel Partner",
@@ -263,7 +266,8 @@ export const translations: Record<Language, Record<string, string>> = {
       "Jelajahi keindahan tersembunyi pulau Lombok dari puncak Rinjani, savana sunset Mandalika, hingga villa eksklusif.",
     "gallery.explore": "Jelajahi",
     "gallery.rinjani_title": "Kaldera Rinjani",
-    "gallery.rinjani_sub": "Puncak 3,726 MDPL • Lautan awan & danau Segara Anak.",
+    "gallery.rinjani_sub":
+      "Puncak 3,726 MDPL • Lautan awan & danau Segara Anak.",
     "gallery.rinjani_badge_top": "Trek 3H2M",
     "gallery.rinjani_badge_extra": "Jalur Sembalun",
     "gallery.gili_title": "Snorkeling Gili Rahasia",
@@ -282,7 +286,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "gallery.pink_stat": "ALL-INCLUSIVE",
     "gallery.pink_badge_extra": "Dermaga Speedboat",
     "gallery.tiu_title": "Air Terjun Tiu Kelep",
-    "gallery.tiu_sub": "Hutan rimbun Senaru dengan air terjun megah menyegarkan.",
+    "gallery.tiu_sub":
+      "Hutan rimbun Senaru dengan air terjun megah menyegarkan.",
     "gallery.tiu_badge_top": "Hidden Gem",
     "gallery.tiu_stat": "Lombok Utara",
     "gallery.tiu_badge_extra": "Trek Hutan Segar",
@@ -297,7 +302,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "gallery.surf_stat": "RAMAH PEMULA",
     "gallery.surf_badge_extra": "Pesisir Selatan",
     "gallery.villa_title": "Infinity Villa Kuta",
-    "gallery.villa_sub": "Berenang langsung menghadap pemandangan bukit dan laut.",
+    "gallery.villa_sub":
+      "Berenang langsung menghadap pemandangan bukit dan laut.",
     "gallery.villa_badge_top": "Villa & Stay",
     "gallery.villa_stat": "EKSKLUSIF",
     "gallery.villa_badge_extra": "Kuta Mandalika",

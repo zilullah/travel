@@ -19,18 +19,23 @@ export const RentalDetailClient: React.FC<RentalDetailClientProps> = ({
   const [withDriver, setWithDriver] = useState<boolean>(false);
   const [durationDays, setDurationDays] = useState<number>(1);
   const [startDate, setStartDate] = useState<string>("");
-  const [deliveryLocation, setDeliveryLocation] = useState<string>("Bandara Lombok (BIL)");
+  const [deliveryLocation, setDeliveryLocation] = useState<string>(
+    "Bandara Lombok (BIL)",
+  );
   const [specialNotes, setSpecialNotes] = useState<string>("");
 
-  const baseDailyPrice = withDriver && vehicle.priceWithDriverPerDay
-    ? vehicle.priceWithDriverPerDay
-    : vehicle.pricePerDay;
+  const baseDailyPrice =
+    withDriver && vehicle.priceWithDriverPerDay
+      ? vehicle.priceWithDriverPerDay
+      : vehicle.pricePerDay;
 
   const totalPrice = baseDailyPrice * Math.max(1, durationDays);
 
   const handleBookRental = (e: React.FormEvent) => {
     e.preventDefault();
-    const serviceType = withDriver ? "Dengan Supir" : "Lepas Kunci (Self Drive)";
+    const serviceType = withDriver
+      ? "Dengan Supir"
+      : "Lepas Kunci (Self Drive)";
     const message = `Halo Lombok Travel Organizer, saya ingin booking rental kendaraan:
 
 *Unit:* ${vehicle.name} (${vehicle.type === "motorcycle" ? "Motor" : "Mobil"})
@@ -122,7 +127,9 @@ Mohon info ketersediaan unit dan konfirmasi pemesanan. Terima kasih!`;
               max={30}
               required
               value={durationDays}
-              onChange={(e) => setDurationDays(Math.max(1, Number(e.target.value)))}
+              onChange={(e) =>
+                setDurationDays(Math.max(1, Number(e.target.value)))
+              }
               className="w-full bg-[#F7FCFF] border border-[#BAE6FD] rounded-xl px-3 py-2 text-xs text-[#0C4A6E] focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
             />
           </div>
@@ -175,7 +182,8 @@ Mohon info ketersediaan unit dan konfirmasi pemesanan. Terima kasih!`;
       </form>
 
       <p className="text-[11px] text-center text-[#6B8CA5] leading-relaxed">
-        ⚡ Gratis antar & jemput unit di Bandara Internasional Lombok (BIL) atau hotel area Kuta Lombok.
+        ⚡ Gratis antar & jemput unit di Bandara Internasional Lombok (BIL) atau
+        hotel area Kuta Lombok.
       </p>
     </div>
   );
