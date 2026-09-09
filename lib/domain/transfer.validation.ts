@@ -15,7 +15,7 @@ export const TransferVehicleSchema = z.object({
   category: z.string().min(2, 'Category is required (e.g. Comfort MPV)'),
   capacityPax: z.number().int().min(1, 'Capacity must be at least 1 pax'),
   baseRateIdr: z.number().min(0, 'Base rate must be positive'),
-  imageUrl: z.string().url().optional().or(z.literal('')),
+  imageUrl: z.string().optional().or(z.literal('')),
   isActive: z.boolean().default(true),
 });
 

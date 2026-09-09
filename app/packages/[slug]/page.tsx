@@ -14,6 +14,8 @@ interface PageProps {
   }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const packages = await getTourPackages();
   return packages.flatMap((p) => [

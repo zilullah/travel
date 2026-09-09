@@ -57,6 +57,41 @@ export class SupabaseRentalRepository implements IRentalRepository {
 
   async update(id: string, payload: UpdateRentalVehicleDTO): Promise<RentalVehicle> {
     const dbPayload = RentalMapper.toDatabase(payload);
+
+    // Check if item exists in database or was from fallback dataset
+    const { data: existing } = await this.client
+      .from("rental_vehicles")
+      .select("id")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (!existing) {
+      const { data, error } = await this.client
+        .from("rental_vehicles")
+        .insert({
+          name: payload.name || "Rental Vehicle",
+          type: payload.type || "motorcycle",
+          transmission: payload.transmission || "matic",
+          capacity_pax: payload.capacityPax || 2,
+          price_per_day: payload.pricePerDay || 100000,
+          price_with_driver_per_day: payload.priceWithDriverPerDay ?? null,
+          image_url:
+            payload.imageUrl ||
+            "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80",
+          features: payload.features || [],
+          is_active: payload.isActive ?? true,
+          display_order: payload.displayOrder ?? 0,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Failed to save new rental vehicle: ${error.message}`);
+      }
+
+      return RentalMapper.toDomain(data as DatabaseRentalVehicleRow);
+    }
+
     const { data, error } = await this.client
       .from("rental_vehicles")
       .update(dbPayload)

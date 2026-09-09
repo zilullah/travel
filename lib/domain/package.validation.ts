@@ -23,17 +23,16 @@ export const TourPackageSchema = z.object({
   id: z.string().optional(),
   slug: z
     .string()
-    .min(3, 'Slug must be at least 3 characters')
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase alphanumeric with hyphens'),
-  title: z.string().min(3, 'Title must be at least 3 characters'),
-  tagline: z.string().min(5, 'Tagline must be at least 5 characters'),
+    .min(2, 'Slug must be at least 2 characters'),
+  title: z.string().min(2, 'Title must be at least 2 characters'),
+  tagline: z.string().optional().default(''),
   destination: z.string().min(2, 'Destination is required'),
   duration: z.string().min(2, 'Duration is required (e.g. 3D2N)'),
   category: z.enum(['adventure', 'island_hopping', 'cultural', 'custom', 'honeymoon']),
   basePriceIdr: z.number().min(0, 'Base price must be positive'),
-  imageUrl: z.string().url('Image URL must be a valid URL'),
-  gallery: z.array(z.string().url()).default([]),
-  highlights: z.array(z.string()).min(1, 'At least 1 highlight is required'),
+  imageUrl: z.string().min(1, 'Image URL is required'),
+  gallery: z.array(z.string()).default([]),
+  highlights: z.array(z.string()).default([]),
   included: z.array(z.string()).default([]),
   excluded: z.array(z.string()).default([]),
   itinerary: z.array(ItineraryItemSchema).default([]),

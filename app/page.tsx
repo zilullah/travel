@@ -11,6 +11,8 @@ import { getProperties } from "@/app/_lib/properties";
 import { getTourPackages } from "@/lib/packages";
 import { getRentalVehicles } from "@/lib/rentals";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [properties, tourPackages, rentalVehicles] = await Promise.all([
     getProperties(),

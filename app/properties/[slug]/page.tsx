@@ -14,6 +14,8 @@ interface PageProps {
   }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const properties = await getProperties();
   return properties.flatMap((p) => [

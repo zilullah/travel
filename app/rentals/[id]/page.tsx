@@ -20,6 +20,8 @@ interface PageProps {
   }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const vehicles = await getRentalVehicles(false);
   return vehicles.flatMap((v) => [{ id: v.id }, { id: maskId(v.id) }]);

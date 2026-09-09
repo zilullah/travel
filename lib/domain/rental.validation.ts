@@ -3,7 +3,7 @@ import { z } from "zod";
 const sanitizeText = (val: string) => val.trim().replace(/[<>]/g, "");
 
 export const RentalVehicleSchema = z.object({
-  id: z.string().uuid("Invalid ID format").optional(),
+  id: z.string().optional(),
   name: z
     .string()
     .min(2, "Vehicle name must be at least 2 characters")
@@ -17,12 +17,14 @@ export const RentalVehicleSchema = z.object({
   }),
   capacityPax: z.number().int().positive("Capacity must be at least 1 person").max(100),
   pricePerDay: z.number().positive("Daily price must be greater than 0").max(100000000),
-  priceWithDriverPerDay: z.number().positive().max(100000000).nullable().optional(),
+  priceWithDriverPerDay: z
+    .union([z.number().positive().max(100000000), z.null(), z.literal("")])
+    .transform((val) => (typeof val === "number" && val > 0 ? val : null))
+    .optional(),
   imageUrl: z
     .string()
-    .url("Invalid Image URL format")
     .min(1, "Image URL is required")
-    .max(500, "Image URL too long")
+    .max(1000, "Image URL too long")
     .transform(sanitizeText),
   features: z
     .array(

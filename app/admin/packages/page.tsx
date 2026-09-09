@@ -11,6 +11,7 @@ import { PackageService } from "@/lib/services/package.service";
 import { SupabasePackageRepository } from "@/lib/repositories/supabase-package.repository";
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { revalidateLandingPages } from "@/app/_actions/revalidate";
 
 export default function AdminPackagesPage() {
   const [packages, setPackages] = useState<TourPackage[]>([]);
@@ -44,6 +45,7 @@ export default function AdminPackagesPage() {
       setPackages((prev) =>
         prev.map((p) => (p.id === id ? { ...p, status } : p)),
       );
+      await revalidateLandingPages();
     } catch (err) {
       alert("Failed to update status");
     }
@@ -54,6 +56,7 @@ export default function AdminPackagesPage() {
     try {
       await service.deletePackage(id);
       setPackages((prev) => prev.filter((p) => p.id !== id));
+      await revalidateLandingPages();
     } catch (err) {
       alert("Failed to delete package");
     }

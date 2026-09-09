@@ -8,6 +8,7 @@ import { PackageService } from '@/lib/services/package.service';
 import { SupabasePackageRepository } from '@/lib/repositories/supabase-package.repository';
 import { supabaseClient } from '@/lib/supabase/client';
 import { generateSlug } from '@/lib/domain/package.validation';
+import { revalidateLandingPages } from '@/app/_actions/revalidate';
 
 export default function PackageFormPage() {
   const router = useRouter();
@@ -127,6 +128,7 @@ export default function PackageFormPage() {
         await service.updatePackage(id, packageData);
       }
 
+      await revalidateLandingPages();
       router.push('/admin/packages');
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to save package';

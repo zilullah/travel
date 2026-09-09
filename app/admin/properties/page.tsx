@@ -11,6 +11,7 @@ import { PropertyService } from "@/lib/services/property.service";
 import { SupabasePropertyRepository } from "@/lib/repositories/supabase-property.repository";
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { revalidateLandingPages } from "@/app/_actions/revalidate";
 
 export default function AdminPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -44,6 +45,7 @@ export default function AdminPropertiesPage() {
       setProperties((prev) =>
         prev.map((p) => (p.id === id ? { ...p, status } : p)),
       );
+      await revalidateLandingPages();
     } catch {
       alert("Failed to update property status");
     }
@@ -54,6 +56,7 @@ export default function AdminPropertiesPage() {
     try {
       await service.deleteProperty(id);
       setProperties((prev) => prev.filter((p) => p.id !== id));
+      await revalidateLandingPages();
     } catch {
       alert("Failed to delete property");
     }

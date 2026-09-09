@@ -8,6 +8,7 @@ import { PropertyService } from '@/lib/services/property.service';
 import { SupabasePropertyRepository } from '@/lib/repositories/supabase-property.repository';
 import { supabaseClient } from '@/lib/supabase/client';
 import { generatePropertySlug } from '@/lib/domain/property.validation';
+import { revalidateLandingPages } from '@/app/_actions/revalidate';
 
 export default function PropertyFormPage() {
   const router = useRouter();
@@ -116,6 +117,7 @@ export default function PropertyFormPage() {
         await service.updateProperty(id, data);
       }
 
+      await revalidateLandingPages();
       router.push('/admin/properties');
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to save property listing';

@@ -8,6 +8,7 @@ import { PackageService } from '@/lib/services/package.service';
 import { SupabasePackageRepository } from '@/lib/repositories/supabase-package.repository';
 import { supabaseClient } from '@/lib/supabase/client';
 import { formatIDR } from '@/app/_lib/utils';
+import { revalidateLandingPages } from '@/app/_actions/revalidate';
 
 export default function PackagePricingPage() {
   const params = useParams();
@@ -79,6 +80,7 @@ export default function PackagePricingPage() {
 
     try {
       await service.updatePricingTiers(packageId, tiers);
+      await revalidateLandingPages();
       setSuccess(true);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to save pricing tiers';

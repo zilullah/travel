@@ -40,11 +40,16 @@ export class SupabasePackageRepository implements IPackageRepository {
   }
 
   async findById(id: string): Promise<TourPackage | null> {
-    const { data: pkgRow, error: pkgError } = await this.supabase
-      .from('tour_packages')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    let query = this.supabase.from('tour_packages').select('*');
+
+    if (isUuid) {
+      query = query.eq('id', id);
+    } else {
+      query = query.eq('slug', id);
+    }
+
+    const { data: pkgRow, error: pkgError } = await query.maybeSingle();
 
     if (pkgError || !pkgRow) {
       return null;
@@ -53,7 +58,7 @@ export class SupabasePackageRepository implements IPackageRepository {
     const { data: tierRows } = await this.supabase
       .from('package_pricing_tiers')
       .select('*')
-      .eq('package_id', id)
+      .eq('package_id', pkgRow.id)
       .order('min_pax', { ascending: true });
 
     return PackageMapper.toDomain(pkgRow as TourPackageRow, (tierRows || []) as PricingTierRow[]);
@@ -64,7 +69,7 @@ export class SupabasePackageRepository implements IPackageRepository {
       .from('tour_packages')
       .select('*')
       .eq('slug', slug)
-      .single();
+      .maybeSingle();
 
     if (error || !pkgRow) {
       return null;
@@ -101,13 +106,48 @@ export class SupabasePackageRepository implements IPackageRepository {
   }
 
   async update(id: string, pkg: Partial<TourPackage>): Promise<TourPackage> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+    // Check if package exists by UUID or Slug
+    let checkQuery = this.supabase.from('tour_packages').select('id, slug');
+    if (isUuid) {
+      checkQuery = checkQuery.eq('id', id);
+    } else {
+      checkQuery = checkQuery.eq('slug', id);
+    }
+
+    const { data: existing } = await checkQuery.maybeSingle();
+
+    if (!existing) {
+      // Create new package if not existing in database (was a fallback dummy)
+      return this.create({
+        slug: pkg.slug || id,
+        title: pkg.title || 'Lombok Tour Package',
+        tagline: pkg.tagline || '',
+        destination: pkg.destination || 'Lombok',
+        duration: pkg.duration || '1 Day',
+        category: pkg.category || 'adventure',
+        basePriceIdr: pkg.basePriceIdr || 500000,
+        imageUrl: pkg.imageUrl || 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
+        gallery: pkg.gallery || [],
+        highlights: pkg.highlights || [],
+        included: pkg.included || [],
+        excluded: pkg.excluded || [],
+        itinerary: pkg.itinerary || [],
+        status: pkg.status || 'published',
+        isFeatured: pkg.isFeatured || false,
+        pricingTiers: pkg.pricingTiers || [],
+      });
+    }
+
+    const realId = existing.id;
     const persistenceData = PackageMapper.toPersistence(pkg);
     persistenceData.updated_at = new Date().toISOString();
 
     const { data, error } = await this.supabase
       .from('tour_packages')
       .update(persistenceData)
-      .eq('id', id)
+      .eq('id', realId)
       .select()
       .single();
 
@@ -117,12 +157,12 @@ export class SupabasePackageRepository implements IPackageRepository {
 
     let savedTiers: PricingTier[] = [];
     if (pkg.pricingTiers) {
-      savedTiers = await this.savePricingTiers(id, pkg.pricingTiers);
+      savedTiers = await this.savePricingTiers(realId, pkg.pricingTiers);
     } else {
-      savedTiers = await this.getPricingTiers(id);
+      savedTiers = await this.getPricingTiers(realId);
     }
 
-    return PackageMapper.toDomain(data as TourPackageRow, (savedTiers || []).map((t) => PackageMapper.tierToPersistence(t, id) as PricingTierRow));
+    return PackageMapper.toDomain(data as TourPackageRow, (savedTiers || []).map((t) => PackageMapper.tierToPersistence(t, realId) as PricingTierRow));
   }
 
   async delete(id: string): Promise<boolean> {

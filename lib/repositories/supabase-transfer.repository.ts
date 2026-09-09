@@ -40,11 +40,31 @@ export class SupabaseTransferRepository implements ITransferRepository {
   }
 
   async updateLocation(id: string, loc: Partial<TransferLocation>): Promise<TransferLocation> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    let checkQuery = this.supabase.from('transfer_locations').select('id');
+    if (isUuid) {
+      checkQuery = checkQuery.eq('id', id);
+    } else {
+      checkQuery = checkQuery.eq('name', loc.name || '');
+    }
+
+    const { data: existing } = await checkQuery.maybeSingle();
+
+    if (!existing) {
+      return this.createLocation({
+        name: loc.name || 'Transfer Point',
+        locationType: loc.locationType || 'both',
+        area: loc.area || 'Lombok',
+        isActive: loc.isActive ?? true,
+        displayOrder: loc.displayOrder ?? 0,
+      });
+    }
+
     const row = TransferMapper.locationToPersistence(loc);
     const { data, error } = await this.supabase
       .from('transfer_locations')
       .update(row)
-      .eq('id', id)
+      .eq('id', existing.id)
       .select()
       .single();
 
@@ -96,11 +116,32 @@ export class SupabaseTransferRepository implements ITransferRepository {
   }
 
   async updateVehicle(id: string, veh: Partial<TransferVehicle>): Promise<TransferVehicle> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    let checkQuery = this.supabase.from('transfer_vehicles').select('id');
+    if (isUuid) {
+      checkQuery = checkQuery.eq('id', id);
+    } else {
+      checkQuery = checkQuery.eq('name', veh.name || '');
+    }
+
+    const { data: existing } = await checkQuery.maybeSingle();
+
+    if (!existing) {
+      return this.createVehicle({
+        name: veh.name || 'Transfer Vehicle',
+        category: veh.category || 'Comfort MPV',
+        capacityPax: veh.capacityPax || 4,
+        baseRateIdr: veh.baseRateIdr || 400000,
+        imageUrl: veh.imageUrl || '',
+        isActive: veh.isActive ?? true,
+      });
+    }
+
     const row = TransferMapper.vehicleToPersistence(veh);
     const { data, error } = await this.supabase
       .from('transfer_vehicles')
       .update(row)
-      .eq('id', id)
+      .eq('id', existing.id)
       .select()
       .single();
 

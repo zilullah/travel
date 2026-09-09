@@ -6,6 +6,7 @@ import { RentalService } from "@/lib/services/rental.service";
 import { SupabaseRentalRepository } from "@/lib/repositories/supabase-rental.repository";
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
+import { revalidateLandingPages } from "@/app/_actions/revalidate";
 
 export default function AdminRentalsPage() {
   const repo = new SupabaseRentalRepository(supabaseClient);
@@ -13,6 +14,8 @@ export default function AdminRentalsPage() {
 
   const [vehicles, setVehicles] = useState<RentalVehicle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   // Form State
@@ -73,8 +76,9 @@ export default function AdminRentalsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatusMessage(null);
     if (!name.trim() || !imageUrl.trim()) {
-      alert("Please fill in the vehicle name and image URL.");
+      setStatusMessage({ type: "error", text: "Mohon isi nama kendaraan dan URL gambar." });
       return;
     }
 
@@ -96,42 +100,53 @@ export default function AdminRentalsPage() {
       displayOrder: Number(displayOrder),
     };
 
+    setSaving(true);
     try {
       if (editingId) {
         const updated = await service.updateVehicle(editingId, payload);
-        setVehicles(vehicles.map((v) => (v.id === editingId ? updated : v)));
-        alert("Vehicle successfully updated!");
+        setVehicles((prev) => prev.map((v) => (v.id === editingId ? updated : v)));
+        setStatusMessage({ type: "success", text: `Kendaraan "${updated.name}" berhasil diperbarui & disinkronkan ke landing page!` });
       } else {
         const created = await service.createVehicle(payload);
-        setVehicles([...vehicles, created]);
-        alert("New vehicle registered successfully!");
+        setVehicles((prev) => [...prev, created]);
+        setStatusMessage({ type: "success", text: `Kendaraan "${created.name}" berhasil didaftarkan & tayang di landing page!` });
       }
+      await revalidateLandingPages();
       resetForm();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error saving vehicle";
-      alert(`Error saving vehicle: ${message}`);
+      const message = err instanceof Error ? err.message : "Error saat menyimpan kendaraan";
+      setStatusMessage({ type: "error", text: `Gagal menyimpan: ${message}` });
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDelete = async (id: string, vName: string) => {
-    if (!confirm(`Are you sure you want to delete "${vName}"?`)) return;
+    if (!confirm(`Yakin ingin menghapus unit rental "${vName}"?`)) return;
     try {
       await service.deleteVehicle(id);
-      setVehicles(vehicles.filter((v) => v.id !== id));
+      setVehicles((prev) => prev.filter((v) => v.id !== id));
       if (editingId === id) resetForm();
+      await revalidateLandingPages();
+      setStatusMessage({ type: "success", text: `Unit "${vName}" berhasil dihapus.` });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to delete vehicle";
-      alert(`Failed to delete vehicle: ${message}`);
+      const message = err instanceof Error ? err.message : "Gagal menghapus kendaraan";
+      setStatusMessage({ type: "error", text: `Gagal menghapus: ${message}` });
     }
   };
 
   const handleToggleActive = async (v: RentalVehicle) => {
     try {
       const updated = await service.updateVehicle(v.id, { isActive: !v.isActive });
-      setVehicles(vehicles.map((item) => (item.id === v.id ? updated : item)));
+      setVehicles((prev) => prev.map((item) => (item.id === v.id ? updated : item)));
+      await revalidateLandingPages();
+      setStatusMessage({
+        type: "success",
+        text: `Status unit "${v.name}" diubah menjadi ${!v.isActive ? "Aktif (Tampil)" : "Nonaktif"}.`,
+      });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to update status";
-      alert(`Failed to update status: ${message}`);
+      const message = err instanceof Error ? err.message : "Gagal mengubah status";
+      setStatusMessage({ type: "error", text: `Gagal update status: ${message}` });
     }
   };
 
@@ -155,6 +170,28 @@ export default function AdminRentalsPage() {
           {editingId ? "Cancel Edit & Add New" : "Reset Form"}
         </button>
       </div>
+
+      {/* Status Feedback Banner */}
+      {statusMessage && (
+        <div
+          className={`p-4 rounded-xl text-xs font-bold flex items-center justify-between transition-all ${
+            statusMessage.type === "success"
+              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+              : "bg-rose-50 text-rose-800 border border-rose-200"
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <span>{statusMessage.type === "success" ? "✓" : "⚠️"}</span>
+            <span>{statusMessage.text}</span>
+          </div>
+          <button
+            onClick={() => setStatusMessage(null)}
+            className="text-xs font-bold opacity-60 hover:opacity-100"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Form Registration / Edit */}
@@ -332,12 +369,22 @@ export default function AdminRentalsPage() {
 
             <button
               type="submit"
-              className="w-full mt-2 py-3 px-4 bg-[#0284C7] hover:bg-[#0369A1] text-white font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"
+              disabled={saving}
+              className="w-full mt-2 py-3 px-4 bg-[#0284C7] hover:bg-[#0369A1] disabled:opacity-50 text-white font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              {editingId ? "Simpan Perubahan Kendaraan" : "Daftarkan Kendaraan"}
+              {saving ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Menyimpan & Menyinkronkan...</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{editingId ? "Simpan Perubahan Kendaraan" : "Daftarkan Kendaraan"}</span>
+                </>
+              )}
             </button>
           </form>
         </div>
