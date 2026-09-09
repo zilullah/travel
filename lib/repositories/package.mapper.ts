@@ -90,8 +90,7 @@ export class PackageMapper {
   }
 
   static tierToPersistence(domain: PricingTier, packageId: string): Partial<PricingTierRow> {
-    return {
-      id: domain.id,
+    const row: Partial<PricingTierRow> = {
       package_id: packageId,
       tier_name: domain.tierName,
       min_pax: domain.minPax,
@@ -99,5 +98,14 @@ export class PackageMapper {
       price_per_pax_idr: domain.pricePerPaxIdr,
       discount_percent: domain.discountPercent || 0,
     };
+
+    const isUuid = domain.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(domain.id);
+    if (isUuid) {
+      row.id = domain.id;
+    } else if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      row.id = crypto.randomUUID();
+    }
+
+    return row;
   }
 }
