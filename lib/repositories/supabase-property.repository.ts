@@ -136,10 +136,15 @@ export class SupabasePropertyRepository implements IPropertyRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    const { error } = await this.supabase
-      .from('properties')
-      .delete()
-      .eq('id', id);
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    let checkQuery = this.supabase.from('properties').delete();
+    if (isUuid) {
+      checkQuery = checkQuery.eq('id', id);
+    } else {
+      checkQuery = checkQuery.eq('slug', id);
+    }
+
+    const { error } = await checkQuery;
 
     if (error) {
       throw new Error(`Failed to delete property: ${error.message}`);

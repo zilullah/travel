@@ -9,6 +9,7 @@ import { SupabasePackageRepository } from '@/lib/repositories/supabase-package.r
 import { supabaseClient } from '@/lib/supabase/client';
 import { generateSlug } from '@/lib/domain/package.validation';
 import { revalidateLandingPages } from '@/app/_actions/revalidate';
+import { DUMMY_TOUR_PACKAGES } from '@/lib/packages';
 
 export default function PackageFormPage() {
   const router = useRouter();
@@ -50,26 +51,49 @@ export default function PackageFormPage() {
       service
         .getPackageById(id)
         .then((pkg) => {
-          if (pkg) {
-            setTitle(pkg.title);
-            setSlug(pkg.slug);
-            setTagline(pkg.tagline);
-            setDestination(pkg.destination);
-            setDuration(pkg.duration);
-            setCategory(pkg.category);
-            setBasePriceIdr(pkg.basePriceIdr);
-            setImageUrl(pkg.imageUrl);
-            setStatus(pkg.status);
-            setIsFeatured(pkg.isFeatured);
-            setHighlightsInput(pkg.highlights.join('\n'));
-            setIncludedInput(pkg.included.join('\n'));
-            setExcludedInput(pkg.excluded.join('\n'));
-            if (pkg.itinerary && pkg.itinerary.length > 0) {
-              setItinerary(pkg.itinerary);
+          const targetPkg = pkg || DUMMY_TOUR_PACKAGES.find((p) => p.id === id || p.slug === id);
+          if (targetPkg) {
+            setTitle(targetPkg.title);
+            setSlug(targetPkg.slug);
+            setTagline(targetPkg.tagline);
+            setDestination(targetPkg.destination);
+            setDuration(targetPkg.duration);
+            setCategory(targetPkg.category);
+            setBasePriceIdr(targetPkg.basePriceIdr);
+            setImageUrl(targetPkg.imageUrl);
+            setStatus(targetPkg.status);
+            setIsFeatured(targetPkg.isFeatured);
+            setHighlightsInput(targetPkg.highlights.join('\n'));
+            setIncludedInput(targetPkg.included.join('\n'));
+            setExcludedInput(targetPkg.excluded.join('\n'));
+            if (targetPkg.itinerary && targetPkg.itinerary.length > 0) {
+              setItinerary(targetPkg.itinerary);
             }
           }
         })
-        .catch((err) => setError(err.message))
+        .catch((err) => {
+          const fallback = DUMMY_TOUR_PACKAGES.find((p) => p.id === id || p.slug === id);
+          if (fallback) {
+            setTitle(fallback.title);
+            setSlug(fallback.slug);
+            setTagline(fallback.tagline);
+            setDestination(fallback.destination);
+            setDuration(fallback.duration);
+            setCategory(fallback.category);
+            setBasePriceIdr(fallback.basePriceIdr);
+            setImageUrl(fallback.imageUrl);
+            setStatus(fallback.status);
+            setIsFeatured(fallback.isFeatured);
+            setHighlightsInput(fallback.highlights.join('\n'));
+            setIncludedInput(fallback.included.join('\n'));
+            setExcludedInput(fallback.excluded.join('\n'));
+            if (fallback.itinerary && fallback.itinerary.length > 0) {
+              setItinerary(fallback.itinerary);
+            }
+          } else {
+            setError(err.message);
+          }
+        })
         .finally(() => setLoading(false));
     }
   }, [id, isNew]);

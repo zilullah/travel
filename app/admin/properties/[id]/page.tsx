@@ -9,6 +9,7 @@ import { SupabasePropertyRepository } from '@/lib/repositories/supabase-property
 import { supabaseClient } from '@/lib/supabase/client';
 import { generatePropertySlug } from '@/lib/domain/property.validation';
 import { revalidateLandingPages } from '@/app/_actions/revalidate';
+import { FALLBACK_PROPERTIES } from '@/app/_lib/properties';
 
 export default function PropertyFormPage() {
   const router = useRouter();
@@ -49,29 +50,55 @@ export default function PropertyFormPage() {
       service
         .getPropertyById(id)
         .then((prop) => {
-          if (prop) {
-            setTitle(prop.title);
-            setSlug(prop.slug);
-            setTagline(prop.tagline);
-            setType(prop.type);
-            setLocation(prop.location);
-            setPriceIdr(prop.priceIdr);
-            setOwnership(prop.ownership);
-            setLeaseYears(prop.leaseYears);
-            setLandSizeM2(prop.landSizeM2);
-            setBuildingSizeM2(prop.buildingSizeM2);
-            setBedrooms(prop.bedrooms);
-            setBathrooms(prop.bathrooms);
-            setRoi(prop.roi);
-            setBeachDistance(prop.beachDistance);
-            setAirportDistance(prop.airportDistance);
-            setImage(prop.image);
-            setFeaturesInput(prop.features.join('\n'));
-            setStatus(prop.status);
-            setIsFeatured(Boolean(prop.isFeatured));
+          const targetProp = prop || FALLBACK_PROPERTIES.find((p) => p.id === id || p.slug === id);
+          if (targetProp) {
+            setTitle(targetProp.title);
+            setSlug(targetProp.slug);
+            setTagline(targetProp.tagline);
+            setType(targetProp.type);
+            setLocation(targetProp.location);
+            setPriceIdr(targetProp.priceIdr);
+            setOwnership(targetProp.ownership);
+            setLeaseYears(targetProp.leaseYears);
+            setLandSizeM2(targetProp.landSizeM2);
+            setBuildingSizeM2(targetProp.buildingSizeM2);
+            setBedrooms(targetProp.bedrooms);
+            setBathrooms(targetProp.bathrooms);
+            setRoi(targetProp.roi);
+            setBeachDistance(targetProp.beachDistance);
+            setAirportDistance(targetProp.airportDistance);
+            setImage(targetProp.image);
+            setFeaturesInput(targetProp.features.join('\n'));
+            setStatus(targetProp.status);
+            setIsFeatured(Boolean(targetProp.isFeatured));
           }
         })
-        .catch((err) => setError(err.message))
+        .catch((err) => {
+          const fallback = FALLBACK_PROPERTIES.find((p) => p.id === id || p.slug === id);
+          if (fallback) {
+            setTitle(fallback.title);
+            setSlug(fallback.slug);
+            setTagline(fallback.tagline);
+            setType(fallback.type);
+            setLocation(fallback.location);
+            setPriceIdr(fallback.priceIdr);
+            setOwnership(fallback.ownership);
+            setLeaseYears(fallback.leaseYears);
+            setLandSizeM2(fallback.landSizeM2);
+            setBuildingSizeM2(fallback.buildingSizeM2);
+            setBedrooms(fallback.bedrooms);
+            setBathrooms(fallback.bathrooms);
+            setRoi(fallback.roi);
+            setBeachDistance(fallback.beachDistance);
+            setAirportDistance(fallback.airportDistance);
+            setImage(fallback.image);
+            setFeaturesInput(fallback.features.join('\n'));
+            setStatus(fallback.status);
+            setIsFeatured(Boolean(fallback.isFeatured));
+          } else {
+            setError(err.message);
+          }
+        })
         .finally(() => setLoading(false));
     }
   }, [id, isNew]);

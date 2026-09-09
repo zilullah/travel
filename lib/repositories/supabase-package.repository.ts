@@ -166,10 +166,15 @@ export class SupabasePackageRepository implements IPackageRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    const { error } = await this.supabase
-      .from('tour_packages')
-      .delete()
-      .eq('id', id);
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    let checkQuery = this.supabase.from('tour_packages').delete();
+    if (isUuid) {
+      checkQuery = checkQuery.eq('id', id);
+    } else {
+      checkQuery = checkQuery.eq('slug', id);
+    }
+
+    const { error } = await checkQuery;
 
     if (error) {
       throw new Error(`Failed to delete tour package: ${error.message}`);
@@ -178,10 +183,26 @@ export class SupabasePackageRepository implements IPackageRepository {
   }
 
   async getPricingTiers(packageId: string): Promise<PricingTier[]> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(packageId);
+    let realId = packageId;
+
+    if (!isUuid) {
+      const { data: pkgRow } = await this.supabase
+        .from('tour_packages')
+        .select('id')
+        .eq('slug', packageId)
+        .maybeSingle();
+
+      if (!pkgRow) {
+        return [];
+      }
+      realId = pkgRow.id;
+    }
+
     const { data, error } = await this.supabase
       .from('package_pricing_tiers')
       .select('*')
-      .eq('package_id', packageId)
+      .eq('package_id', realId)
       .order('min_pax', { ascending: true });
 
     if (error) {
@@ -192,14 +213,57 @@ export class SupabasePackageRepository implements IPackageRepository {
   }
 
   async savePricingTiers(packageId: string, tiers: PricingTier[]): Promise<PricingTier[]> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(packageId);
+    let realId = packageId;
+
+    let checkQuery = this.supabase.from('tour_packages').select('id');
+    if (isUuid) {
+      checkQuery = checkQuery.eq('id', packageId);
+    } else {
+      checkQuery = checkQuery.eq('slug', packageId);
+    }
+
+    const { data: existing } = await checkQuery.maybeSingle();
+
+    if (!existing) {
+      const created = await this.create({
+        slug: packageId,
+        title: 'Lombok Tour Package',
+        tagline: '',
+        destination: 'Lombok',
+        duration: '1 Day',
+        category: 'adventure',
+        basePriceIdr: 500000,
+        imageUrl: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
+        gallery: [],
+        highlights: [],
+        included: [],
+        excluded: [],
+        itinerary: [],
+        status: 'published',
+        isFeatured: false,
+        pricingTiers: [],
+      });
+      realId = created.id;
+    } else {
+      realId = existing.id;
+    }
+
     // Delete existing tiers for clean sync
-    await this.supabase.from('package_pricing_tiers').delete().eq('package_id', packageId);
+    const { error: deleteError } = await this.supabase
+      .from('package_pricing_tiers')
+      .delete()
+      .eq('package_id', realId);
+
+    if (deleteError) {
+      throw new Error(`Failed to clear existing pricing tiers: ${deleteError.message}`);
+    }
 
     if (!tiers || tiers.length === 0) {
       return [];
     }
 
-    const rows = tiers.map((t) => PackageMapper.tierToPersistence(t, packageId));
+    const rows = tiers.map((t) => PackageMapper.tierToPersistence(t, realId));
     const { data, error } = await this.supabase
       .from('package_pricing_tiers')
       .insert(rows)

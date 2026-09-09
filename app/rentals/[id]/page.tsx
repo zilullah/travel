@@ -46,7 +46,7 @@ export async function generateMetadata({
 
   return {
     title: `Sewa ${vehicle.name} di Lombok | Rental Motor & Mobil`,
-    description: `Rental ${vehicle.name} (${vehicle.type === "motorcycle" ? "Motor" : "Mobil"}) di Lombok. ${formatIDR(vehicle.pricePerDay)}/hari dengan fasilitas lengkap & gratis antar ke bandara/hotel.`,
+    description: `Rental ${vehicle.name} (${vehicle.type === "motorcycle" ? "Motor" : "Mobil"}) di Lombok. ${formatIDR(vehicle.pricePerDay)}/hari dengan fasilitas lengkap, 2 helm SNI, dan bantuan 24 jam.`,
     alternates: {
       canonical: `/rentals/${maskedToken}`,
     },

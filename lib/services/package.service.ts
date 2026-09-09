@@ -62,11 +62,6 @@ export class PackageService {
   ): Promise<TourPackage> {
     if (!id) throw new Error("Package ID is required");
 
-    const existing = await this.packageRepo.findById(id);
-    if (!existing) {
-      throw new Error(`Package with ID ${id} not found`);
-    }
-
     if (data.title && !data.slug) {
       data.slug = generateSlug(data.title);
     }

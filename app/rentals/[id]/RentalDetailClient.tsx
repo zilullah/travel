@@ -182,8 +182,7 @@ Mohon info ketersediaan unit dan konfirmasi pemesanan. Terima kasih!`;
       </form>
 
       <p className="text-[11px] text-center text-[#6B8CA5] leading-relaxed">
-        ⚡ Gratis antar & jemput unit di Bandara Internasional Lombok (BIL) atau
-        hotel area Kuta Lombok.
+        ⚡ Pembayaran fleksibel dan aman saat serah terima unit kendaraan.
       </p>
     </div>
   );

@@ -66,11 +66,6 @@ export class PropertyService {
   async updateProperty(id: string, data: Partial<Property>): Promise<Property> {
     if (!id) throw new Error('Property ID is required');
 
-    const existing = await this.propertyRepo.findById(id);
-    if (!existing) {
-      throw new Error(`Property with ID ${id} not found`);
-    }
-
     if (data.title && !data.slug) {
       data.slug = generatePropertySlug(data.title);
     }

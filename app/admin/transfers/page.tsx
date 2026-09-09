@@ -7,6 +7,10 @@ import { SupabaseTransferRepository } from "@/lib/repositories/supabase-transfer
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR } from "@/app/_lib/utils";
 import { revalidateLandingPages } from "@/app/_actions/revalidate";
+import {
+  FALLBACK_TRANSFER_LOCATIONS,
+  FALLBACK_TRANSFER_VEHICLES,
+} from "@/app/_lib/transfers";
 
 export default function AdminTransfersPage() {
   const repo = new SupabaseTransferRepository(supabaseClient);
@@ -39,10 +43,16 @@ export default function AdminTransfersPage() {
         service.listLocations(),
         service.listVehicles(),
       ]);
-      setLocations(locs);
-      setVehicles(vehs);
+      setLocations(
+        locs && locs.length > 0 ? locs : FALLBACK_TRANSFER_LOCATIONS,
+      );
+      setVehicles(
+        vehs && vehs.length > 0 ? vehs : FALLBACK_TRANSFER_VEHICLES,
+      );
     } catch (err) {
       console.error("Failed to load transfers:", err);
+      setLocations(FALLBACK_TRANSFER_LOCATIONS);
+      setVehicles(FALLBACK_TRANSFER_VEHICLES);
     } finally {
       setLoading(false);
     }

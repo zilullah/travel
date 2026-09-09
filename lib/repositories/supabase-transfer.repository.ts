@@ -76,6 +76,11 @@ export class SupabaseTransferRepository implements ITransferRepository {
   }
 
   async deleteLocation(id: string): Promise<boolean> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (!isUuid) {
+      return true;
+    }
+
     const { error } = await this.supabase
       .from('transfer_locations')
       .delete()
@@ -153,6 +158,11 @@ export class SupabaseTransferRepository implements ITransferRepository {
   }
 
   async deleteVehicle(id: string): Promise<boolean> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (!isUuid) {
+      return true;
+    }
+
     const { error } = await this.supabase
       .from('transfer_vehicles')
       .delete()

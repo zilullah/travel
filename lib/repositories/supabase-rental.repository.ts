@@ -26,14 +26,17 @@ export class SupabaseRentalRepository implements IRentalRepository {
   }
 
   async findById(id: string): Promise<RentalVehicle | null> {
-    const { data, error } = await this.client
-      .from("rental_vehicles")
-      .select("*")
-      .eq("id", id)
-      .single();
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    let query = this.client.from("rental_vehicles").select("*");
+    if (isUuid) {
+      query = query.eq("id", id);
+    } else {
+      return null;
+    }
+
+    const { data, error } = await query.maybeSingle();
 
     if (error) {
-      if (error.code === "PGRST116") return null;
       throw new Error(`Failed to fetch rental vehicle ${id}: ${error.message}`);
     }
 
@@ -57,13 +60,17 @@ export class SupabaseRentalRepository implements IRentalRepository {
 
   async update(id: string, payload: UpdateRentalVehicleDTO): Promise<RentalVehicle> {
     const dbPayload = RentalMapper.toDatabase(payload);
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
     // Check if item exists in database or was from fallback dataset
-    const { data: existing } = await this.client
-      .from("rental_vehicles")
-      .select("id")
-      .eq("id", id)
-      .maybeSingle();
+    let checkQuery = this.client.from("rental_vehicles").select("id");
+    if (isUuid) {
+      checkQuery = checkQuery.eq("id", id);
+    } else {
+      checkQuery = checkQuery.eq("name", payload.name || "");
+    }
+
+    const { data: existing } = await checkQuery.maybeSingle();
 
     if (!existing) {
       const { data, error } = await this.client
@@ -92,10 +99,11 @@ export class SupabaseRentalRepository implements IRentalRepository {
       return RentalMapper.toDomain(data as DatabaseRentalVehicleRow);
     }
 
+    const realId = existing.id;
     const { data, error } = await this.client
       .from("rental_vehicles")
       .update(dbPayload)
-      .eq("id", id)
+      .eq("id", realId)
       .select()
       .single();
 
@@ -107,6 +115,11 @@ export class SupabaseRentalRepository implements IRentalRepository {
   }
 
   async delete(id: string): Promise<boolean> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (!isUuid) {
+      return true;
+    }
+
     const { error } = await this.client
       .from("rental_vehicles")
       .delete()

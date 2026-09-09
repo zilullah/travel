@@ -7,6 +7,7 @@ import { SupabaseRentalRepository } from "@/lib/repositories/supabase-rental.rep
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 import { revalidateLandingPages } from "@/app/_actions/revalidate";
+import { FALLBACK_RENTAL_VEHICLES } from "@/lib/rentals";
 
 export default function AdminRentalsPage() {
   const repo = new SupabaseRentalRepository(supabaseClient);
@@ -34,9 +35,14 @@ export default function AdminRentalsPage() {
     setLoading(true);
     try {
       const data = await service.listVehicles(false);
-      setVehicles(data);
+      if (data && data.length > 0) {
+        setVehicles(data);
+      } else {
+        setVehicles(FALLBACK_RENTAL_VEHICLES);
+      }
     } catch (err) {
       console.error("Failed to load rental vehicles:", err);
+      setVehicles(FALLBACK_RENTAL_VEHICLES);
     } finally {
       setLoading(false);
     }

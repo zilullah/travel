@@ -12,6 +12,7 @@ import { SupabasePropertyRepository } from "@/lib/repositories/supabase-property
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 import { revalidateLandingPages } from "@/app/_actions/revalidate";
+import { FALLBACK_PROPERTIES } from "@/app/_lib/properties";
 
 export default function AdminPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -27,9 +28,14 @@ export default function AdminPropertiesPage() {
     setLoading(true);
     try {
       const data = await service.listProperties();
-      setProperties(data);
+      if (data && data.length > 0) {
+        setProperties(data);
+      } else {
+        setProperties(FALLBACK_PROPERTIES);
+      }
     } catch (err) {
       console.error("Failed to load properties:", err);
+      setProperties(FALLBACK_PROPERTIES);
     } finally {
       setLoading(false);
     }

@@ -193,7 +193,7 @@ Mohon konfirmasi ketersediaan unit. Terima kasih.`;
       </Button>
 
       <p className="text-[11px] text-[#6B8CA5] text-center leading-relaxed">
-        Gratis antar unit ke bandara/hotel. Pembayaran fleksibel saat serah terima unit.
+        Pembayaran fleksibel dan aman saat serah terima unit.
       </p>
     </div>
   );

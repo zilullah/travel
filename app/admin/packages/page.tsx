@@ -12,6 +12,7 @@ import { SupabasePackageRepository } from "@/lib/repositories/supabase-package.r
 import { supabaseClient } from "@/lib/supabase/client";
 import { formatIDR, formatImageUrl } from "@/app/_lib/utils";
 import { revalidateLandingPages } from "@/app/_actions/revalidate";
+import { DUMMY_TOUR_PACKAGES } from "@/lib/packages";
 
 export default function AdminPackagesPage() {
   const [packages, setPackages] = useState<TourPackage[]>([]);
@@ -27,9 +28,14 @@ export default function AdminPackagesPage() {
     setLoading(true);
     try {
       const data = await service.listPackages();
-      setPackages(data);
+      if (data && data.length > 0) {
+        setPackages(data);
+      } else {
+        setPackages(DUMMY_TOUR_PACKAGES);
+      }
     } catch (err) {
       console.error("Failed to load packages:", err);
+      setPackages(DUMMY_TOUR_PACKAGES);
     } finally {
       setLoading(false);
     }

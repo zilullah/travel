@@ -155,9 +155,9 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Rentals Section
     "rental.badge": "Lombok Scooter & Car Rental",
-    "rental.title": "Rent Motorbikes & Cars with Easy Delivery",
+    "rental.title": "Rent Motorbikes & Cars in Lombok",
     "rental.desc":
-      "Explore Lombok with total freedom. Premium maintained scooters and cars with free delivery to airport or hotel, 2 helmets, raincoats, and 24/7 road assistance.",
+      "Explore Lombok with total freedom. Premium maintained scooters and cars with 2 helmets, raincoats, and 24/7 road assistance.",
     "rental.tab_all": "All Vehicles",
     "rental.tab_motorcycle": "Scooters / Motorbikes",
     "rental.tab_car": "Cars / MPV",
@@ -392,9 +392,9 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Rentals Section
     "rental.badge": "Rental Motor & Mobil Lombok",
-    "rental.title": "Sewa Motor & Mobil Nyaman dengan Layanan Antar-Jemput",
+    "rental.title": "Sewa Motor & Mobil Nyaman di Lombok",
     "rental.desc":
-      "Jelajahi Lombok dengan bebas dan leluasa. Unit motor dan mobil terawat prima, gratis antar ke bandara atau hotel, lengkap dengan 2 helm SNI, jas hujan, dan bantuan darurat 24 jam.",
+      "Jelajahi Lombok dengan bebas dan leluasa. Unit motor dan mobil terawat prima, lengkap dengan 2 helm SNI, jas hujan, dan bantuan darurat 24 jam.",
     "rental.tab_all": "Semua Kendaraan",
     "rental.tab_motorcycle": "Sewa Motor",
     "rental.tab_car": "Sewa Mobil",
@@ -412,9 +412,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "rental.transmission": "Transmisi",
     "rental.capacity": "Kapasitas",
     "rental.type": "Kategori",
-    "rental.rental_terms": "Syarat Sewa & Layanan Antar",
+    "rental.rental_terms": "Syarat & Ketentuan Sewa",
     "rental.term1":
-      "Gratis antar ke Bandara Lombok (BIL) atau hotel area Kuta Lombok",
+      "Serah terima unit fleksibel di area Bandara Lombok (BIL) atau hotel",
     "rental.term2": "Termasuk 2 helm SNI bersih + jas hujan siap pakai",
     "rental.term3": "Bantuan darurat roadside assistance 24 jam se-Lombok",
     "rental.term4": "Cukup tunjukkan KTP / Paspor & SIM untuk verifikasi cepat",

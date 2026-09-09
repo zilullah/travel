@@ -5,14 +5,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Lombok Motorbike & Car Rentals | Full Fleet Catalog",
   description:
-    "Rent premium maintained scooters and cars in Lombok with free delivery to airport or hotel and 24/7 assistance.",
+    "Rent premium maintained scooters and cars in Lombok with clean helmets, raincoats, and 24/7 road assistance.",
   alternates: {
     canonical: "/rentals",
   },
   openGraph: {
     title: "Lombok Motorbike & Car Rentals | Full Fleet Catalog",
     description:
-      "Rent premium maintained scooters and cars in Lombok with free delivery to airport or hotel and 24/7 assistance.",
+      "Rent premium maintained scooters and cars in Lombok with clean helmets, raincoats, and 24/7 road assistance.",
     url: "/rentals",
     type: "website",
   },
