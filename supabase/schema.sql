@@ -138,7 +138,31 @@ CREATE INDEX IF NOT EXISTS idx_rental_vehicles_active ON public.rental_vehicles(
 CREATE INDEX IF NOT EXISTS idx_rental_vehicles_type ON public.rental_vehicles(type);
 CREATE INDEX IF NOT EXISTS idx_rental_vehicles_order ON public.rental_vehicles(display_order);
 
--- 8. SECURITY FUNCTIONS & RLS POLICIES
+-- 8. GALLERY SNAPSHOTS (Scattered Visual Journey Section)
+CREATE TABLE IF NOT EXISTS public.gallery_snapshots (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  subtitle TEXT NOT NULL DEFAULT '',
+  badge_top TEXT,
+  badge_stat TEXT,
+  badge_extra TEXT,
+  image_url TEXT NOT NULL,
+  link_url TEXT NOT NULL DEFAULT '/packages',
+  display_order INT NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  rotation TEXT,
+  z_index TEXT,
+  position_classes TEXT,
+  card_width_classes TEXT,
+  image_aspect_classes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_gallery_snapshots_active ON public.gallery_snapshots(is_active);
+CREATE INDEX IF NOT EXISTS idx_gallery_snapshots_order ON public.gallery_snapshots(display_order);
+
+-- 9. SECURITY FUNCTIONS & RLS POLICIES
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
@@ -159,6 +183,7 @@ ALTER TABLE public.properties ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transfer_locations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transfer_vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rental_vehicles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gallery_snapshots ENABLE ROW LEVEL SECURITY;
 
 -- Drop old policies if re-running
 DROP POLICY IF EXISTS "Public can view own profile or admin" ON public.profiles;
@@ -167,6 +192,8 @@ DROP POLICY IF EXISTS "Public view published tour packages" ON public.tour_packa
 DROP POLICY IF EXISTS "Admins manage tour packages" ON public.tour_packages;
 DROP POLICY IF EXISTS "Public view pricing tiers" ON public.package_pricing_tiers;
 DROP POLICY IF EXISTS "Admins manage pricing tiers" ON public.package_pricing_tiers;
+DROP POLICY IF EXISTS "Public view active gallery snapshots" ON public.gallery_snapshots;
+DROP POLICY IF EXISTS "Admins manage gallery snapshots" ON public.gallery_snapshots;
 DROP POLICY IF EXISTS "Public view active properties" ON public.properties;
 DROP POLICY IF EXISTS "Admins manage properties" ON public.properties;
 DROP POLICY IF EXISTS "Public view active transfer locations" ON public.transfer_locations;
@@ -245,7 +272,16 @@ CREATE POLICY "Admins manage rental vehicles"
   ON public.rental_vehicles FOR ALL
   USING (public.is_admin());
 
--- 9. AUTOMATIC AUTH TRIGGER
+-- Gallery Snapshots Policies
+CREATE POLICY "Public view active gallery snapshots"
+  ON public.gallery_snapshots FOR SELECT
+  USING (is_active = true OR public.is_admin());
+
+CREATE POLICY "Admins manage gallery snapshots"
+  ON public.gallery_snapshots FOR ALL
+  USING (public.is_admin());
+
+-- 10. AUTOMATIC AUTH TRIGGER
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql

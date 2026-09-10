@@ -10,14 +10,16 @@ import { AnimatedSection } from "@/app/_components/ui/AnimatedSection";
 import { getProperties } from "@/app/_lib/properties";
 import { getTourPackages } from "@/lib/packages";
 import { getRentalVehicles } from "@/lib/rentals";
+import { getGallerySnapshots } from "@/app/_lib/gallery";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [properties, tourPackages, rentalVehicles] = await Promise.all([
+  const [properties, tourPackages, rentalVehicles, gallerySnapshots] = await Promise.all([
     getProperties(),
     getTourPackages(),
     getRentalVehicles(),
+    getGallerySnapshots(),
   ]);
 
   return (
@@ -26,7 +28,7 @@ export default async function Home() {
       {/* <Hero /> */}
       {/* 2. Scattered Polaroid/Photo Gallery Showcase */}
       <AnimatedSection>
-        <ScatteredGallerySection />
+        <ScatteredGallerySection snapshots={gallerySnapshots} />
       </AnimatedSection>
 
       {/* 3. Dynamic Curated Tour Packages (Synced with Supabase / Admin Panel) */}
