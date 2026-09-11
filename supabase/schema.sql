@@ -162,7 +162,26 @@ CREATE TABLE IF NOT EXISTS public.gallery_snapshots (
 CREATE INDEX IF NOT EXISTS idx_gallery_snapshots_active ON public.gallery_snapshots(is_active);
 CREATE INDEX IF NOT EXISTS idx_gallery_snapshots_order ON public.gallery_snapshots(display_order);
 
--- 9. SECURITY FUNCTIONS & RLS POLICIES
+-- 9. CUSTOMER REVIEWS (Google Maps Review Screenshots)
+CREATE TABLE IF NOT EXISTS public.customer_reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  reviewer_name TEXT NOT NULL,
+  location TEXT NOT NULL DEFAULT '',
+  rating SMALLINT NOT NULL DEFAULT 5 CHECK (rating BETWEEN 1 AND 5),
+  review_text TEXT NOT NULL,
+  service_label TEXT NOT NULL DEFAULT '',
+  screenshot_url TEXT NOT NULL,
+  google_maps_url TEXT,
+  display_order INT NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_customer_reviews_active ON public.customer_reviews(is_active);
+CREATE INDEX IF NOT EXISTS idx_customer_reviews_order ON public.customer_reviews(display_order);
+
+-- 10. SECURITY FUNCTIONS & RLS POLICIES
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
@@ -184,6 +203,7 @@ ALTER TABLE public.transfer_locations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.transfer_vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rental_vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gallery_snapshots ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.customer_reviews ENABLE ROW LEVEL SECURITY;
 
 -- Drop old policies if re-running
 DROP POLICY IF EXISTS "Public can view own profile or admin" ON public.profiles;
@@ -194,6 +214,8 @@ DROP POLICY IF EXISTS "Public view pricing tiers" ON public.package_pricing_tier
 DROP POLICY IF EXISTS "Admins manage pricing tiers" ON public.package_pricing_tiers;
 DROP POLICY IF EXISTS "Public view active gallery snapshots" ON public.gallery_snapshots;
 DROP POLICY IF EXISTS "Admins manage gallery snapshots" ON public.gallery_snapshots;
+DROP POLICY IF EXISTS "Public view active customer reviews" ON public.customer_reviews;
+DROP POLICY IF EXISTS "Admins manage customer reviews" ON public.customer_reviews;
 DROP POLICY IF EXISTS "Public view active properties" ON public.properties;
 DROP POLICY IF EXISTS "Admins manage properties" ON public.properties;
 DROP POLICY IF EXISTS "Public view active transfer locations" ON public.transfer_locations;
@@ -279,6 +301,15 @@ CREATE POLICY "Public view active gallery snapshots"
 
 CREATE POLICY "Admins manage gallery snapshots"
   ON public.gallery_snapshots FOR ALL
+  USING (public.is_admin());
+
+-- Customer Reviews Policies
+CREATE POLICY "Public view active customer reviews"
+  ON public.customer_reviews FOR SELECT
+  USING (is_active = true OR public.is_admin());
+
+CREATE POLICY "Admins manage customer reviews"
+  ON public.customer_reviews FOR ALL
   USING (public.is_admin());
 
 -- 10. AUTOMATIC AUTH TRIGGER

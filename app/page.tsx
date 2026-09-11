@@ -11,15 +11,17 @@ import { getProperties } from "@/app/_lib/properties";
 import { getTourPackages } from "@/lib/packages";
 import { getRentalVehicles } from "@/lib/rentals";
 import { getGallerySnapshots } from "@/app/_lib/gallery";
+import { getCustomerReviews } from "@/app/_lib/reviews";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [properties, tourPackages, rentalVehicles, gallerySnapshots] = await Promise.all([
+  const [properties, tourPackages, rentalVehicles, gallerySnapshots, customerReviews] = await Promise.all([
     getProperties(),
     getTourPackages(),
     getRentalVehicles(),
     getGallerySnapshots(),
+    getCustomerReviews(),
   ]);
 
   return (
@@ -58,7 +60,7 @@ export default async function Home() {
 
       {/* 7. Real Customer Reviews & Social Proof */}
       <AnimatedSection>
-        <CustomerReviews />
+        <CustomerReviews reviews={customerReviews} />
       </AnimatedSection>
     </main>
   );

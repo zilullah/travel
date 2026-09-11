@@ -1,85 +1,88 @@
 "use client";
 
 import React from "react";
-import { Badge } from "@/app/_components/ui/Badge";
-import { StarIcon } from "@/app/_components/ui/Icons";
-import { useLanguage } from "@/app/_context/LanguageContext";
+import MarqueeModule from "react-fast-marquee";
+import { formatImageUrl } from "@/app/_lib/utils";
+import { CustomerReviewItem } from "@/lib/domain/review.types";
+import { FALLBACK_CUSTOMER_REVIEWS } from "@/lib/reviews";
 
-export const CustomerReviews: React.FC = () => {
-  const { t } = useLanguage();
+// SSR can expose the CommonJS default wrapper instead of the component.
+const Marquee = (MarqueeModule as unknown as { default?: typeof MarqueeModule }).default ?? MarqueeModule;
 
-  const reviews = [
-    {
-      author: "David & Emily Thompson",
-      location: "Perth, Australia",
-      tripKey: "reviews.trip1",
-      quoteKey: "reviews.quote1",
-      rating: 5,
-    },
-    {
-      author: "Julien Laurent",
-      location: "Geneva, Switzerland",
-      tripKey: "reviews.trip2",
-      quoteKey: "reviews.quote2",
-      rating: 5,
-    },
-    {
-      author: "Aiko & Kenji Sato",
-      location: "Tokyo, Japan",
-      tripKey: "reviews.trip3",
-      quoteKey: "reviews.quote3",
-      rating: 5,
-    },
-  ];
+interface CustomerReviewsProps {
+  reviews?: CustomerReviewItem[];
+}
+
+export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ reviews }) => {
+  const items = reviews && reviews.length > 0 ? reviews : FALLBACK_CUSTOMER_REVIEWS;
+  const laneItems = Array.from(
+    { length: Math.max(4, items.length) },
+    (_, index) => items[index % items.length],
+  );
 
   return (
     <section
       id="reviews"
-      className="py-20 lg:py-28 bg-[#F7FCFF] text-[#0C4A6E] border-t border-[#BAE6FD]"
+      aria-label="Customer review screenshots"
+      className="overflow-hidden border-t border-[#BAE6FD] bg-[#F7FCFF] py-10 lg:py-14"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-          <Badge variant="sky">{t("reviews.badge")}</Badge>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0C4A6E]">
-            {t("reviews.title")}
-          </h2>
-          <p className="text-[#486581] text-sm sm:text-base">
-            {t("reviews.desc")}
-          </p>
+      <div className="review-wall space-y-4" aria-label="Customer review image wall">
+        <div className="review-marquee" aria-label="Customer reviews moving right">
+          <Marquee
+            direction="right"
+            speed={45}
+            pauseOnHover
+            pauseOnClick={false}
+            gradient
+            gradientColor="#F7FCFF"
+            gradientWidth={80}
+            className="review-marquee-track"
+            autoFill
+          >
+            {laneItems.map((review, index) => (
+              <ReviewImage key={`right-${review.id}-${index}`} review={review} />
+            ))}
+          </Marquee>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {reviews.map((rev, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-[23px] p-8 border border-[#BAE6FD] shadow-md flex flex-col justify-between"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex text-amber-500 gap-1">
-                    {Array.from({ length: rev.rating }).map((_, i) => (
-                      <StarIcon key={i} className="w-4 h-4 text-amber-500" />
-                    ))}
-                  </div>
-                  <span className="text-[11px] font-semibold text-[#0284C7] bg-[#EFF8FF] px-2.5 py-1 rounded-full border border-[#BAE6FD]">
-                    {t(rev.tripKey)}
-                  </span>
-                </div>
-                <p className="text-sm text-[#0C4A6E] leading-relaxed">
-                  &ldquo;{t(rev.quoteKey)}&rdquo;
-                </p>
-              </div>
-
-              <div className="pt-6 mt-6 border-t border-[#EFF8FF]">
-                <h4 className="font-bold text-sm text-[#0C4A6E]">
-                  {rev.author}
-                </h4>
-                <p className="text-xs text-[#486581]">{rev.location}</p>
-              </div>
-            </div>
-          ))}
+        <div className="review-marquee" aria-label="Customer reviews moving left">
+          <Marquee
+            direction="left"
+            speed={45}
+            pauseOnHover
+            pauseOnClick={false}
+            gradient
+            gradientColor="#F7FCFF"
+            gradientWidth={80}
+            className="review-marquee-track"
+            autoFill
+          >
+            {laneItems.map((review, index) => (
+              <ReviewImage key={`left-${review.id}-${index}`} review={review} />
+            ))}
+          </Marquee>
         </div>
       </div>
     </section>
   );
 };
+
+const ReviewImage: React.FC<{ review: CustomerReviewItem }> = ({ review }) => {
+  const screenshot = formatImageUrl(review.screenshotUrl);
+
+  if (!screenshot) return null;
+
+  return (
+    <figure className="review-wall-card mx-2 h-56 w-[min(78vw,360px)] shrink-0 overflow-hidden rounded-2xl border border-[#BAE6FD] bg-white shadow-md sm:h-64 sm:w-[390px]">
+      {/* Admin-managed URLs can come from any public image host, so use a native image element here. */}
+      <img
+        src={screenshot}
+        alt={`Google Maps review screenshot from ${review.reviewerName}`}
+        className="h-full w-full object-cover"
+        loading="lazy"
+      />
+    </figure>
+  );
+};
+
+export default CustomerReviews;

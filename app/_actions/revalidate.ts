@@ -8,6 +8,7 @@ export async function revalidateLandingPages() {
     revalidatePath("/rentals");
     revalidatePath("/packages");
     revalidatePath("/properties");
+    revalidatePath("/admin/reviews");
     return { success: true };
   } catch (error) {
     console.error("Failed to revalidate pages cache:", error);

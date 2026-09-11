@@ -122,6 +122,17 @@ function AdminShell({ children }: { children: React.ReactNode }) {
               <span>Snapshot Gallery</span>
             </Link>
             <Link
+              href="/admin/reviews"
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-[23px] text-sm font-bold transition-all ${
+                pathname.startsWith('/admin/reviews')
+                  ? 'bg-[#E0F2FE] text-[#0284C7]'
+                  : 'text-[#486581] hover:bg-[#F0F9FF]'
+              }`}
+            >
+              <span>⭐</span>
+              <span>Google Reviews</span>
+            </Link>
+            <Link
               href="/"
               className="flex items-center gap-3 px-4 py-2.5 rounded-[23px] text-sm font-semibold text-[#486581] hover:bg-[#F0F9FF] transition-all"
             >
