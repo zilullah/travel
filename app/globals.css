@@ -73,11 +73,76 @@ body {
   to { transform: translateX(-100%); }
 }
 
+.review-section {
+  border-top: 1px solid var(--theme-border);
+  background: var(--theme-background);
+  padding-block: 40px;
+}
+
+.review-wall {
+  display: grid;
+  gap: 16px;
+}
+
+.review-controls {
+  display: flex;
+  justify-content: flex-end;
+  padding-inline: 16px;
+  margin-bottom: 16px;
+}
+
+.review-pause {
+  color: var(--theme-text-primary);
+  border: 1px solid var(--theme-border);
+  background: var(--theme-surface);
+  border-radius: var(--radius-control);
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.review-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  padding-inline: 16px;
+}
+
+.review-google-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 100%;
+  min-height: 48px;
+  padding: 10px 24px;
+  border: 1px solid var(--theme-border);
+  border-radius: 9999px;
+  background: var(--theme-surface);
+  color: var(--theme-text-primary);
+  box-shadow: 0 4px 12px rgb(7 89 133 / 0.1);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+}
+
+.review-google-link:hover {
+  background: var(--theme-surface-card);
+  border-color: var(--theme-accent);
+}
+
+.review-pause:focus-visible,
+.review-google-link:focus-visible,
+.review-static:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 3px;
+}
+
 .review-marquee {
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  mask-image: linear-gradient(to right, transparent, black min(7%, 80px), black calc(100% - min(7%, 80px)), transparent);
 }
 
 .review-marquee::-webkit-scrollbar {
@@ -106,87 +171,54 @@ body {
   flex: 0 0 auto;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .review-marquee {
-    mask-image: none;
-  }
-
-  .review-marquee .rfm-marquee {
-    animation: none;
-    transform: none !important;
-  }
-}
-
 .review-wall-card {
   position: relative;
-  animation: reviewCardFloat 5s ease-in-out infinite;
-  transform: rotate(-1deg);
-  transition: transform 300ms ease, box-shadow 300ms ease;
+  flex: 0 0 auto;
+  width: min(82vw, var(--review-width));
+  aspect-ratio: var(--review-ratio);
+  margin: 4px 8px;
+  overflow: hidden;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-card);
+  background: var(--theme-surface);
+  box-shadow: 0 2px 4px rgb(7 89 133 / 0.05);
 }
 
-.review-wall-card:nth-child(3n) {
-  animation-delay: -1.8s;
-  transform: rotate(1.5deg);
+.review-wall-card--small {
+  --review-width: 280px;
+  --review-ratio: 280 / 160;
 }
 
-.review-wall-card:nth-child(3n + 2) {
-  animation-delay: -3.2s;
-  transform: rotate(-2deg);
+.review-wall-card--medium {
+  --review-width: 340px;
+  --review-ratio: 340 / 200;
 }
 
-.review-wall-card:hover {
-  z-index: 2;
-  box-shadow: 0 18px 35px rgb(7 89 133 / 0.2);
-  transform: translateY(-10px) rotate(0deg) scale(1.03);
+.review-wall-card--large {
+  --review-width: 400px;
+  --review-ratio: 400 / 240;
 }
 
-@keyframes reviewCardFloat {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -6px; }
+.review-static {
+  overflow-x: auto;
+  margin-inline: 16px;
 }
 
-.review-marquee:hover .review-wall-card,
-.review-marquee:focus-within .review-wall-card {
-  animation-play-state: paused;
+.review-static-images {
+  display: flex;
+  align-items: center;
+  width: max-content;
 }
 
-.review-wall-card img {
-  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1), filter 500ms ease;
-}
-
-.review-wall-card:hover img {
-  transform: scale(1.08);
-  filter: saturate(1.1) contrast(1.03);
-}
-
-.review-wall-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
-}
-
-.review-wall-card:nth-child(even)::before {
-  content: "";
-  position: absolute;
-  top: -7px;
-  left: 18%;
-  z-index: 1;
-  width: 58px;
-  height: 16px;
-  border: 1px solid rgb(186 230 253 / 0.8);
-  background: rgb(255 255 255 / 0.65);
-  box-shadow: 0 2px 4px rgb(7 89 133 / 0.08);
-  rotate: -4deg;
+@media (min-width: 1024px) {
+  .review-section {
+    padding-block: 56px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .review-wall-card,
-  .review-wall-card img {
+  .review-marquee .rfm-marquee {
     animation: none;
-    transition: none;
   }
 }
 

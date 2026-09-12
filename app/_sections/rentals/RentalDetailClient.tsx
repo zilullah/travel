@@ -134,20 +134,18 @@ Mohon konfirmasi ketersediaan unit. Terima kasih.`;
         </div>
 
         <div>
-          <label className="text-xs font-semibold text-[#0C4A6E] block mb-1">
+          <label htmlFor="delivery-location" className="text-xs font-semibold text-[#0C4A6E] block mb-1">
             Lokasi Pengantaran / Penyerahan
           </label>
-          <select
+          <input
+            id="delivery-location"
+            name="deliveryLocation"
+            type="text"
             value={deliveryLocation}
             onChange={(e) => setDeliveryLocation(e.target.value)}
+            placeholder="Masukkan nama hotel, bandara, atau alamat lengkap"
             className="w-full text-xs p-2.5 rounded-xl border border-[#BAE6FD] bg-[#F7FCFF] focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
-          >
-            <option value="Bandara Lombok (BIL)">Bandara Internasional Lombok (BIL)</option>
-            <option value="Hotel Area Kuta Mandalika">Hotel / Villa Area Kuta Mandalika</option>
-            <option value="Pelabuhan Lembar / Bangsal">Pelabuhan Lembar / Bangsal</option>
-            <option value="Hotel Area Mataram / Senggigi">Hotel Area Mataram / Senggigi</option>
-            <option value="Lokasi Lainnya">Lokasi Lainnya (Diinfokan via WA)</option>
-          </select>
+          />
         </div>
 
         <div>
