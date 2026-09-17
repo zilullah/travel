@@ -6,12 +6,14 @@ import { TourPackagesSection } from "@/app/_sections/tours/TourPackagesSection";
 import { PropertyList } from "@/app/_sections/properties/PropertyList";
 import { CustomerReviews } from "@/app/_sections/testimonials/CustomerReviews";
 import { AboutUs } from "@/app/_sections/about/AboutUs";
+import { SponsorGridSection } from "@/app/_sections/sponsors/SponsorGridSection";
 import { AnimatedSection } from "@/app/_components/ui/AnimatedSection";
 import { getProperties } from "@/app/_lib/properties";
 import { getTourPackages } from "@/lib/packages";
 import { getRentalVehicles } from "@/lib/rentals";
 import { getGallerySnapshots } from "@/app/_lib/gallery";
 import { getCustomerReviews } from "@/app/_lib/reviews";
+import { getSponsors } from "@/app/_lib/sponsors";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,12 +35,20 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [properties, tourPackages, rentalVehicles, gallerySnapshots, customerReviews] = await Promise.all([
+  const [
+    properties,
+    tourPackages,
+    rentalVehicles,
+    gallerySnapshots,
+    customerReviews,
+    sponsors,
+  ] = await Promise.all([
     getProperties(),
     getTourPackages(),
     getRentalVehicles(),
     getGallerySnapshots(),
     getCustomerReviews(),
+    getSponsors(),
   ]);
 
   return (
@@ -75,7 +85,12 @@ export default async function Home() {
         <AboutUs />
       </AnimatedSection>
 
-      {/* 7. Real Customer Reviews & Social Proof */}
+      {/* 7. Travel Partners */}
+      <AnimatedSection>
+        <SponsorGridSection sponsors={sponsors} />
+      </AnimatedSection>
+
+      {/* 8. Real Customer Reviews & Social Proof */}
       <AnimatedSection>
         <CustomerReviews reviews={customerReviews} />
       </AnimatedSection>

@@ -181,7 +181,23 @@ CREATE TABLE IF NOT EXISTS public.customer_reviews (
 CREATE INDEX IF NOT EXISTS idx_customer_reviews_active ON public.customer_reviews(is_active);
 CREATE INDEX IF NOT EXISTS idx_customer_reviews_order ON public.customer_reviews(display_order);
 
--- 10. SECURITY FUNCTIONS & RLS POLICIES
+-- 10. SPONSORS / TRAVEL PARTNERS
+CREATE TABLE IF NOT EXISTS public.sponsors (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL CHECK (btrim(name) <> ''),
+  logo_url TEXT NOT NULL CHECK (btrim(logo_url) <> ''),
+  website_url TEXT,
+  display_order INT NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_sponsors_active_order
+  ON public.sponsors(display_order)
+  WHERE is_active = true;
+
+-- 11. SECURITY FUNCTIONS & RLS POLICIES
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
@@ -204,6 +220,7 @@ ALTER TABLE public.transfer_vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rental_vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.gallery_snapshots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.customer_reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.sponsors ENABLE ROW LEVEL SECURITY;
 
 -- Drop old policies if re-running
 DROP POLICY IF EXISTS "Public can view own profile or admin" ON public.profiles;
@@ -216,6 +233,8 @@ DROP POLICY IF EXISTS "Public view active gallery snapshots" ON public.gallery_s
 DROP POLICY IF EXISTS "Admins manage gallery snapshots" ON public.gallery_snapshots;
 DROP POLICY IF EXISTS "Public view active customer reviews" ON public.customer_reviews;
 DROP POLICY IF EXISTS "Admins manage customer reviews" ON public.customer_reviews;
+DROP POLICY IF EXISTS "Public view active sponsors" ON public.sponsors;
+DROP POLICY IF EXISTS "Admins manage sponsors" ON public.sponsors;
 DROP POLICY IF EXISTS "Public view active properties" ON public.properties;
 DROP POLICY IF EXISTS "Admins manage properties" ON public.properties;
 DROP POLICY IF EXISTS "Public view active transfer locations" ON public.transfer_locations;
@@ -312,7 +331,17 @@ CREATE POLICY "Admins manage customer reviews"
   ON public.customer_reviews FOR ALL
   USING (public.is_admin());
 
--- 10. AUTOMATIC AUTH TRIGGER
+-- Sponsors Policies
+CREATE POLICY "Public view active sponsors"
+  ON public.sponsors FOR SELECT
+  USING (is_active = true OR public.is_admin());
+
+CREATE POLICY "Admins manage sponsors"
+  ON public.sponsors FOR ALL
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+-- 12. AUTOMATIC AUTH TRIGGER
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
