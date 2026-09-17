@@ -84,15 +84,13 @@ export default async function Home() {
       <AnimatedSection>
         <AboutUs />
       </AnimatedSection>
-
-      {/* 7. Travel Partners */}
-      <AnimatedSection>
-        <SponsorGridSection sponsors={sponsors} />
-      </AnimatedSection>
-
       {/* 8. Real Customer Reviews & Social Proof */}
       <AnimatedSection>
         <CustomerReviews reviews={customerReviews} />
+      </AnimatedSection>
+      {/* 7. Travel Partners */}
+      <AnimatedSection>
+        <SponsorGridSection sponsors={sponsors} />
       </AnimatedSection>
     </main>
   );
