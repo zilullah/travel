@@ -71,7 +71,7 @@ export default async function TourPackageDetailPage({ params }: PageProps) {
     <main className="min-h-screen pt-28 pb-20 bg-[#F7FCFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
-          href="/#tour-packages"
+          href="/packages"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[#0C4A6E] mb-6 hover:underline"
         >
           <LocalizedText translationKey="tour.back_to_list" />

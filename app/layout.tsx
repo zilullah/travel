@@ -3,6 +3,7 @@ import { Footer } from "@/app/_components/layout/Footer";
 import { LanguageProvider } from "@/app/_context/LanguageContext";
 import { SITE_CONFIG } from "@/app/_constants/site";
 import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,11 +16,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
-  title: "Lombok Travel Organizer | Tours, Airport Transfer & Luxury Property",
-  description:
-    "Plan your Lombok holiday with curated tours, airport transfers, private drivers, and verified villas and land in South Lombok.",
+  title: "Lombok Travel Organizer",
+  description: SITE_CONFIG.description,
   keywords: [
     "Lombok travel",
     "Lombok tour packages",
@@ -27,12 +27,8 @@ export const metadata = {
     "Lombok villa investment",
     "South Lombok property",
   ],
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
-    url: "/",
     siteName: "Lombok Travel Organizer",
     title: "Lombok Travel Organizer | Tours, Transfers & Properties",
     description:

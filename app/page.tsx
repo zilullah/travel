@@ -12,6 +12,23 @@ import { getTourPackages } from "@/lib/packages";
 import { getRentalVehicles } from "@/lib/rentals";
 import { getGallerySnapshots } from "@/app/_lib/gallery";
 import { getCustomerReviews } from "@/app/_lib/reviews";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Lombok Travel Organizer | Tours, Airport Transfer & Luxury Property",
+  description:
+    "Plan your Lombok holiday with curated tours, airport transfers, private drivers, and verified villas and land in South Lombok.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: "Lombok Travel Organizer | Tours, Transfers & Properties",
+    description:
+      "Book memorable Lombok experiences, reliable airport transfers, and explore verified property opportunities in South Lombok.",
+  },
+};
 
 export const dynamic = "force-dynamic";
 

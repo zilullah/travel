@@ -76,7 +76,7 @@ export default async function RentalDetailPage({ params }: PageProps) {
     <main className="min-h-screen pt-28 pb-20 bg-[#F7FCFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
-          href="/#rental"
+          href="/rentals"
           className="inline-flex items-center gap-2 text-sm font-semibold text-[#0C4A6E] mb-6 hover:underline"
         >
           <LocalizedText translationKey="rental.back_to_list" />

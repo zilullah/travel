@@ -6,6 +6,7 @@ import { useLanguage } from "@/app/_context/LanguageContext";
 import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { SITE_CONFIG } from "@/app/_constants/site";
 import { InstagramIcon, TikTokIcon } from "@/app/_components/ui/Icons";
+import Link from "next/link";
 
 export const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -60,29 +61,29 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-1 text-xs text-[#486581]">
               <li>
-                <a href="/#packages" className="hover:text-[#0284C7]">
+                <Link href="/packages" className="hover:text-[#0284C7]">
                   {t("nav.tours")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#rentals" className="hover:text-[#0284C7]">
+                <Link href="/rentals" className="hover:text-[#0284C7]">
                   {t("nav.rentals")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#antar-jemput" className="hover:text-[#0284C7]">
+                <Link href="/#antar-jemput" className="hover:text-[#0284C7]">
                   {t("nav.pickup")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/properties" className="hover:text-[#0284C7]">
+                <Link href="/properties" className="hover:text-[#0284C7]">
                   {t("nav.properties")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#about" className="hover:text-[#0284C7]">
+                <Link href="/#about" className="hover:text-[#0284C7]">
                   {t("nav.about")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
