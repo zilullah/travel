@@ -8,7 +8,7 @@ import { CustomerReviews } from "@/app/_sections/testimonials/CustomerReviews";
 import { AboutUs } from "@/app/_sections/about/AboutUs";
 import { SponsorGridSection } from "@/app/_sections/sponsors/SponsorGridSection";
 import { AnimatedSection } from "@/app/_components/ui/AnimatedSection";
-import { WhatsAppFloatingButton } from "@/app/_components/ui/WhatsAppFloatingButton";
+import { WhatsAppFloatingButton } from "@/app/_sections/home/WhatsAppFloatingButton";
 import { getProperties } from "@/app/_lib/properties";
 import { getTourPackages } from "@/lib/packages";
 import { getRentalVehicles } from "@/lib/rentals";

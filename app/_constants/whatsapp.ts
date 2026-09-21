@@ -1,3 +1,5 @@
+import type { Language } from "@/app/_context/LanguageContext";
+
 export const WHATSAPP_CONFIG = {
   phoneNumber: "6287754552859",
   defaultGreeting: "Hello LombokTravelOrganizer 👋",
@@ -110,30 +112,72 @@ export const WHATSAPP_TEMPLATES = {
   },
 
   rental: (params: {
+    lang: Language;
     vehicleName: string;
     type: "motorcycle" | "car";
     transmission: string;
     price: string;
+    totalPrice?: string;
     durationDays?: number;
     startDate?: string;
     withDriver?: boolean;
+    deliveryLocation?: string;
     name?: string;
     notes?: string;
   }) => {
-    let msg = `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya ingin menyewa kendaraan di Lombok:\n`;
-    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-    msg += `🛵 *Unit Kendaraan:* ${params.vehicleName}\n`;
-    msg += `🏷️ *Kategori:* ${params.type === "motorcycle" ? "Sewa Motor" : "Sewa Mobil"} (${params.transmission.toUpperCase()})\n`;
-    msg += `💰 *Tarif:* ${params.price} / hari\n`;
-    if (params.withDriver !== undefined) {
-      msg += `🚗 *Opsi:* ${params.withDriver ? "Dengan Supir" : "Lepas Kunci"}\n`;
-    }
-    if (params.durationDays) msg += `⏱️ *Durasi Sewa:* ${params.durationDays} Hari\n`;
-    if (params.startDate) msg += `📅 *Mulai Tanggal:* ${params.startDate}\n`;
-    if (params.name) msg += `👤 *Nama Penyewa:* ${params.name}\n`;
-    if (params.notes) msg += `💬 *Catatan:* ${params.notes}\n`;
-    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-    msg += `Mohon informasi ketersediaan unit dan persyaratan sewanya. Terima kasih!`;
-    return msg;
+    const isEnglish = params.lang === "en";
+    const category = isEnglish
+      ? params.type === "motorcycle"
+        ? "Motorbike Rental"
+        : "Car Rental"
+      : params.type === "motorcycle"
+        ? "Sewa Motor"
+        : "Sewa Mobil";
+    const lines = [
+      WHATSAPP_CONFIG.defaultGreeting,
+      "",
+      isEnglish
+        ? "I would like to rent a vehicle in Lombok:"
+        : "Saya ingin menyewa kendaraan di Lombok:",
+      "━━━━━━━━━━━━━━━━━━━━━",
+      `🛵 *${isEnglish ? "Vehicle" : "Unit Kendaraan"}:* ${params.vehicleName}`,
+      `🏷️ *${isEnglish ? "Category" : "Kategori"}:* ${category} (${params.transmission.toUpperCase()})`,
+      `💰 *${isEnglish ? "Rate" : "Tarif"}:* ${params.price} / ${isEnglish ? "day" : "hari"}`,
+      params.totalPrice
+        ? `🧾 *${isEnglish ? "Estimated Total" : "Total Estimasi"}:* ${params.totalPrice}`
+        : null,
+      params.withDriver === undefined
+        ? null
+        : `🚗 *${isEnglish ? "Service" : "Opsi"}:* ${
+            params.withDriver
+              ? isEnglish
+                ? "With Driver"
+                : "Dengan Supir"
+              : isEnglish
+                ? "Self Drive"
+                : "Lepas Kunci"
+          }`,
+      params.durationDays
+        ? `⏱️ *${isEnglish ? "Rental Duration" : "Durasi Sewa"}:* ${params.durationDays} ${isEnglish ? "Days" : "Hari"}`
+        : null,
+      params.startDate
+        ? `📅 *${isEnglish ? "Start Date" : "Mulai Tanggal"}:* ${params.startDate}`
+        : null,
+      params.deliveryLocation
+        ? `📍 *${isEnglish ? "Delivery / Handover Location" : "Lokasi Antar / Serah Terima"}:* ${params.deliveryLocation}`
+        : null,
+      params.name
+        ? `👤 *${isEnglish ? "Renter Name" : "Nama Penyewa"}:* ${params.name}`
+        : null,
+      params.notes
+        ? `💬 *${isEnglish ? "Notes" : "Catatan"}:* ${params.notes}`
+        : null,
+      "━━━━━━━━━━━━━━━━━━━━━",
+      isEnglish
+        ? "Please confirm vehicle availability and rental requirements. Thank you!"
+        : "Mohon informasi ketersediaan unit dan persyaratan sewanya. Terima kasih!",
+    ];
+
+    return lines.filter((line): line is string => line !== null).join("\n");
   },
 };

@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import { RentalVehicle } from "@/lib/domain/rental.types";
 import { formatIDR } from "@/app/_lib/utils";
-import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
+import { WHATSAPP_TEMPLATES } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
+import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
 import { WhatsAppIcon } from "@/app/_components/ui/Icons";
 import { Button } from "@/app/_components/ui/Button";
 
@@ -15,7 +16,7 @@ interface RentalDetailClientProps {
 export const RentalDetailClient: React.FC<RentalDetailClientProps> = ({
   vehicle,
 }) => {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const [withDriver, setWithDriver] = useState<boolean>(false);
   const [durationDays, setDurationDays] = useState<number>(1);
   const [startDate, setStartDate] = useState<string>("");
@@ -29,19 +30,21 @@ export const RentalDetailClient: React.FC<RentalDetailClientProps> = ({
   const totalPrice = baseDailyPrice * Math.max(1, durationDays);
 
   const handleBooking = () => {
-    const serviceType = withDriver ? "Dengan Supir" : "Lepas Kunci";
-    const message = `Halo Lombok Travel Organizer, saya ingin sewa unit:
-- Unit: ${vehicle.name} (${vehicle.type === "motorcycle" ? "Motor" : "Mobil"})
-- Layanan: ${serviceType}
-- Durasi: ${durationDays} Hari (Mulai: ${startDate || "Fleksibel / Belum Ditentukan"})
-- Lokasi Serah Terima: ${deliveryLocation}
-- Estimasi Biaya: ${formatIDR(totalPrice)}
-${specialNotes ? `- Catatan: ${specialNotes}` : ""}
+    const message = WHATSAPP_TEMPLATES.rental({
+      lang,
+      vehicleName: vehicle.name,
+      type: vehicle.type,
+      transmission: vehicle.transmission,
+      price: formatIDR(baseDailyPrice),
+      totalPrice: formatIDR(totalPrice),
+      withDriver,
+      durationDays,
+      startDate,
+      deliveryLocation,
+      notes: specialNotes,
+    });
 
-Mohon konfirmasi ketersediaan unit. Terima kasih.`;
-
-    const url = `https://wa.me/${WHATSAPP_CONFIG.phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+    window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
   };
 
   return (

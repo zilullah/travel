@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { RentalVehicle } from "@/lib/domain/rental.types";
 import { formatIDR, formatImageUrl, maskId } from "@/app/_lib/utils";
-import { WHATSAPP_TEMPLATES, WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
+import { WHATSAPP_TEMPLATES } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
+import { buildWhatsAppLink } from "@/app/_lib/whatsapp";
 import { MotorcycleSvg, CarSvg, UsersSvg, GearSvg, CheckCircleSvg } from "./rental.icons";
 import { Button } from "@/app/_components/ui/Button";
 import { WhatsAppIcon } from "@/app/_components/ui/Icons";
@@ -16,31 +18,33 @@ interface VehicleCardProps {
 }
 
 export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
 
   const handleBook = () => {
     const message = WHATSAPP_TEMPLATES.rental({
+      lang,
       vehicleName: vehicle.name,
       type: vehicle.type,
       transmission: vehicle.transmission,
       price: formatIDR(vehicle.pricePerDay),
     });
-    const url = `https://wa.me/${WHATSAPP_CONFIG.phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+    window.open(buildWhatsAppLink(message), "_blank", "noopener,noreferrer");
   };
 
   return (
     <Card variant="bordered" className="flex flex-col group hover:shadow-xl">
-      {/* Vehicle Image Header */}
       <CardHeader className="h-52 sm:h-56 w-full bg-[#F0F9FF]">
-        <img
+        <Image
           src={formatImageUrl(
             vehicle.imageUrl ||
               "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80",
           )}
           alt={vehicle.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          // ponytail: admin-provided image hosts stay unoptimized until a safe host allowlist exists.
+          unoptimized
         />
         <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
           <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/90 backdrop-blur-md text-[#0284C7] shadow-sm flex items-center gap-1.5">
