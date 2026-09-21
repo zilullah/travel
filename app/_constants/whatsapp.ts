@@ -4,6 +4,11 @@ export const WHATSAPP_CONFIG = {
 };
 
 export const WHATSAPP_TEMPLATES = {
+  consultation: {
+    en: `${WHATSAPP_CONFIG.defaultGreeting}\n\nI would like to consult about travel services in Lombok. Could you please assist me? Thank you!`,
+    id: `${WHATSAPP_CONFIG.defaultGreeting}\n\nSaya ingin berkonsultasi tentang layanan perjalanan di Lombok. Mohon bantuannya, terima kasih!`,
+  },
+
   property: (params: {
     title: string;
     location: string;

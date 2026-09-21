@@ -6,8 +6,9 @@ import { RentalVehicle } from "@/lib/domain/rental.types";
 import { formatIDR, formatImageUrl, maskId } from "@/app/_lib/utils";
 import { WHATSAPP_TEMPLATES, WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
-import { MotorcycleSvg, CarSvg, UsersSvg, GearSvg, CheckCircleSvg, WhatsAppSvg } from "./rental.icons";
+import { MotorcycleSvg, CarSvg, UsersSvg, GearSvg, CheckCircleSvg } from "./rental.icons";
 import { Button } from "@/app/_components/ui/Button";
+import { WhatsAppIcon } from "@/app/_components/ui/Icons";
 import { Card, CardHeader, CardBody } from "@/app/_components/ui/Card";
 
 interface VehicleCardProps {
@@ -131,7 +132,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
               onClick={handleBook}
               className="flex-1 sm:flex-initial text-xs whitespace-nowrap px-3 py-2 flex items-center justify-center gap-1.5 active:scale-95"
             >
-              <WhatsAppSvg className="w-3.5 h-3.5 flex-shrink-0" />
+              <WhatsAppIcon className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{t("rental.rent_wa")}</span>
             </Button>
           </div>

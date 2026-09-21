@@ -5,7 +5,7 @@ import { RentalVehicle } from "@/lib/domain/rental.types";
 import { formatIDR } from "@/app/_lib/utils";
 import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
-import { WhatsAppSvg } from "@/app/_sections/rentals/rental.icons";
+import { WhatsAppIcon } from "@/app/_components/ui/Icons";
 import { Button } from "@/app/_components/ui/Button";
 
 interface RentalDetailClientProps {
@@ -186,7 +186,7 @@ Mohon konfirmasi ketersediaan unit. Terima kasih.`;
         onClick={handleBooking}
         className="shadow-md flex items-center justify-center gap-2"
       >
-        <WhatsAppSvg className="w-5 h-5" />
+        <WhatsAppIcon className="w-5 h-5" />
         <span>Sewa via WhatsApp</span>
       </Button>
 

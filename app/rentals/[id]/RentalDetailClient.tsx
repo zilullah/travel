@@ -5,7 +5,7 @@ import { RentalVehicle } from "@/lib/domain/rental.types";
 import { formatIDR } from "@/app/_lib/utils";
 import { WHATSAPP_CONFIG } from "@/app/_constants/whatsapp";
 import { useLanguage } from "@/app/_context/LanguageContext";
-import { WhatsAppSvg } from "@/app/_sections/rentals/rental.icons";
+import { WhatsAppIcon } from "@/app/_components/ui/Icons";
 import { Button } from "@/app/_components/ui/Button";
 
 interface RentalDetailClientProps {
@@ -176,7 +176,7 @@ Mohon info ketersediaan unit dan konfirmasi pemesanan. Terima kasih!`;
           type="submit"
           className="w-full py-3 px-4 bg-[#0284C7] hover:bg-[#0369A1] text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
         >
-          <WhatsAppSvg className="w-4 h-4" />
+          <WhatsAppIcon className="w-4 h-4" />
           <span>{t("rental.book_now")}</span>
         </button>
       </form>

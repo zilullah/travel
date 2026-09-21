@@ -22,6 +22,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "header.tagline": "Tours • Transfers • Real Estate",
     "header.whatsapp_cta": "WhatsApp Us",
     "header.whatsapp_247": "Contact WhatsApp 24/7",
+    "whatsapp.consultation": "Consult via WhatsApp",
 
     // Scattered Gallery
     "gallery.badge": "Lombok Visual Journey",
@@ -258,6 +259,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "header.tagline": "Wisata • Antar-Jemput • Properti",
     "header.whatsapp_cta": "Hubungi WhatsApp",
     "header.whatsapp_247": "Hubungi WhatsApp 24/7",
+    "whatsapp.consultation": "Konsultasi via WhatsApp",
 
     // Scattered Gallery
     "gallery.badge": "Lombok Visual Journey",
