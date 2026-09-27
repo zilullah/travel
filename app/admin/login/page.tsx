@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { useAdminAuth } from '../_context/AdminAuthContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAdminAuth();
 
   const [email, setEmail] = useState('');
@@ -41,6 +43,12 @@ export default function AdminLoginPage() {
             Sign in with your authorized admin account to manage packages and pricing.
           </p>
         </div>
+
+        {searchParams.get('passwordChanged') === '1' && (
+          <p role="status" className="rounded-xl border border-[#7DD3FC] bg-[#F0F9FF] p-3.5 text-sm text-[#082F49]">
+            Password changed. Sign in with your new password.
+          </p>
+        )}
 
         {error && (
           <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
@@ -83,9 +91,9 @@ export default function AdminLoginPage() {
         </form>
 
         <div className="text-center pt-2">
-          <a href="/" className="text-xs font-semibold text-[#0284C7] hover:underline">
+          <Link href="/" className="text-xs font-semibold text-[#0284C7] hover:underline">
             ← Back to Public Website
-          </a>
+          </Link>
         </div>
       </div>
     </div>

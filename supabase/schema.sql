@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS public.properties (
   image_url TEXT NOT NULL,
   gallery TEXT[] DEFAULT '{}',
   features TEXT[] NOT NULL DEFAULT '{}',
-  status TEXT NOT NULL DEFAULT 'For Sale' CHECK (status IN ('For Sale', 'Exclusive', 'Under Offer', 'Sold')),
+  status TEXT NOT NULL DEFAULT 'For Sale' CHECK (status IN ('For Sale', 'For Rent', 'Exclusive', 'Under Offer', 'Sold')),
   is_featured BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

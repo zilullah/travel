@@ -26,8 +26,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-        <div className="absolute top-4 left-4 flex gap-2">
-          <span className="bg-[#0EA5E9] text-white font-bold text-xs px-3 py-1 rounded-full uppercase shadow-sm">
+        <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2">
+          <span className="bg-[#0369A1] text-white font-bold text-xs px-3 py-1 rounded-full uppercase">
             {property.status}
           </span>
           <span className="bg-white/80 backdrop-blur-md text-[#0C4A6E] font-semibold text-xs px-3 py-1 rounded-full border border-white/40">
@@ -76,7 +76,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         <div className="pt-4 mt-auto border-t border-[#EFF8FF] flex items-center justify-between">
           <div>
             <span className="text-[10px] uppercase font-bold text-[#486581] block">
-              {t("property.price")}
+              {t(property.status === "For Rent" ? "property.rental_price" : "property.price")}
             </span>
             <span className="text-lg font-black text-[#0284C7]">
               {formatIDR(property.priceIdr)}

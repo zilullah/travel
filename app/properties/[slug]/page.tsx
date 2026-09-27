@@ -162,8 +162,8 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           {/* Sidebar Booking Form */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white p-6 rounded-[23px] border border-[#BAE6FD] shadow-sm">
-              <span className="text-xs text-[#6B8CA5] uppercase font-bold block">
-                <LocalizedText translationKey="property.asking_price" />
+              <span className="text-xs text-[#486581] uppercase font-bold block">
+                <LocalizedText translationKey={property.status === "For Rent" ? "property.rental_price" : "property.asking_price"} />
               </span>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-3xl font-black text-[#0C4A6E]">

@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Property,
-  PropertyType,
-  PropertyStatus,
+  PROPERTY_STATUSES,
 } from "@/lib/domain/property.types";
 import { PropertyService } from "@/lib/services/property.service";
 import { SupabasePropertyRepository } from "@/lib/repositories/supabase-property.repository";
@@ -44,18 +43,6 @@ export default function AdminPropertiesPage() {
   useEffect(() => {
     loadProperties();
   }, []);
-
-  const handleStatusChange = async (id: string, status: PropertyStatus) => {
-    try {
-      await service.updatePropertyStatus(id, status);
-      setProperties((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, status } : p)),
-      );
-      await revalidateLandingPages();
-    } catch {
-      alert("Failed to update property status");
-    }
-  };
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
@@ -111,7 +98,7 @@ export default function AdminPropertiesPage() {
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
@@ -124,15 +111,15 @@ export default function AdminPropertiesPage() {
           </select>
 
           <select
+            aria-label="Filter by property status"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-[#F0F9FF] border border-[#BAE6FD] rounded-xl px-3 py-2 text-xs font-semibold text-[#082F49] focus:outline-none"
+            className="min-h-11 bg-[#F0F9FF] border border-[#486581] rounded-xl px-3 py-2 text-xs font-semibold text-[#082F49] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0369A1]"
           >
             <option value="all">All Status</option>
-            <option value="Exclusive">Exclusive</option>
-            <option value="For Sale">For Sale</option>
-            <option value="Under Offer">Under Offer</option>
-            <option value="Sold">Sold</option>
+            {PROPERTY_STATUSES.map((status) => (
+              <option key={status} value={status}>{status}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -167,16 +154,8 @@ export default function AdminPropertiesPage() {
                   alt={prop.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-3 left-3 flex gap-1.5">
-                  <span
-                    className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full ${
-                      prop.status === "Exclusive"
-                        ? "bg-[#0284C7] text-white"
-                        : prop.status === "For Sale"
-                          ? "bg-emerald-500 text-white"
-                          : "bg-amber-500 text-white"
-                    }`}
-                  >
+                <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5">
+                  <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#0369A1] text-white">
                     {prop.status}
                   </span>
                   <span className="bg-black/60 backdrop-blur-md text-white font-semibold text-[10px] px-2.5 py-0.5 rounded-full">
@@ -199,8 +178,8 @@ export default function AdminPropertiesPage() {
                     <span>📐 {prop.landSizeM2} m²</span>
                   </div>
 
-                  <div className="mt-2 text-xs font-bold text-[#0284C7]">
-                    Asking: {formatIDR(prop.priceIdr)}
+                  <div className="mt-2 text-xs font-bold text-[#0369A1]">
+                    {prop.status === "For Rent" ? "Rental Price" : "Asking"}: {formatIDR(prop.priceIdr)}
                   </div>
                 </div>
 

@@ -1,4 +1,7 @@
 import { z } from 'zod';
+import { PROPERTY_STATUSES } from './property.types';
+
+export const PropertyStatusSchema = z.enum(PROPERTY_STATUSES);
 
 export const PropertySchema = z.object({
   id: z.string().optional(),
@@ -22,7 +25,7 @@ export const PropertySchema = z.object({
   image: z.string().min(1, 'Main image is required'),
   gallery: z.array(z.string()).default([]),
   features: z.array(z.string()).default([]),
-  status: z.enum(['For Sale', 'Exclusive', 'Under Offer', 'Sold']).default('For Sale'),
+  status: PropertyStatusSchema.default('For Sale'),
   isFeatured: z.boolean().default(false),
 });
 

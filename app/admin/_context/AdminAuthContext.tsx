@@ -10,7 +10,7 @@ interface AdminAuthContextType {
   loading: boolean;
   isAdmin: boolean;
   login: (email: string, pass: string) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: (scope?: 'local' | 'global') => Promise<void>;
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType>({
@@ -54,8 +54,8 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     await fetchSession();
   };
 
-  const logout = async () => {
-    await authService.signOut();
+  const logout = async (scope: 'local' | 'global' = 'global') => {
+    await authService.signOut(scope);
     setUser(null);
   };
 

@@ -168,10 +168,13 @@ function AdminShell({ children }: { children: React.ReactNode }) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-[#7DD3FC] px-6 flex items-center justify-between">
+        <header className="min-h-16 bg-white border-b border-[#7DD3FC] px-4 py-2 sm:px-6 flex flex-wrap gap-2 items-center justify-between">
           <div className="font-bold text-sm text-[#5B7C93]">Management Console</div>
           <div className="flex items-center gap-3">
-            <span className="bg-[#E0F2FE] text-[#0284C7] font-bold text-xs px-3 py-1 rounded-full border border-[#7DD3FC]">
+            <Link href="/admin/account" aria-current={pathname === '/admin/account' ? 'page' : undefined} className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-[#075985] underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#075985]">
+              My Account
+            </Link>
+            <span className="hidden sm:inline bg-[#E0F2FE] text-[#0284C7] font-bold text-xs px-3 py-1 rounded-full border border-[#7DD3FC]">
               Role: Admin
             </span>
           </div>

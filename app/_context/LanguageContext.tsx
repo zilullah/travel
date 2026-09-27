@@ -137,6 +137,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "property.back_to_list": "← Back to properties list",
     "property.features": "Features & Legal Due Diligence",
     "property.asking_price": "Asking Price",
+    "property.rental_price": "Rental Price",
 
     // Reviews Section
     "reviews.badge": "Verified Guest Stories",
@@ -375,6 +376,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "property.back_to_list": "← Kembali ke daftar properti",
     "property.features": "Fitur & Legalitas Dokumen",
     "property.asking_price": "Harga Penawaran",
+    "property.rental_price": "Harga Sewa",
 
     // Reviews Section
     "reviews.badge": "Kisah Nyata Tamu & Wisatawan",

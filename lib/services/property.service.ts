@@ -1,6 +1,6 @@
 import { IPropertyRepository, PropertyFilter } from '../repositories/property.repository.interface';
 import { Property, PropertyStatus } from '../domain/property.types';
-import { validateProperty, generatePropertySlug, PropertyInput } from '../domain/property.validation';
+import { validateProperty, generatePropertySlug, PropertyInput, PropertyStatusSchema } from '../domain/property.validation';
 
 export class PropertyService {
   constructor(private propertyRepo: IPropertyRepository) {}
@@ -47,11 +47,11 @@ export class PropertyService {
       location: validData.location,
       priceIdr: validData.priceIdr,
       ownership: validData.ownership,
-      leaseYears: validData.leaseYears,
+      leaseYears: validData.leaseYears ?? undefined,
       landSizeM2: validData.landSizeM2,
-      buildingSizeM2: validData.buildingSizeM2,
-      bedrooms: validData.bedrooms,
-      bathrooms: validData.bathrooms,
+      buildingSizeM2: validData.buildingSizeM2 ?? undefined,
+      bedrooms: validData.bedrooms ?? undefined,
+      bathrooms: validData.bathrooms ?? undefined,
       roi: validData.roi,
       beachDistance: validData.beachDistance,
       airportDistance: validData.airportDistance,
@@ -65,6 +65,9 @@ export class PropertyService {
 
   async updateProperty(id: string, data: Partial<Property>): Promise<Property> {
     if (!id) throw new Error('Property ID is required');
+    if (data.status !== undefined && !PropertyStatusSchema.safeParse(data.status).success) {
+      throw new Error('Invalid property status');
+    }
 
     if (data.title && !data.slug) {
       data.slug = generatePropertySlug(data.title);
@@ -74,10 +77,9 @@ export class PropertyService {
   }
 
   async updatePropertyStatus(id: string, status: PropertyStatus): Promise<Property> {
-    if (!['For Sale', 'Exclusive', 'Under Offer', 'Sold'].includes(status)) {
-      throw new Error(`Invalid status: ${status}`);
-    }
-    return this.updateProperty(id, { status });
+    const parsedStatus = PropertyStatusSchema.safeParse(status);
+    if (!parsedStatus.success) throw new Error('Invalid property status');
+    return this.updateProperty(id, { status: parsedStatus.data });
   }
 
   async deleteProperty(id: string): Promise<boolean> {

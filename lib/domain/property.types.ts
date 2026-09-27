@@ -1,6 +1,7 @@
 export type PropertyType = 'villa' | 'land' | 'commercial';
 export type PropertyOwnership = 'Freehold (SHM)' | 'Leasehold (HGB)' | 'PMA Foreign Investment';
-export type PropertyStatus = 'For Sale' | 'Exclusive' | 'Under Offer' | 'Sold';
+export const PROPERTY_STATUSES = ['For Sale', 'For Rent', 'Exclusive', 'Under Offer', 'Sold'] as const;
+export type PropertyStatus = (typeof PROPERTY_STATUSES)[number];
 
 export interface Property {
   id: string;

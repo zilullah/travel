@@ -74,6 +74,8 @@ export const Header: React.FC = () => {
     return pathname === "/" && activeSection === item.sectionId;
   };
 
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3.5 text-[#0C4A6E] ${

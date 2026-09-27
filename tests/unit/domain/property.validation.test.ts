@@ -1,8 +1,19 @@
 import { describe, it, expect } from 'vitest';
-import { validateProperty, generatePropertySlug } from '@/lib/domain/property.validation';
-import { Property } from '@/lib/domain/property.types';
+import { validateProperty, generatePropertySlug, PropertySchema, PropertyStatusSchema } from '@/lib/domain/property.validation';
+import { Property, PROPERTY_STATUSES } from '@/lib/domain/property.types';
+import { PropertyMapper, PropertyRow } from '@/lib/repositories/property.mapper';
 
 describe('Property Domain & Validation', () => {
+  it.each(PROPERTY_STATUSES)('accepts listing status %s', (status) => {
+    expect(PropertyStatusSchema.parse(status)).toBe(status);
+    expect(PropertySchema.shape.status.parse(status)).toBe(status);
+  });
+
+  it('preserves the sale default and rejects unknown statuses', () => {
+    expect(PropertySchema.shape.status.parse(undefined)).toBe('For Sale');
+    expect(PropertyStatusSchema.safeParse('Unavailable').success).toBe(false);
+  });
+
   it('should generate a valid slug from title', () => {
     const title = 'The Cliffside Oasis 3-Bedroom Luxury Villa';
     const slug = generatePropertySlug(title);
@@ -34,6 +45,11 @@ describe('Property Domain & Validation', () => {
 
     const result = validateProperty(validData);
     expect(result.success).toBe(true);
+    for (const status of PROPERTY_STATUSES) {
+      const row = PropertyMapper.toPersistence({ ...validData, status });
+      expect(row.status).toBe(status);
+      expect(PropertyMapper.toDomain({ ...row, id: 'test-property' } as PropertyRow).status).toBe(status);
+    }
   });
 
   it('should reject invalid negative price or land size', () => {

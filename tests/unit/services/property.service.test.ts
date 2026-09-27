@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { PropertyService } from '@/lib/services/property.service';
 import { IPropertyRepository } from '@/lib/repositories/property.repository.interface';
 import { Property } from '@/lib/domain/property.types';
@@ -35,16 +35,56 @@ describe('PropertyService', () => {
     findBySlug: vi.fn().mockImplementation((slug: string) =>
       Promise.resolve(mockProperties.find((p) => p.slug === slug) || null)
     ),
-    create: vi.fn().mockImplementation((data: any) =>
+    create: vi.fn().mockImplementation((data: Omit<Property, 'id' | 'createdAt' | 'updatedAt'>) =>
       Promise.resolve({ id: 'p2', ...data, createdAt: '2026-01-01', updatedAt: '2026-01-01' })
     ),
-    update: vi.fn().mockImplementation((id: string, data: any) =>
+    update: vi.fn().mockImplementation((id: string, data: Partial<Property>) =>
       Promise.resolve({ ...mockProperties[0], ...data, id })
     ),
     delete: vi.fn().mockResolvedValue(true),
   };
 
   const service = new PropertyService(mockRepo);
+
+  beforeEach(() => vi.clearAllMocks());
+
+  it('creates and updates rental listings without losing the status', async () => {
+    const created = await service.createProperty({ ...mockProperties[0], status: 'For Rent' });
+    expect(created.status).toBe('For Rent');
+    expect(mockRepo.create).toHaveBeenCalledWith(expect.objectContaining({ status: 'For Rent' }));
+
+    expect((await service.updateProperty('p1', { status: 'For Rent' })).status).toBe('For Rent');
+    expect((await service.updatePropertyStatus('p1', 'For Rent')).status).toBe('For Rent');
+  });
+
+  it('normalizes optional null sizes when creating a rental listing', async () => {
+    await service.createProperty({
+      ...mockProperties[0], status: 'For Rent',
+      leaseYears: null, buildingSizeM2: null, bedrooms: null, bathrooms: null,
+    });
+    expect(mockRepo.create).toHaveBeenCalledWith(expect.objectContaining({
+      leaseYears: undefined, buildingSizeM2: undefined, bedrooms: undefined, bathrooms: undefined,
+    }));
+  });
+
+  it('passes the rental filter to persistence', async () => {
+    await service.listProperties({ status: 'For Rent' });
+    expect(mockRepo.findAll).toHaveBeenCalledWith({ status: 'For Rent' });
+  });
+
+  it.each(['Unavailable', '', null])('rejects invalid status %s before persistence', async (status) => {
+    const invalidStatus = status as Property['status'];
+    await expect(service.createProperty({ ...mockProperties[0], status })).rejects.toThrow(/Validation/);
+    await expect(service.updateProperty('p1', { status: invalidStatus })).rejects.toThrow('Invalid property status');
+    await expect(service.updatePropertyStatus('p1', invalidStatus)).rejects.toThrow('Invalid property status');
+    expect(mockRepo.create).not.toHaveBeenCalled();
+    expect(mockRepo.update).not.toHaveBeenCalled();
+  });
+
+  it('rejects an undefined status in the status-only operation', async () => {
+    await expect(service.updatePropertyStatus('p1', undefined as unknown as Property['status'])).rejects.toThrow('Invalid property status');
+    expect(mockRepo.update).not.toHaveBeenCalled();
+  });
 
   it('should list all properties', async () => {
     const list = await service.listProperties();
@@ -57,7 +97,7 @@ describe('PropertyService', () => {
       service.createProperty({
         title: '',
         priceIdr: -500,
-      } as any)
+      })
     ).rejects.toThrow(/Property Validation Error/);
   });
 

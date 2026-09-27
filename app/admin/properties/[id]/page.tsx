@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Property, PropertyType, PropertyOwnership, PropertyStatus } from '@/lib/domain/property.types';
+import { PROPERTY_STATUSES, PropertyType, PropertyOwnership, PropertyStatus } from '@/lib/domain/property.types';
 import { PropertyService } from '@/lib/services/property.service';
 import { SupabasePropertyRepository } from '@/lib/repositories/supabase-property.repository';
 import { supabaseClient } from '@/lib/supabase/client';
@@ -245,14 +245,17 @@ export default function PropertyFormPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#082F49] uppercase">Asking Price (IDR)</label>
+              <label htmlFor="property-price" className="text-xs font-bold text-[#082F49] uppercase">
+                {status === 'For Rent' ? 'Rental Price (IDR)' : 'Asking Price (IDR)'}
+              </label>
               <input
+                id="property-price"
                 type="number"
                 required
                 min={0}
                 value={priceIdr}
                 onChange={(e) => setPriceIdr(Number(e.target.value))}
-                className="w-full bg-[#F0F9FF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#082F49] font-bold text-[#0284C7] focus:outline-none"
+                className="w-full min-h-11 bg-[#F0F9FF] border border-[#486581] rounded-xl px-3.5 py-2.5 text-sm text-[#082F49] font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0369A1]"
               />
             </div>
 
@@ -283,16 +286,16 @@ export default function PropertyFormPage() {
             )}
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#082F49] uppercase">Status</label>
+              <label htmlFor="property-status" className="text-xs font-bold text-[#082F49] uppercase">Status</label>
               <select
+                id="property-status"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as PropertyStatus)}
-                className="w-full bg-[#F0F9FF] border border-[#BAE6FD] rounded-xl px-3.5 py-2.5 text-sm text-[#082F49] focus:outline-none"
+                className="w-full min-h-11 bg-[#F0F9FF] border border-[#486581] rounded-xl px-3.5 py-2.5 text-sm text-[#082F49] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0369A1]"
               >
-                <option value="For Sale">For Sale</option>
-                <option value="Exclusive">Exclusive</option>
-                <option value="Under Offer">Under Offer</option>
-                <option value="Sold">Sold</option>
+                {PROPERTY_STATUSES.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
               </select>
             </div>
 
