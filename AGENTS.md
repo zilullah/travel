@@ -185,3 +185,43 @@ The agent **MUST** check:
 - [ ] Forms (if any) use schema validation
 - [ ] No direct API calls inside components
 - [ ] Any relevant `.skill` was checked and followed before implementation
+
+## Agent Failure Fallback
+
+Sub-agents are optional optimizations, not requirements.
+
+If `Agent`, `Explore`, `fork`, or any delegated agent fails because of:
+
+- model unavailability
+- safety classifier outage
+- temporary service errors
+- agent initialization failure
+
+do not stop the task and do not repeatedly retry the same failed operation.
+
+Instead:
+
+1. Continue in the main agent.
+2. Read and inspect the relevant files directly.
+3. Use `git diff`, `git status`, `git log`, grep, and code search as needed.
+4. Perform the analysis or review directly.
+5. Retry delegation at most once later if it would materially improve the result.
+6. Never treat an unavailable sub-agent as a code or repository failure.
+
+For review tasks, complete as much of the review as possible using direct,
+read-only inspection before reporting any limitation.
+
+## Secrets
+
+Never read, display, search, modify, or include the contents of:
+
+- `.env`
+- `.env.*`
+- private keys
+- credentials files
+- API tokens or secrets
+
+`.env.example` may be inspected because it must not contain real secrets.
+
+If environment variable names are needed, inspect `.env.example`
+or application source code instead of `.env`.

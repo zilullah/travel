@@ -77,9 +77,8 @@ export class PropertyService {
   }
 
   async updatePropertyStatus(id: string, status: PropertyStatus): Promise<Property> {
-    const parsedStatus = PropertyStatusSchema.safeParse(status);
-    if (!parsedStatus.success) throw new Error('Invalid property status');
-    return this.updateProperty(id, { status: parsedStatus.data });
+    if (status === undefined) throw new Error('Invalid property status');
+    return this.updateProperty(id, { status });
   }
 
   async deleteProperty(id: string): Promise<boolean> {
